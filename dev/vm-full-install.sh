@@ -151,10 +151,11 @@ sudo apt install -y \
 # Audio (Pipewire)
 sudo apt install -y \
     pipewire \
-    pipewire-audio \
     pipewire-pulse \
     wireplumber \
     pavucontrol
+# pipewire-audio puede no existir en algunas versiones
+sudo apt install -y pipewire-audio 2>/dev/null || sudo apt install -y pipewire-alsa 2>/dev/null || true
 
 # Network
 sudo apt install -y \
@@ -173,13 +174,14 @@ sudo apt install -y \
 # System utilities
 sudo apt install -y \
     htop \
-    btop \
-    neofetch \
     tree \
     ripgrep \
     fd-find \
     fzf \
     jq
+# btop y fastfetch pueden no estar en repos base
+sudo apt install -y btop 2>/dev/null || true
+sudo apt install -y fastfetch 2>/dev/null || true
 
 # Terminal
 sudo apt install -y \
@@ -190,8 +192,9 @@ sudo apt install -y \
 sudo apt install -y \
     fonts-noto \
     fonts-noto-color-emoji \
-    fonts-jetbrains-mono \
     fonts-font-awesome
+# JetBrains Mono puede no estar en repos base
+sudo apt install -y fonts-jetbrains-mono 2>/dev/null || true
 
 # Themes
 sudo apt install -y \
@@ -201,9 +204,10 @@ sudo apt install -y \
 
 # Media
 sudo apt install -y \
-    imv \
     mpv \
     ffmpeg
+# imv puede no estar en repos base
+sudo apt install -y imv 2>/dev/null || true
 
 # Screenshots
 sudo apt install -y \
@@ -522,8 +526,7 @@ phase "[4/9] Instalando window managers..."
 # Openbox
 sudo apt install -y \
     openbox \
-    obconf \
-    obmenu
+    obconf
 
 # i3
 sudo apt install -y \
@@ -558,7 +561,7 @@ if ! command -v polybar &> /dev/null; then
         libnl-genl-3-dev \
         libcairo2-dev \
         libxcb1-dev \
-        libxcb-util0-dev \
+        libxcb-util-dev \
         libxcb-randr0-dev \
         libxcb-composite0-dev \
         libxcb-image0-dev \
@@ -599,14 +602,15 @@ sudo apt install -y \
     libgtk-layer-shell-dev \
     libpulse-dev \
     libnm-dev \
-    libsoup-3.0-dev \
     libjson-glib-dev \
     libgirepository1.0-dev \
     gobject-introspection \
     gir1.2-gtk-3.0 \
     gir1.2-nm-1.0 \
-    gir1.2-soup-3.0 \
     typescript
+# libsoup 3.0 puede no existir en todas las versiones
+sudo apt install -y libsoup-3.0-dev gir1.2-soup-3.0 2>/dev/null || \
+    sudo apt install -y libsoup2.4-dev gir1.2-soup-2.4 2>/dev/null || true
 
 # GIR para layer-shell puede no existir en todos los repos
 sudo apt install -y gir1.2-gtklayershell-0.1 2>/dev/null || warn "gir1.2-gtklayershell-0.1 no disponible, AGS puede tener funcionalidad limitada"
@@ -651,8 +655,9 @@ sudo apt install -y \
 sudo apt install -y \
     portaudio19-dev \
     libsndfile1-dev \
-    espeak-ng \
-    espeak-ng-espeak
+    espeak-ng
+# espeak-ng-espeak es opcional (compatibilidad)
+sudo apt install -y espeak-ng-espeak 2>/dev/null || true
 
 # Dependencias para OCR
 sudo apt install -y \
