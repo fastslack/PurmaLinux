@@ -1,0 +1,24 @@
+# PurmaLinux Sway - Packages
+# Paquetes específicos para versión Sway (Wayland)
+
+# Sway (i3-compatible Wayland compositor)
+sway
+
+# Bar
+waybar
+
+# Launcher (wofi es como rofi para Wayland)
+wofi
+
+# Lock/Idle (ya en wayland.txt pero reforzamos)
+swaylock
+swayidle
+
+# Wallpaper
+swaybg
+
+# Notifications
+mako-notifier
+
+# Grimshot (screenshot helper para Sway)
+# Viene con sway o se instala aparte

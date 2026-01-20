@@ -1,0 +1,277 @@
+# ═══════════════════════════════════════════════════════════════════
+# PurmaLinux - Sway Configuration
+# Theme: Aurora
+# Compatible with i3 configs
+# ═══════════════════════════════════════════════════════════════════
+
+# ───────────────────────────────────────────────────────────────────
+# VARIABLES
+# ───────────────────────────────────────────────────────────────────
+set $mod Mod4
+set $term kitty
+set $menu wofi --show drun
+
+# Aurora theme colors
+set $void       #0a0e14
+set $space      #0d1117
+set $nebula     #161b22
+set $cosmic     #21262d
+set $stardust   #30363d
+set $moonlight  #8b949e
+set $starlight  #c9d1d9
+set $plasma     #f0f6fc
+set $cyan       #00d4ff
+set $purple     #a855f7
+set $pink       #ec4899
+set $green      #22c55e
+set $yellow     #f59e0b
+set $red        #ef4444
+
+# ───────────────────────────────────────────────────────────────────
+# OUTPUT (Monitor configuration)
+# ───────────────────────────────────────────────────────────────────
+# Default wallpaper
+output * bg ~/.config/wallpaper.png fill
+
+# Example monitor config:
+# output HDMI-A-1 resolution 1920x1080 position 0,0
+
+# ───────────────────────────────────────────────────────────────────
+# INPUT
+# ───────────────────────────────────────────────────────────────────
+input type:keyboard {
+    xkb_layout us
+}
+
+input type:touchpad {
+    tap enabled
+    natural_scroll enabled
+    dwt enabled
+}
+
+# ───────────────────────────────────────────────────────────────────
+# APPEARANCE
+# ───────────────────────────────────────────────────────────────────
+# Gaps
+gaps inner 12
+gaps outer 8
+
+# Borders
+default_border pixel 2
+default_floating_border pixel 2
+smart_borders on
+smart_gaps on
+
+# Window colors          border     bg         text       indicator  child_border
+client.focused          $cyan      $space     $plasma    $purple    $cyan
+client.focused_inactive $stardust  $space     $moonlight $stardust  $stardust
+client.unfocused        $cosmic    $void      $moonlight $cosmic    $cosmic
+client.urgent           $red       $red       $plasma    $red       $red
+
+# Font
+font pango:JetBrains Mono 10
+
+# Title bar (disabled with pixel border)
+titlebar_border_thickness 0
+titlebar_padding 0
+
+# ───────────────────────────────────────────────────────────────────
+# AUTOSTART
+# ───────────────────────────────────────────────────────────────────
+# Waybar
+exec waybar
+
+# Notifications
+exec mako
+
+# Polkit
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+
+# Clipboard
+exec wl-paste --watch cliphist store
+
+# Idle/Lock
+exec swayidle -w \
+    timeout 300 'swaylock -f -c 0d1117' \
+    timeout 600 'swaymsg "output * dpms off"' \
+    resume 'swaymsg "output * dpms on"' \
+    before-sleep 'swaylock -f -c 0d1117'
+
+# PurmaLinux AI Server
+exec ~/.local/bin/purma-dev server &
+
+# ───────────────────────────────────────────────────────────────────
+# KEYBINDINGS - ESSENTIAL
+# ───────────────────────────────────────────────────────────────────
+bindsym $mod+Return exec $term
+bindsym $mod+q kill
+bindsym $mod+d exec $menu
+bindsym $mod+Shift+q exit
+bindsym $mod+Shift+c reload
+
+# Floating
+bindsym $mod+space floating toggle
+bindsym $mod+Shift+space focus mode_toggle
+
+# Fullscreen
+bindsym $mod+m fullscreen toggle
+
+# Layout
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+bindsym $mod+v splitv
+bindsym $mod+b splith
+
+# ───────────────────────────────────────────────────────────────────
+# KEYBINDINGS - PURMALINUX AI SUITE
+# ───────────────────────────────────────────────────────────────────
+bindsym $mod+a exec ~/.local/bin/purma-chat-toggle
+bindsym $mod+Shift+a exec $term --title purma-chat -e purma-dev chat
+bindsym $mod+o exec ~/.local/bin/purma-spaces
+bindsym $mod+Shift+o exec ~/.local/bin/purma-spaces-menu
+bindsym $mod+f exec ~/.local/bin/purma-flow
+bindsym $mod+Shift+f exec ~/.local/bin/purma-flow-record
+bindsym $mod+Shift+b exec $term --title purma-bridge -e purma-dev chat
+bindsym $mod+p exec ~/.local/bin/purma-pulse
+bindsym $mod+Shift+p exec $term --title btop -e btop
+bindsym $mod+y exec ~/.local/bin/purma-lens
+bindsym $mod+Shift+y exec grim -g "$(slurp)" - | wl-copy
+bindsym $mod+Shift+v exec $term -e ~/.local/bin/purma-vault-cli
+bindsym $mod+c exec ~/.local/bin/purma-scribe
+bindsym $mod+Shift+x exec ~/.local/bin/purma-quick-record
+bindsym $mod+i exec ~/.local/bin/purma-brain
+
+# ───────────────────────────────────────────────────────────────────
+# KEYBINDINGS - SCREENSHOTS
+# ───────────────────────────────────────────────────────────────────
+bindsym Print exec grim - | wl-copy
+bindsym Shift+Print exec grim -g "$(slurp)" - | wl-copy
+bindsym $mod+Print exec grim -g "$(swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')" - | wl-copy
+bindsym Ctrl+Print exec grim ~/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png
+
+# ───────────────────────────────────────────────────────────────────
+# KEYBINDINGS - FOCUS (vim-style)
+# ───────────────────────────────────────────────────────────────────
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# ───────────────────────────────────────────────────────────────────
+# KEYBINDINGS - MOVE WINDOWS
+# ───────────────────────────────────────────────────────────────────
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# ───────────────────────────────────────────────────────────────────
+# KEYBINDINGS - WORKSPACES
+# ───────────────────────────────────────────────────────────────────
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+
+# Scratchpad
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+
+# Workspace navigation
+bindsym $mod+bracketright workspace next
+bindsym $mod+bracketleft workspace prev
+
+# Quick Spaces (PurmaLinux)
+bindsym Ctrl+$mod+1 exec ~/.local/bin/purma-spaces activate work
+bindsym Ctrl+$mod+2 exec ~/.local/bin/purma-spaces activate code
+bindsym Ctrl+$mod+3 exec ~/.local/bin/purma-spaces activate focus
+bindsym Ctrl+$mod+4 exec ~/.local/bin/purma-spaces activate gaming
+
+# ───────────────────────────────────────────────────────────────────
+# KEYBINDINGS - RESIZE MODE
+# ───────────────────────────────────────────────────────────────────
+mode "resize" {
+    bindsym h resize shrink width 50px
+    bindsym j resize grow height 50px
+    bindsym k resize shrink height 50px
+    bindsym l resize grow width 50px
+
+    bindsym Left resize shrink width 50px
+    bindsym Down resize grow height 50px
+    bindsym Up resize shrink height 50px
+    bindsym Right resize grow width 50px
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# ───────────────────────────────────────────────────────────────────
+# KEYBINDINGS - MEDIA
+# ───────────────────────────────────────────────────────────────────
+bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86MonBrightnessUp exec brightnessctl set +5%
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+
+# ───────────────────────────────────────────────────────────────────
+# WINDOW RULES
+# ───────────────────────────────────────────────────────────────────
+# Floating
+for_window [app_id="pavucontrol"] floating enable
+for_window [app_id="nm-connection-editor"] floating enable
+for_window [app_id="thunar"] floating enable
+for_window [title="btop"] floating enable
+for_window [title="purma-chat"] floating enable
+for_window [app_id="purma-.*"] floating enable
+
+# PurmaLinux widgets always on top
+for_window [app_id="purma-.*"] sticky enable
+
+# Size
+for_window [app_id="thunar"] resize set 800 600
+for_window [app_id="pavucontrol"] resize set 600 400
+
+# Opacity (requires sway with blur patch or just skip)
+# for_window [app_id="kitty"] opacity 0.95
+
+# ───────────────────────────────────────────────────────────────────
+# BAR (using Waybar instead)
+# ───────────────────────────────────────────────────────────────────
+# bar {
+#     swaybar_command waybar
+# }
+
+include /etc/sway/config.d/*

@@ -1,0 +1,107 @@
+/* ═══════════════════════════════════════════════════════════════════
+ * PurmaLinux - Wofi Style
+ * Theme: Aurora
+ * ═══════════════════════════════════════════════════════════════════ */
+
+/* Aurora Colors */
+@define-color void #0a0e14;
+@define-color space #0d1117;
+@define-color nebula #161b22;
+@define-color cosmic #21262d;
+@define-color stardust #30363d;
+@define-color moonlight #8b949e;
+@define-color starlight #c9d1d9;
+@define-color plasma #f0f6fc;
+@define-color cyan #00d4ff;
+@define-color purple #a855f7;
+@define-color pink #ec4899;
+@define-color green #22c55e;
+@define-color yellow #f59e0b;
+@define-color red #ef4444;
+
+/* Window */
+window {
+    background-color: alpha(@space, 0.95);
+    border: 2px solid @stardust;
+    border-radius: 16px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px;
+}
+
+/* Input box */
+#input {
+    background-color: @nebula;
+    border: none;
+    border-radius: 12px;
+    margin: 12px;
+    padding: 12px 16px;
+    color: @plasma;
+    font-size: 14px;
+}
+
+#input:focus {
+    border: 2px solid @cyan;
+    outline: none;
+}
+
+/* Outer box containing everything */
+#outer-box {
+    margin: 0;
+    padding: 0;
+}
+
+/* Inner box containing entries */
+#inner-box {
+    margin: 0 12px 12px 12px;
+    padding: 0;
+}
+
+/* Scroll area */
+#scroll {
+    margin: 0;
+    padding: 0;
+}
+
+/* Entry items */
+#entry {
+    padding: 10px 12px;
+    margin: 2px 0;
+    border-radius: 8px;
+    color: @starlight;
+    transition: all 0.15s ease;
+}
+
+#entry:hover {
+    background-color: alpha(@cyan, 0.1);
+}
+
+#entry:selected {
+    background-color: alpha(@cyan, 0.2);
+    color: @plasma;
+    border-left: 3px solid @cyan;
+}
+
+/* Entry text */
+#text {
+    margin-left: 8px;
+    color: inherit;
+}
+
+#text:selected {
+    color: @plasma;
+}
+
+/* Entry image/icon */
+#img {
+    margin-right: 8px;
+}
+
+/* Categories */
+#entry.category {
+    background-color: @nebula;
+    color: @moonlight;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 6px 12px;
+    margin-top: 8px;
+}

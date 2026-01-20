@@ -1,0 +1,41 @@
+# PurmaLinux - Wayland Base Packages
+# Paquetes comunes para sesiones Wayland
+
+# Wayland core
+wayland-protocols
+libwayland-dev
+xwayland
+
+# Clipboard
+wl-clipboard
+
+# Screenshots
+grim
+slurp
+
+# Screen recording
+wf-recorder
+
+# Notifications (Wayland-native)
+mako-notifier
+
+# App launcher
+wofi
+
+# Idle/Lock
+swayidle
+swaylock
+
+# Wallpaper
+swaybg
+
+# Gamma/Night light
+wlsunset
+
+# Output management
+wlr-randr
+kanshi
+
+# Utilities
+wtype
+wdisplays

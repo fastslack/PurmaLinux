@@ -1,0 +1,32 @@
+# ═══════════════════════════════════════════════════════════════════
+# PurmaLinux - Wofi Configuration
+# Theme: Aurora
+# ═══════════════════════════════════════════════════════════════════
+
+# General
+show=drun
+width=500
+height=400
+always_parse_args=true
+show_all=true
+print_command=true
+layer=overlay
+insensitive=true
+prompt=Search...
+image_size=32
+columns=1
+
+# Appearance
+allow_markup=true
+allow_images=true
+hide_scroll=true
+no_actions=true
+orientation=vertical
+content_halign=fill
+halign=center
+line_wrap=off
+
+# Behavior
+matching=contains
+sort_order=alphabetical
+gtk_dark=true

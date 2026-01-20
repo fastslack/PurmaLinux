@@ -965,28 +965,23 @@ cat << 'EOF'
 ║      ██║     ╚██████╔╝██║  ██║██║ ╚═╝ ██║██║  ██║                ║
 ║      ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝                ║
 ║                                                                  ║
-║           ¡INSTALACIÓN COMPLETADA!                               ║
+║           ¡INSTALACIÓN COMPLETADA! (X11)                         ║
 ║                                                                  ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║                                                                  ║
-║  Para iniciar el entorno gráfico:                                ║
-║                                                                  ║
-║    sudo systemctl start lightdm                                  ║
-║                                                                  ║
-║  O reiniciar el sistema:                                         ║
-║                                                                  ║
-║    sudo reboot                                                   ║
-║                                                                  ║
-║  Sesiones disponibles en LightDM:                                ║
+║  Sesiones X11 disponibles en LightDM:                            ║
 ║    • PurmaLinux (Openbox) - Desktop con AGS                      ║
 ║    • PurmaLinux (i3) - Tiling con Polybar                        ║
+║                                                                  ║
+║  ¿Quieres también Wayland (Hyprland/Sway)?                       ║
+║    bash ~/PurmaLinux/wayland/install-wayland.sh                  ║
 ║                                                                  ║
 ║  Comandos útiles:                                                ║
 ║    purma-dev server  → Iniciar servidor AI                       ║
 ║    purma-dev test    → Verificar servicios                       ║
 ║    purma-dev chat    → Chat CLI                                  ║
 ║                                                                  ║
-║  Atajos principales (en i3/Openbox):                             ║
+║  Atajos principales:                                             ║
 ║    Super+A           → Purma Chat                                ║
 ║    Super+Return      → Terminal (Kitty)                          ║
 ║    Super+D           → Launcher (Rofi)                           ║
@@ -995,6 +990,13 @@ cat << 'EOF'
 ╚══════════════════════════════════════════════════════════════════╝
 EOF
 echo -e "${NC}"
+
+echo ""
+echo -e "${YELLOW}¿Instalar también Wayland (Hyprland/Sway)?${NC}"
+read -p "Esto es opcional, puedes hacerlo después [y/N]: " wayland_choice
+if [[ "$wayland_choice" =~ ^[Yy]$ ]]; then
+    bash "$PURMA_DIR/wayland/install-wayland.sh"
+fi
 
 echo ""
 read -p "¿Reiniciar ahora para iniciar el entorno gráfico? [Y/n]: " reboot_choice

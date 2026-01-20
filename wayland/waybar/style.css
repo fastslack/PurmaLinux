@@ -1,0 +1,275 @@
+/* ═══════════════════════════════════════════════════════════════════
+ * PurmaLinux - Waybar Style
+ * Theme: Aurora
+ * ═══════════════════════════════════════════════════════════════════ */
+
+/* Aurora Color Palette */
+@define-color void #0a0e14;
+@define-color space #0d1117;
+@define-color nebula #161b22;
+@define-color cosmic #21262d;
+@define-color stardust #30363d;
+@define-color moonlight #8b949e;
+@define-color starlight #c9d1d9;
+@define-color plasma #f0f6fc;
+@define-color cyan #00d4ff;
+@define-color purple #a855f7;
+@define-color pink #ec4899;
+@define-color green #22c55e;
+@define-color yellow #f59e0b;
+@define-color red #ef4444;
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* BASE                                                                 */
+/* ─────────────────────────────────────────────────────────────────── */
+* {
+    font-family: "JetBrains Mono", "Symbols Nerd Font", monospace;
+    font-size: 13px;
+    font-weight: 500;
+    min-height: 0;
+}
+
+window#waybar {
+    background: transparent;
+}
+
+window#waybar > box {
+    background: alpha(@space, 0.9);
+    border: 2px solid @stardust;
+    border-radius: 12px;
+    margin: 0;
+    padding: 0 8px;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* MODULES BASE                                                         */
+/* ─────────────────────────────────────────────────────────────────── */
+#workspaces,
+#window,
+#clock,
+#tray,
+#pulseaudio,
+#network,
+#cpu,
+#memory,
+#battery,
+#custom-logo,
+#custom-purma-ai,
+#custom-power {
+    padding: 0 12px;
+    margin: 4px 2px;
+    border-radius: 8px;
+    background: transparent;
+    color: @starlight;
+    transition: all 0.2s ease;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* LOGO                                                                 */
+/* ─────────────────────────────────────────────────────────────────── */
+#custom-logo {
+    font-size: 16px;
+    color: @cyan;
+    padding: 0 8px;
+    margin-left: 4px;
+}
+
+#custom-logo:hover {
+    background: alpha(@cyan, 0.2);
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* WORKSPACES                                                           */
+/* ─────────────────────────────────────────────────────────────────── */
+#workspaces {
+    padding: 0 4px;
+}
+
+#workspaces button {
+    padding: 0 8px;
+    margin: 4px 2px;
+    border-radius: 6px;
+    color: @moonlight;
+    background: transparent;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+#workspaces button:hover {
+    background: alpha(@cyan, 0.2);
+    color: @cyan;
+}
+
+#workspaces button.active,
+#workspaces button.focused {
+    background: alpha(@cyan, 0.3);
+    color: @cyan;
+    font-weight: bold;
+}
+
+#workspaces button.urgent {
+    background: alpha(@red, 0.3);
+    color: @red;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* WINDOW TITLE                                                         */
+/* ─────────────────────────────────────────────────────────────────── */
+#window {
+    color: @moonlight;
+    font-style: italic;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* CLOCK                                                                */
+/* ─────────────────────────────────────────────────────────────────── */
+#clock {
+    color: @plasma;
+    font-weight: bold;
+}
+
+#clock:hover {
+    background: alpha(@purple, 0.2);
+    color: @purple;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* PURMA AI                                                             */
+/* ─────────────────────────────────────────────────────────────────── */
+#custom-purma-ai {
+    font-size: 16px;
+    color: @purple;
+    background: linear-gradient(45deg, alpha(@purple, 0.2), alpha(@cyan, 0.2));
+    border: 1px solid alpha(@purple, 0.5);
+}
+
+#custom-purma-ai:hover {
+    background: linear-gradient(45deg, alpha(@purple, 0.4), alpha(@cyan, 0.4));
+    color: @plasma;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* TRAY                                                                 */
+/* ─────────────────────────────────────────────────────────────────── */
+#tray {
+    padding: 0 8px;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background: alpha(@yellow, 0.2);
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* AUDIO                                                                */
+/* ─────────────────────────────────────────────────────────────────── */
+#pulseaudio {
+    color: @cyan;
+}
+
+#pulseaudio:hover {
+    background: alpha(@cyan, 0.2);
+}
+
+#pulseaudio.muted {
+    color: @moonlight;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* NETWORK                                                              */
+/* ─────────────────────────────────────────────────────────────────── */
+#network {
+    color: @green;
+}
+
+#network:hover {
+    background: alpha(@green, 0.2);
+}
+
+#network.disconnected {
+    color: @red;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* CPU & MEMORY                                                         */
+/* ─────────────────────────────────────────────────────────────────── */
+#cpu {
+    color: @purple;
+}
+
+#cpu:hover {
+    background: alpha(@purple, 0.2);
+}
+
+#memory {
+    color: @pink;
+}
+
+#memory:hover {
+    background: alpha(@pink, 0.2);
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* BATTERY                                                              */
+/* ─────────────────────────────────────────────────────────────────── */
+#battery {
+    color: @green;
+}
+
+#battery:hover {
+    background: alpha(@green, 0.2);
+}
+
+#battery.charging,
+#battery.plugged {
+    color: @cyan;
+}
+
+#battery.warning:not(.charging) {
+    color: @yellow;
+    background: alpha(@yellow, 0.2);
+}
+
+#battery.critical:not(.charging) {
+    color: @red;
+    background: alpha(@red, 0.2);
+    animation: blink 0.5s linear infinite alternate;
+}
+
+@keyframes blink {
+    to {
+        background: alpha(@red, 0.4);
+    }
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* POWER                                                                */
+/* ─────────────────────────────────────────────────────────────────── */
+#custom-power {
+    font-size: 16px;
+    color: @red;
+    padding: 0 12px;
+    margin-right: 4px;
+}
+
+#custom-power:hover {
+    background: alpha(@red, 0.2);
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* TOOLTIP                                                              */
+/* ─────────────────────────────────────────────────────────────────── */
+tooltip {
+    background: @space;
+    border: 2px solid @stardust;
+    border-radius: 8px;
+}
+
+tooltip label {
+    color: @starlight;
+    padding: 8px;
+}

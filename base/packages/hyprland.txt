@@ -1,0 +1,39 @@
+# PurmaLinux Hyprland - Packages
+# Paquetes específicos para versión Hyprland (Wayland)
+
+# Hyprland (compilar desde source para última versión)
+# Dependencias de compilación:
+meson
+ninja-build
+cmake
+libxcb-util-dev
+libxcb-ewmh-dev
+libxcb-icccm4-dev
+libxcb-render-util0-dev
+libxcb-res0-dev
+libcairo2-dev
+libpango1.0-dev
+libgbm-dev
+libdrm-dev
+libxkbcommon-dev
+libegl1-mesa-dev
+libgles2-mesa-dev
+libpixman-1-dev
+libseat-dev
+libinput-dev
+libxcb-composite0-dev
+libxcb-damage0-dev
+libxcb-xfixes0-dev
+libxcb-xinput-dev
+libdisplay-info-dev
+libtomlplusplus-dev
+hwdata
+
+# Hyprland ecosystem
+# hyprpaper (wallpaper)
+# hyprlock (lock screen)
+# hypridle (idle daemon)
+# hyprpicker (color picker)
+
+# Bar
+# waybar (compilar para Hyprland support)
