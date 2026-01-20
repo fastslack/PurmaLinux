@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openbox_config xmlns="http://openbox.org/3.4/rc">
+
+  <resistance>
+    <strength>10</strength>
+    <screen_edge_strength>20</screen_edge_strength>
+  </resistance>
+
+  <focus>
+    <focusNew>yes</focusNew>
+    <followMouse>no</followMouse>
+    <focusLast>yes</focusLast>
+    <underMouse>no</underMouse>
+    <focusDelay>200</focusDelay>
+    <raiseOnFocus>no</raiseOnFocus>
+  </focus>
+
+  <placement>
+    <policy>Smart</policy>
+    <center>yes</center>
+    <monitor>Primary</monitor>
+    <primaryMonitor>1</primaryMonitor>
+  </placement>
+
+  <theme>
+    <name>Aurora-PurmaLinux</name>
+    <titleLayout>NLIMC</titleLayout>
+    <keepBorder>yes</keepBorder>
+    <animateIconify>yes</animateIconify>
+    <font place="ActiveWindow">
+      <name>JetBrains Mono</name>
+      <size>10</size>
+      <weight>Bold</weight>
+      <slant>Normal</slant>
+    </font>
+    <font place="InactiveWindow">
+      <name>JetBrains Mono</name>
+      <size>10</size>
+      <weight>Normal</weight>
+      <slant>Normal</slant>
+    </font>
+    <font place="MenuHeader">
+      <name>JetBrains Mono</name>
+      <size>10</size>
+      <weight>Bold</weight>
+      <slant>Normal</slant>
+    </font>
+    <font place="MenuItem">
+      <name>JetBrains Mono</name>
+      <size>10</size>
+      <weight>Normal</weight>
+      <slant>Normal</slant>
+    </font>
+    <font place="ActiveOnScreenDisplay">
+      <name>JetBrains Mono</name>
+      <size>10</size>
+      <weight>Bold</weight>
+      <slant>Normal</slant>
+    </font>
+    <font place="InactiveOnScreenDisplay">
+      <name>JetBrains Mono</name>
+      <size>10</size>
+      <weight>Normal</weight>
+      <slant>Normal</slant>
+    </font>
+  </theme>
+
+  <desktops>
+    <number>4</number>
+    <firstdesk>1</firstdesk>
+    <names>
+      <name>Main</name>
+      <name>Code</name>
+      <name>Web</name>
+      <name>AI</name>
+    </names>
+    <popupTime>875</popupTime>
+  </desktops>
+
+  <resize>
+    <drawContents>yes</drawContents>
+    <popupShow>Nonpixel</popupShow>
+    <popupPosition>Center</popupPosition>
+    <popupFixedPosition>
+      <x>10</x>
+      <y>10</y>
+    </popupFixedPosition>
+  </resize>
+
+  <margins>
+    <top>48</top>
+    <bottom>0</bottom>
+    <left>0</left>
+    <right>0</right>
+  </margins>
+
+  <dock>
+    <position>TopLeft</position>
+    <floatingX>0</floatingX>
+    <floatingY>0</floatingY>
+    <noStrut>no</noStrut>
+    <stacking>Above</stacking>
+    <direction>Horizontal</direction>
+    <autoHide>no</autoHide>
+    <hideDelay>300</hideDelay>
+    <showDelay>300</showDelay>
+    <moveButton>Middle</moveButton>
+  </dock>
+
+  <keyboard>
+    <!-- Desktop switching -->
+    <keybind key="W-1"><action name="GoToDesktop"><to>1</to></action></keybind>
+    <keybind key="W-2"><action name="GoToDesktop"><to>2</to></action></keybind>
+    <keybind key="W-3"><action name="GoToDesktop"><to>3</to></action></keybind>
+    <keybind key="W-4"><action name="GoToDesktop"><to>4</to></action></keybind>
+
+    <!-- Move window to desktop -->
+    <keybind key="W-S-1"><action name="SendToDesktop"><to>1</to><follow>no</follow></action></keybind>
+    <keybind key="W-S-2"><action name="SendToDesktop"><to>2</to><follow>no</follow></action></keybind>
+    <keybind key="W-S-3"><action name="SendToDesktop"><to>3</to><follow>no</follow></action></keybind>
+    <keybind key="W-S-4"><action name="SendToDesktop"><to>4</to><follow>no</follow></action></keybind>
+
+    <!-- Window management -->
+    <keybind key="W-q"><action name="Close"/></keybind>
+    <keybind key="W-f"><action name="ToggleMaximize"/></keybind>
+    <keybind key="W-m"><action name="Iconify"/></keybind>
+    <keybind key="W-t"><action name="ToggleDecorations"/></keybind>
+    <keybind key="W-space"><action name="ToggleFullscreen"/></keybind>
+
+    <!-- Snap windows -->
+    <keybind key="W-Left">
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo">
+        <x>0</x>
+        <y>48</y>
+        <width>50%</width>
+        <height>100%-48</height>
+      </action>
+    </keybind>
+    <keybind key="W-Right">
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo">
+        <x>50%</x>
+        <y>48</y>
+        <width>50%</width>
+        <height>100%-48</height>
+      </action>
+    </keybind>
+    <keybind key="W-Up"><action name="Maximize"/></keybind>
+    <keybind key="W-Down"><action name="Unmaximize"/></keybind>
+
+    <!-- Applications -->
+    <keybind key="W-Return"><action name="Execute"><command>kitty</command></action></keybind>
+    <keybind key="W-e"><action name="Execute"><command>thunar</command></action></keybind>
+    <keybind key="W-d"><action name="Execute"><command>rofi -show drun</command></action></keybind>
+    <keybind key="W-r"><action name="Execute"><command>rofi -show run</command></action></keybind>
+    <keybind key="W-w"><action name="Execute"><command>rofi -show window</command></action></keybind>
+
+    <!-- AI Chat (Super + A) -->
+    <keybind key="W-a"><action name="Execute"><command>purma-chat</command></action></keybind>
+
+    <!-- Purma Flow -->
+    <keybind key="W-g"><action name="Execute"><command>purma-flow-ctl toggle</command></action></keybind>
+    <keybind key="W-S-g"><action name="Execute"><command>purma-flow-ctl record</command></action></keybind>
+
+    <!-- Purma Bridge -->
+    <keybind key="W-b"><action name="Execute"><command>ags -r "togglePurmaBridge()"</command></action></keybind>
+    <keybind key="W-S-b"><action name="Execute"><command>kitty -e purma-bridge</command></action></keybind>
+
+    <!-- Purma Pulse -->
+    <keybind key="W-p"><action name="Execute"><command>ags -r "togglePurmaPulse()"</command></action></keybind>
+    <keybind key="W-S-p"><action name="Execute"><command>kitty -e htop</command></action></keybind>
+
+    <!-- Purma Lens -->
+    <keybind key="W-y"><action name="Execute"><command>ags -r "togglePurmaLens()"</command></action></keybind>
+    <keybind key="W-S-y"><action name="Execute"><command>ags -r "purmaQuickCapture('region')"</command></action></keybind>
+    <keybind key="Print"><action name="Execute"><command>ags -r "purmaQuickCapture('fullscreen')"</command></action></keybind>
+    <keybind key="S-Print"><action name="Execute"><command>ags -r "purmaQuickCapture('region')"</command></action></keybind>
+    <keybind key="A-Print"><action name="Execute"><command>ags -r "purmaQuickCapture('window')"</command></action></keybind>
+
+    <!-- Purma Vault (Password Manager) -->
+    <keybind key="W-v"><action name="Execute"><command>ags -r "togglePurmaVault()"</command></action></keybind>
+    <keybind key="W-S-v"><action name="Execute"><command>kitty -e purma-vault-ctl</command></action></keybind>
+
+    <!-- Purma Scribe (Voice Assistant) -->
+    <keybind key="W-c"><action name="Execute"><command>ags -r "togglePurmaScribe()"</command></action></keybind>
+    <keybind key="W-S-x"><action name="Execute"><command>notify-send "Purma Scribe" "Recording for 5 seconds..." &amp;&amp; curl -X POST http://localhost:11435/scribe/quick?duration=5</command></action></keybind>
+
+    <!-- Purma Spaces -->
+    <keybind key="W-s"><action name="Execute"><command>purma-spaces-ctl toggle</command></action></keybind>
+    <keybind key="W-S-s"><action name="Execute"><command>purma-spaces-ctl menu</command></action></keybind>
+    <keybind key="W-bracketright"><action name="Execute"><command>purma-spaces-ctl next</command></action></keybind>
+    <keybind key="W-bracketleft"><action name="Execute"><command>purma-spaces-ctl prev</command></action></keybind>
+
+    <!-- Quick Spaces (Ctrl+Super+number) -->
+    <keybind key="C-W-1"><action name="Execute"><command>purma-spaces-ctl work</command></action></keybind>
+    <keybind key="C-W-2"><action name="Execute"><command>purma-spaces-ctl code</command></action></keybind>
+    <keybind key="C-W-3"><action name="Execute"><command>purma-spaces-ctl focus</command></action></keybind>
+    <keybind key="C-W-4"><action name="Execute"><command>purma-spaces-ctl gaming</command></action></keybind>
+
+    <!-- Volume -->
+    <keybind key="XF86AudioRaiseVolume"><action name="Execute"><command>pactl set-sink-volume @DEFAULT_SINK@ +5%</command></action></keybind>
+    <keybind key="XF86AudioLowerVolume"><action name="Execute"><command>pactl set-sink-volume @DEFAULT_SINK@ -5%</command></action></keybind>
+    <keybind key="XF86AudioMute"><action name="Execute"><command>pactl set-sink-mute @DEFAULT_SINK@ toggle</command></action></keybind>
+
+    <!-- Brightness -->
+    <keybind key="XF86MonBrightnessUp"><action name="Execute"><command>brightnessctl set +10%</command></action></keybind>
+    <keybind key="XF86MonBrightnessDown"><action name="Execute"><command>brightnessctl set 10%-</command></action></keybind>
+
+    <!-- Cycle windows -->
+    <keybind key="A-Tab">
+      <action name="NextWindow">
+        <finalactions>
+          <action name="Focus"/>
+          <action name="Raise"/>
+          <action name="Unshade"/>
+        </finalactions>
+      </action>
+    </keybind>
+    <keybind key="A-S-Tab">
+      <action name="PreviousWindow">
+        <finalactions>
+          <action name="Focus"/>
+          <action name="Raise"/>
+          <action name="Unshade"/>
+        </finalactions>
+      </action>
+    </keybind>
+
+    <!-- Lock screen -->
+    <keybind key="W-l"><action name="Execute"><command>i3lock -c 1a1b26</command></action></keybind>
+  </keyboard>
+
+  <mouse>
+    <dragThreshold>1</dragThreshold>
+    <doubleClickTime>500</doubleClickTime>
+    <screenEdgeWarpTime>400</screenEdgeWarpTime>
+    <screenEdgeWarpMouse>false</screenEdgeWarpMouse>
+
+    <context name="Frame">
+      <mousebind button="W-Left" action="Press">
+        <action name="Focus"/>
+        <action name="Raise"/>
+      </mousebind>
+      <mousebind button="W-Left" action="Drag">
+        <action name="Move"/>
+      </mousebind>
+      <mousebind button="W-Right" action="Drag">
+        <action name="Resize"/>
+      </mousebind>
+    </context>
+
+    <context name="Titlebar">
+      <mousebind button="Left" action="Drag">
+        <action name="Move"/>
+      </mousebind>
+      <mousebind button="Left" action="DoubleClick">
+        <action name="ToggleMaximize"/>
+      </mousebind>
+    </context>
+
+    <context name="Desktop">
+      <mousebind button="Up" action="Click">
+        <action name="GoToDesktop"><to>previous</to></action>
+      </mousebind>
+      <mousebind button="Down" action="Click">
+        <action name="GoToDesktop"><to>next</to></action>
+      </mousebind>
+    </context>
+
+    <context name="Root">
+      <mousebind button="Middle" action="Press">
+        <action name="ShowMenu"><menu>client-list-combined-menu</menu></action>
+      </mousebind>
+      <mousebind button="Right" action="Press">
+        <action name="ShowMenu"><menu>root-menu</menu></action>
+      </mousebind>
+    </context>
+  </mouse>
+
+  <applications>
+    <!-- Float certain windows -->
+    <application class="pavucontrol">
+      <decor>yes</decor>
+      <position force="yes">
+        <x>center</x>
+        <y>center</y>
+      </position>
+    </application>
+    <application class="lxappearance">
+      <decor>yes</decor>
+      <position force="yes">
+        <x>center</x>
+        <y>center</y>
+      </position>
+    </application>
+    <!-- AI Chat sidebar -->
+    <application name="purma-chat">
+      <decor>no</decor>
+      <position force="yes">
+        <x>-0</x>
+        <y>48</y>
+      </position>
+      <size>
+        <width>400</width>
+        <height>100%-48</height>
+      </size>
+      <layer>above</layer>
+    </application>
+  </applications>
+
+</openbox_config>

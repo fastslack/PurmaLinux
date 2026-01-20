@@ -1,0 +1,22 @@
+# PurmaLinux - AI Packages
+# Dependencias para el stack de IA
+
+# Python (para herramientas de IA)
+python3
+python3-pip
+python3-venv
+
+# Node.js (para chat-ui y herramientas)
+nodejs
+npm
+
+# Runtime dependencies
+libcurl4-openssl-dev
+libssl-dev
+
+# GPU Support (NVIDIA - opcional)
+# nvidia-driver-535
+# nvidia-cuda-toolkit
+
+# Monitoring
+nvtop

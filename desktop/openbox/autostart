@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                                                                              ║
+# ║                PurmaLinux Openbox Autostart Script                           ║
+# ║                         Aurora Theme                                          ║
+# ║                                                                              ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+# Kill existing processes
+killall -q picom
+
+# Wait for picom to stop
+while pgrep -x picom >/dev/null; do sleep 0.1; done
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Desktop Environment Setup
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Set wallpaper
+if command -v feh &> /dev/null; then
+    feh --bg-fill ~/.config/wallpaper.jpg 2>/dev/null || \
+    feh --bg-fill /usr/share/backgrounds/purmalinux-aurora.png 2>/dev/null || \
+    hsetroot -solid "#0a0e14"
+elif command -v nitrogen &> /dev/null; then
+    nitrogen --restore &
+elif command -v hsetroot &> /dev/null; then
+    hsetroot -solid "#0a0e14"
+fi
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Compositor (Picom) - Blur, Shadows, Transparency
+# ═══════════════════════════════════════════════════════════════════════════════
+picom --config ~/.config/picom/picom.conf -b &
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  AGS (Aylur's GTK Shell) - Bar and Widgets
+# ═══════════════════════════════════════════════════════════════════════════════
+command -v ags &> /dev/null && ags &
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  System Services
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# PolicyKit authentication agent
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &>/dev/null &
+/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &>/dev/null &
+
+# Network Manager applet
+nm-applet &
+
+# Bluetooth applet
+command -v blueman-applet &> /dev/null && blueman-applet &
+
+# Clipboard manager
+command -v parcellite &> /dev/null && parcellite &
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Input Settings
+# ═══════════════════════════════════════════════════════════════════════════════
+xset r rate 300 50 2>/dev/null
+command -v numlockx &> /dev/null && numlockx on
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  PurmaLinux AI Services
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Start Ollama if not running
+if ! pgrep -x "ollama" > /dev/null; then
+    ollama serve &>/dev/null &
+fi
+
+# Start Purma AI server (if not already running)
+if ! pgrep -f "purma_server.py" > /dev/null; then
+    (cd ~/PurmaLinux/ai/server && python purma_server.py &>/dev/null &)
+fi
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  XDG Autostart
+# ═══════════════════════════════════════════════════════════════════════════════
+command -v dex &> /dev/null && dex -a -s ~/.config/autostart/ 2>/dev/null &
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Startup Notification
+# ═══════════════════════════════════════════════════════════════════════════════
+sleep 2
+notify-send -u normal -i face-robot "PurmaLinux Aurora" "Openbox desktop loaded\nPress Super+A for Purma AI"
+
+echo "[$(date)] PurmaLinux Openbox Aurora theme loaded successfully"

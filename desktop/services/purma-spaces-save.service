@@ -1,0 +1,13 @@
+[Unit]
+Description=PurmaLinux Spaces Save State
+Documentation=https://github.com/purmalinux
+DefaultDependencies=no
+Before=shutdown.target reboot.target halt.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/purma-spaces save
+TimeoutStartSec=10
+
+[Install]
+WantedBy=shutdown.target reboot.target halt.target

@@ -1,0 +1,227 @@
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                                                                              ║
+# ║      █████╗ ██╗   ██╗██████╗  ██████╗ ██████╗  █████╗                         ║
+# ║     ██╔══██╗██║   ██║██╔══██╗██╔═══██╗██╔══██╗██╔══██╗                        ║
+# ║     ███████║██║   ██║██████╔╝██║   ██║██████╔╝███████║                        ║
+# ║     ██╔══██║██║   ██║██╔══██╗██║   ██║██╔══██╗██╔══██║                        ║
+# ║     ██║  ██║╚██████╔╝██║  ██║╚██████╔╝██║  ██║██║  ██║                        ║
+# ║     ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝                        ║
+# ║                                                                              ║
+# ║                    Openbox Theme - PurmaLinux                                ║
+# ║                                                                              ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Window Geometry
+# ═══════════════════════════════════════════════════════════════════════════════
+border.width: 2
+padding.width: 10
+padding.height: 8
+window.client.padding.width: 0
+window.client.padding.height: 0
+window.handle.width: 0
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Border Colors
+# ═══════════════════════════════════════════════════════════════════════════════
+window.active.border.color: #00d4ff
+window.inactive.border.color: #21262d
+window.active.client.color: #0d1117
+window.inactive.client.color: #0a0e14
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Title Bar - Active Window
+# ═══════════════════════════════════════════════════════════════════════════════
+window.active.title.bg: flat solid
+window.active.title.bg.color: #0d1117
+
+window.active.label.bg: parentrelative
+window.active.label.text.color: #f0f6fc
+window.active.label.text.font: shadow=n
+window.active.label.text.justify: center
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Title Bar - Inactive Window
+# ═══════════════════════════════════════════════════════════════════════════════
+window.inactive.title.bg: flat solid
+window.inactive.title.bg.color: #0a0e14
+
+window.inactive.label.bg: parentrelative
+window.inactive.label.text.color: #8b949e
+window.inactive.label.text.font: shadow=n
+window.inactive.label.text.justify: center
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Window Buttons - Active
+# ═══════════════════════════════════════════════════════════════════════════════
+# Close button
+window.active.button.close.unpressed.bg: flat solid
+window.active.button.close.unpressed.bg.color: #ef4444
+window.active.button.close.unpressed.image.color: #ef4444
+
+window.active.button.close.hover.bg: flat solid
+window.active.button.close.hover.bg.color: #f87171
+window.active.button.close.hover.image.color: #0a0e14
+
+window.active.button.close.pressed.bg: flat solid
+window.active.button.close.pressed.bg.color: #dc2626
+window.active.button.close.pressed.image.color: #0a0e14
+
+# Maximize button
+window.active.button.max.unpressed.bg: flat solid
+window.active.button.max.unpressed.bg.color: #22c55e
+window.active.button.max.unpressed.image.color: #22c55e
+
+window.active.button.max.hover.bg: flat solid
+window.active.button.max.hover.bg.color: #4ade80
+window.active.button.max.hover.image.color: #0a0e14
+
+window.active.button.max.pressed.bg: flat solid
+window.active.button.max.pressed.bg.color: #16a34a
+window.active.button.max.pressed.image.color: #0a0e14
+
+window.active.button.max.toggled.unpressed.bg: flat solid
+window.active.button.max.toggled.unpressed.bg.color: #22c55e
+window.active.button.max.toggled.unpressed.image.color: #22c55e
+
+window.active.button.max.toggled.hover.bg: flat solid
+window.active.button.max.toggled.hover.bg.color: #4ade80
+window.active.button.max.toggled.hover.image.color: #0a0e14
+
+# Iconify button
+window.active.button.iconify.unpressed.bg: flat solid
+window.active.button.iconify.unpressed.bg.color: #f59e0b
+window.active.button.iconify.unpressed.image.color: #f59e0b
+
+window.active.button.iconify.hover.bg: flat solid
+window.active.button.iconify.hover.bg.color: #fbbf24
+window.active.button.iconify.hover.image.color: #0a0e14
+
+window.active.button.iconify.pressed.bg: flat solid
+window.active.button.iconify.pressed.bg.color: #d97706
+window.active.button.iconify.pressed.image.color: #0a0e14
+
+# Shade button
+window.active.button.shade.unpressed.bg: flat solid
+window.active.button.shade.unpressed.bg.color: #a855f7
+window.active.button.shade.unpressed.image.color: #a855f7
+
+window.active.button.shade.hover.bg: flat solid
+window.active.button.shade.hover.bg.color: #c084fc
+window.active.button.shade.hover.image.color: #0a0e14
+
+# Desk button
+window.active.button.desk.unpressed.bg: flat solid
+window.active.button.desk.unpressed.bg.color: #00d4ff
+window.active.button.desk.unpressed.image.color: #00d4ff
+
+window.active.button.desk.hover.bg: flat solid
+window.active.button.desk.hover.bg.color: #38bdf8
+window.active.button.desk.hover.image.color: #0a0e14
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Window Buttons - Inactive
+# ═══════════════════════════════════════════════════════════════════════════════
+window.inactive.button.close.unpressed.bg: flat solid
+window.inactive.button.close.unpressed.bg.color: #30363d
+window.inactive.button.close.unpressed.image.color: #6e7681
+
+window.inactive.button.close.hover.bg: flat solid
+window.inactive.button.close.hover.bg.color: #ef4444
+window.inactive.button.close.hover.image.color: #0a0e14
+
+window.inactive.button.max.unpressed.bg: flat solid
+window.inactive.button.max.unpressed.bg.color: #30363d
+window.inactive.button.max.unpressed.image.color: #6e7681
+
+window.inactive.button.max.hover.bg: flat solid
+window.inactive.button.max.hover.bg.color: #22c55e
+window.inactive.button.max.hover.image.color: #0a0e14
+
+window.inactive.button.iconify.unpressed.bg: flat solid
+window.inactive.button.iconify.unpressed.bg.color: #30363d
+window.inactive.button.iconify.unpressed.image.color: #6e7681
+
+window.inactive.button.iconify.hover.bg: flat solid
+window.inactive.button.iconify.hover.bg.color: #f59e0b
+window.inactive.button.iconify.hover.image.color: #0a0e14
+
+window.inactive.button.shade.unpressed.bg: flat solid
+window.inactive.button.shade.unpressed.bg.color: #30363d
+window.inactive.button.shade.unpressed.image.color: #6e7681
+
+window.inactive.button.desk.unpressed.bg: flat solid
+window.inactive.button.desk.unpressed.bg.color: #30363d
+window.inactive.button.desk.unpressed.image.color: #6e7681
+
+# Disabled buttons (when action not available)
+window.active.button.disabled.bg: flat solid
+window.active.button.disabled.bg.color: #21262d
+window.active.button.disabled.image.color: #484f58
+
+window.inactive.button.disabled.bg: flat solid
+window.inactive.button.disabled.bg.color: #161b22
+window.inactive.button.disabled.image.color: #30363d
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Menu Styling
+# ═══════════════════════════════════════════════════════════════════════════════
+menu.border.width: 1
+menu.border.color: #21262d
+menu.separator.width: 1
+menu.separator.padding.width: 8
+menu.separator.padding.height: 4
+menu.separator.color: #30363d
+
+menu.overlap.x: 0
+menu.overlap.y: 0
+
+# Menu title
+menu.title.bg: flat solid
+menu.title.bg.color: #161b22
+menu.title.text.color: #00d4ff
+menu.title.text.font: shadow=n
+menu.title.text.justify: center
+
+# Menu items
+menu.items.bg: flat solid
+menu.items.bg.color: #0d1117
+menu.items.text.color: #c9d1d9
+menu.items.disabled.text.color: #6e7681
+
+# Menu active item
+menu.items.active.bg: flat solid
+menu.items.active.bg.color: #161b22
+menu.items.active.text.color: #00d4ff
+menu.items.active.disabled.text.color: #6e7681
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  On-Screen Display (OSD)
+# ═══════════════════════════════════════════════════════════════════════════════
+osd.border.width: 2
+osd.border.color: #00d4ff
+
+osd.bg: flat solid
+osd.bg.color: #0d1117
+
+osd.label.bg: parentrelative
+osd.label.text.color: #f0f6fc
+
+osd.hilight.bg: flat solid
+osd.hilight.bg.color: #00d4ff
+
+osd.unhilight.bg: flat solid
+osd.unhilight.bg.color: #21262d
+
+osd.button.unpressed.bg: flat solid
+osd.button.unpressed.bg.color: #161b22
+osd.button.unpressed.text.color: #c9d1d9
+
+osd.button.pressed.bg: flat solid
+osd.button.pressed.bg.color: #00d4ff
+osd.button.pressed.text.color: #0a0e14
+
+osd.button.focused.bg: flat solid
+osd.button.focused.bg.color: #21262d
+osd.button.focused.text.color: #00d4ff
+osd.button.focused.box.color: #00d4ff

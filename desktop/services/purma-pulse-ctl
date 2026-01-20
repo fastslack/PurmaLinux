@@ -1,0 +1,368 @@
+#!/bin/bash
+# PurmaLinux - Pulse Control Script
+# System health monitoring helper
+
+PURMA_SERVER="http://localhost:8787"
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+PURPLE='\033[0;35m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+BOLD='\033[1m'
+
+show_notification() {
+    local title="$1"
+    local message="$2"
+    local icon="${3:-utilities-system-monitor}"
+    notify-send -i "$icon" "$title" "$message" 2>/dev/null
+}
+
+# Toggle Pulse popup via AGS
+toggle_popup() {
+    ags -r "togglePurmaPulse()" 2>/dev/null || \
+    gdbus call --session \
+        --dest org.Aylur.ags \
+        --object-path /org/Aylur/ags \
+        --method org.Aylur.ags.RunJs \
+        "togglePurmaPulse()" 2>/dev/null
+}
+
+# Get health color
+get_health_color() {
+    local level="$1"
+    case "$level" in
+        excellent) echo -e "${GREEN}" ;;
+        good) echo -e "${BLUE}" ;;
+        fair) echo -e "${YELLOW}" ;;
+        poor) echo -e "${RED}" ;;
+        critical) echo -e "${RED}${BOLD}" ;;
+        *) echo -e "${NC}" ;;
+    esac
+}
+
+# Show current status
+show_status() {
+    local data=$(curl -s "${PURMA_SERVER}/pulse/status" 2>/dev/null)
+
+    if [ -z "$data" ]; then
+        echo -e "${RED}Error: No se puede conectar al servidor Purma${NC}"
+        exit 1
+    fi
+
+    local health_level=$(echo "$data" | python3 -c "import sys, json; d=json.load(sys.stdin); print(d['health']['level'])" 2>/dev/null)
+    local health_score=$(echo "$data" | python3 -c "import sys, json; d=json.load(sys.stdin); print(d['health']['overall'])" 2>/dev/null)
+    local health_desc=$(echo "$data" | python3 -c "import sys, json; d=json.load(sys.stdin); print(d['health']['description'])" 2>/dev/null)
+
+    local color=$(get_health_color "$health_level")
+
+    echo -e ""
+    echo -e "${BOLD}${PURPLE}  Purma Pulse - Estado del Sistema${NC}"
+    echo -e ""
+    echo -e "  ${color}${BOLD}${health_level^^}${NC} - Puntuacion: ${color}${health_score}/100${NC}"
+    echo -e "  ${health_desc}"
+    echo -e ""
+
+    # Metrics
+    echo "$data" | python3 -c "
+import sys, json
+
+d = json.load(sys.stdin)
+m = d['metrics']
+
+def bar(percent, width=20):
+    filled = int(percent / 100 * width)
+    return '[' + '=' * filled + ' ' * (width - filled) + ']'
+
+def color(percent):
+    if percent > 85: return '\033[0;31m'
+    elif percent > 70: return '\033[0;33m'
+    elif percent > 50: return '\033[0;34m'
+    return '\033[0;32m'
+
+nc = '\033[0m'
+
+print('  Metricas:')
+print(f\"    CPU     {color(m['cpu']['percent'])}{bar(m['cpu']['percent'])} {m['cpu']['percent']:.1f}%{nc}\")
+print(f\"    Memoria {color(m['memory']['percent'])}{bar(m['memory']['percent'])} {m['memory']['percent']:.1f}%{nc} ({m['memory']['used_gb']:.1f}/{m['memory']['total_gb']:.1f} GB)\")
+print(f\"    Disco   {color(m['disk']['percent'])}{bar(m['disk']['percent'])} {m['disk']['percent']:.1f}%{nc} ({m['disk']['used_gb']:.1f}/{m['disk']['total_gb']:.1f} GB)\")
+
+if m.get('battery'):
+    b = m['battery']
+    charging = '' if b['charging'] else ''
+    print(f\"    Bateria {bar(b['percent'])} {b['percent']:.0f}% {charging}\")
+
+if m.get('temperature'):
+    print(f\"    Temp    {m['temperature']:.0f}C\")
+
+print(f\"    Red     {m['network']['connections']} conexiones\")
+print()
+" 2>/dev/null
+
+    # Alerts
+    local alerts=$(echo "$data" | python3 -c "
+import sys, json
+d = json.load(sys.stdin)
+if d['alerts']:
+    print('  Alertas activas:')
+    for a in d['alerts'][:3]:
+        icon = {'warning': '', 'danger': '', 'critical': ''}.get(a['severity'], '')
+        print(f\"    {icon} {a['title']}: {a['message']}\")
+" 2>/dev/null)
+
+    if [ -n "$alerts" ]; then
+        echo -e "${YELLOW}${alerts}${NC}"
+        echo ""
+    fi
+}
+
+# Show detailed metrics
+show_metrics() {
+    local data=$(curl -s "${PURMA_SERVER}/pulse/metrics" 2>/dev/null)
+
+    if [ -z "$data" ]; then
+        echo -e "${RED}Error: No se puede conectar al servidor${NC}"
+        exit 1
+    fi
+
+    echo "$data" | python3 -c "
+import sys, json
+
+d = json.load(sys.stdin)
+
+print()
+print('\033[1m\033[35m  Metricas Detalladas del Sistema\033[0m')
+print()
+
+# CPU
+print('\033[1m  CPU\033[0m')
+print(f\"    Uso: {d['cpu']['percent']:.1f}%\")
+print(f\"    Frecuencia: {d['cpu']['frequency']:.0f} MHz\")
+print(f\"    Nucleos: {d['cpu']['cores']}\")
+print(f\"    Carga: {d['cpu']['load_1m']:.2f} / {d['cpu']['load_5m']:.2f} / {d['cpu']['load_15m']:.2f}\")
+if d['cpu']['top_processes']:
+    print('    Top procesos:')
+    for p in d['cpu']['top_processes'][:3]:
+        print(f\"      - {p['name']}: {p['cpu_percent']:.1f}%\")
+print()
+
+# Memory
+print('\033[1m  Memoria\033[0m')
+print(f\"    Uso: {d['memory']['percent']:.1f}%\")
+print(f\"    Usado: {d['memory']['used'] / (1024**3):.1f} GB\")
+print(f\"    Total: {d['memory']['total'] / (1024**3):.1f} GB\")
+print(f\"    Disponible: {d['memory']['available'] / (1024**3):.1f} GB\")
+print(f\"    Swap: {d['memory']['swap_percent']:.1f}%\")
+if d['memory']['top_processes']:
+    print('    Top procesos:')
+    for p in d['memory']['top_processes'][:3]:
+        print(f\"      - {p['name']}: {p['memory_percent']:.1f}%\")
+print()
+
+# Disk
+print('\033[1m  Disco\033[0m')
+print(f\"    Uso: {d['disk']['percent']:.1f}%\")
+print(f\"    Usado: {d['disk']['used'] / (1024**3):.1f} GB\")
+print(f\"    Total: {d['disk']['total'] / (1024**3):.1f} GB\")
+print(f\"    Lectura: {d['disk']['read_rate'] / 1024:.1f} KB/s\")
+print(f\"    Escritura: {d['disk']['write_rate'] / 1024:.1f} KB/s\")
+print()
+
+# Network
+print('\033[1m  Red\033[0m')
+print(f\"    Descarga: {d['network']['recv_rate'] / 1024:.1f} KB/s\")
+print(f\"    Subida: {d['network']['sent_rate'] / 1024:.1f} KB/s\")
+print(f\"    Conexiones: {d['network']['connections']}\")
+print()
+
+# Battery
+if d.get('battery'):
+    b = d['battery']
+    print('\033[1m  Bateria\033[0m')
+    print(f\"    Nivel: {b['percent']:.0f}%\")
+    print(f\"    Cargando: {'Si' if b['charging'] else 'No'}\")
+    if b.get('time_left'):
+        print(f\"    Tiempo restante: {b['time_left'] // 60} min\")
+    print()
+
+# Temperature
+if d.get('temperature'):
+    print(f'\033[1m  Temperatura\033[0m')
+    print(f\"    CPU: {d['temperature']:.0f}C\")
+    print()
+
+print(f\"  Procesos activos: {d['process_count']}\")
+print()
+" 2>/dev/null
+}
+
+# Show insights
+show_insights() {
+    local data=$(curl -s "${PURMA_SERVER}/pulse/insights" 2>/dev/null)
+
+    if [ -z "$data" ]; then
+        echo -e "${RED}Error: No se puede conectar al servidor${NC}"
+        exit 1
+    fi
+
+    echo "$data" | python3 -c "
+import sys, json
+
+d = json.load(sys.stdin)
+insights = d.get('insights', [])
+
+print()
+print('\033[1m\033[35m  Insights del Sistema\033[0m')
+print()
+
+if not insights:
+    print('\033[32m   Todo en orden!\033[0m')
+    print('  No hay recomendaciones en este momento.')
+    print()
+    sys.exit(0)
+
+icons = {
+    'performance': '',
+    'memory': '',
+    'storage': '',
+    'battery': '',
+    'network': '',
+    'prediction': '',
+    'health': '',
+}
+
+for i in insights:
+    icon = icons.get(i['category'], '')
+    stars = '' * min(i['priority'], 5)
+    print(f\"  {icon} \033[1m{i['title']}\033[0m\")
+    print(f\"    Prioridad: {stars}\")
+    print(f\"    {i['description']}\")
+    if i.get('command'):
+        print(f\"    \033[36m$ {i['command']}\033[0m\")
+    print()
+" 2>/dev/null
+}
+
+# Show predictions
+show_predictions() {
+    local minutes="${1:-30}"
+    local data=$(curl -s "${PURMA_SERVER}/pulse/predictions?minutes=${minutes}" 2>/dev/null)
+
+    if [ -z "$data" ]; then
+        echo -e "${RED}Error: No se puede conectar al servidor${NC}"
+        exit 1
+    fi
+
+    echo "$data" | python3 -c "
+import sys, json
+
+d = json.load(sys.stdin)
+preds = d.get('predictions', [])
+
+print()
+print('\033[1m\033[35m  Predicciones del Sistema\033[0m')
+print()
+
+if not preds:
+    print('  No hay suficientes datos para predicciones.')
+    print()
+    sys.exit(0)
+
+trend_icons = {'rising': '', 'falling': '', 'stable': ''}
+trend_colors = {'rising': '\033[31m', 'falling': '\033[32m', 'stable': '\033[34m'}
+nc = '\033[0m'
+
+for p in preds:
+    icon = trend_icons.get(p['trend'], '')
+    color = trend_colors.get(p['trend'], '')
+    conf = int(p['confidence'] * 100)
+
+    print(f\"  {p['metric'].upper()}:\")
+    print(f\"    Actual: {p['current']:.1f}%\")
+    print(f\"    Prediccion ({p['time_horizon']}min): {color}{p['predicted']:.1f}%{nc} {icon}\")
+    print(f\"    Tendencia: {color}{p['trend']}{nc} (confianza: {conf}%)\")
+    if p.get('warning'):
+        print(f\"    \033[33m {p['warning']}\033[0m\")
+    print()
+" 2>/dev/null
+}
+
+# Run cleanup
+run_cleanup() {
+    echo -e "${CYAN}Ejecutando limpieza del sistema...${NC}"
+
+    local result=$(curl -s -X POST "${PURMA_SERVER}/pulse/cleanup" 2>/dev/null)
+
+    if echo "$result" | grep -q '"success":true'; then
+        echo "$result" | python3 -c "
+import sys, json
+d = json.load(sys.stdin)
+print()
+print('\033[32m Limpieza completada\033[0m')
+print()
+print('Acciones realizadas:')
+for action in d.get('actions', []):
+    print(f'  - {action}')
+print()
+print(f\"Disco: {d['disk_percent']:.1f}% usado\")
+print(f\"Espacio libre: {d['free_gb']:.1f} GB\")
+print()
+" 2>/dev/null
+        show_notification "Purma Pulse" "Limpieza completada" "emblem-ok"
+    else
+        echo -e "${RED}Error al realizar la limpieza${NC}"
+    fi
+}
+
+# Watch mode (live updates)
+watch_mode() {
+    while true; do
+        clear
+        show_status
+        echo -e "${CYAN}Presiona Ctrl+C para salir${NC}"
+        sleep 5
+    done
+}
+
+# Main command handler
+case "$1" in
+    toggle)
+        toggle_popup
+        ;;
+    status|"")
+        show_status
+        ;;
+    metrics|details)
+        show_metrics
+        ;;
+    insights|ai)
+        show_insights
+        ;;
+    predictions|predict)
+        show_predictions "${2:-30}"
+        ;;
+    cleanup|clean)
+        run_cleanup
+        ;;
+    watch|live)
+        watch_mode
+        ;;
+    *)
+        echo "PurmaLinux Pulse Control"
+        echo ""
+        echo "Usage: purma-pulse-ctl <command>"
+        echo ""
+        echo "Commands:"
+        echo "  status             Show system status (default)"
+        echo "  metrics            Show detailed metrics"
+        echo "  insights           Show AI insights"
+        echo "  predictions [min]  Show predictions"
+        echo "  cleanup            Run disk cleanup"
+        echo "  watch              Live status updates"
+        echo "  toggle             Toggle Pulse popup"
+        exit 1
+        ;;
+esac

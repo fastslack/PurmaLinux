@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Purma Spaces Restore
+Comment=Restore last active workspace
+Exec=/usr/local/bin/purma-spaces restore
+Terminal=false
+NoDisplay=true
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=5

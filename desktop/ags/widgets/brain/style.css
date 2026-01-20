@@ -1,0 +1,550 @@
+/**
+ * PurmaLinux - Brain Widget Styles
+ * Unified AI Control Panel
+ */
+
+/* ============================================
+   Bar Button
+   ============================================ */
+.brain-button {
+  background: linear-gradient(135deg, #a855f7 0%, #00d4ff 100%);
+  border: none;
+  border-radius: 6px;
+  padding: 4px 10px;
+  transition: all 150ms ease;
+}
+
+.brain-button:hover {
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
+}
+
+.brain-btn-icon {
+  font-size: 14px;
+}
+
+.brain-btn-label {
+  font-size: 12px;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* ============================================
+   Popup Window
+   ============================================ */
+.brain-window {
+  background: transparent;
+}
+
+.brain-popup {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  min-width: 420px;
+  max-width: 480px;
+  min-height: 520px;
+  max-height: 620px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   Header
+   ============================================ */
+.brain-header {
+  background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+  padding: 12px 16px;
+  border-bottom: 1px solid #30363d;
+  border-radius: 12px 12px 0 0;
+}
+
+.brain-icon {
+  font-size: 20px;
+  margin-right: 8px;
+}
+
+.brain-title {
+  color: #f0f6fc;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.header-btn {
+  color: #8b949e;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  background: transparent;
+}
+
+.close-btn:hover {
+  background: #f85149;
+  color: #ffffff;
+}
+
+/* ============================================
+   Navigation Tabs
+   ============================================ */
+.nav-tabs {
+  background: #161b22;
+  padding: 8px;
+  border-bottom: 1px solid #21262d;
+}
+
+.nav-tab {
+  background: transparent;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin: 0 2px;
+}
+
+.nav-tab:hover {
+  background: #21262d;
+}
+
+.nav-tab.active {
+  background: linear-gradient(135deg, #a855f7 0%, #00d4ff 100%);
+}
+
+.tab-icon {
+  font-size: 12px;
+  margin-right: 4px;
+}
+
+.tab-label {
+  font-size: 11px;
+  color: #c9d1d9;
+}
+
+.nav-tab.active .tab-label {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* ============================================
+   Content Area
+   ============================================ */
+.brain-content {
+  padding: 16px;
+}
+
+.view-title {
+  color: #f0f6fc;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.view-subtitle {
+  color: #8b949e;
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+
+.section {
+  margin-bottom: 16px;
+}
+
+.section-title {
+  color: #8b949e;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+/* ============================================
+   Overview - Status Cards
+   ============================================ */
+.status-cards {
+  margin-top: 12px;
+}
+
+.status-card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  transition: all 150ms ease;
+}
+
+.status-card:hover {
+  border-color: #484f58;
+}
+
+.card-icon {
+  font-size: 24px;
+  margin-right: 12px;
+}
+
+.card-title {
+  color: #f0f6fc;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.card-status {
+  color: #8b949e;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.toggle-btn {
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 16px;
+  padding: 4px 12px;
+  font-size: 11px;
+  color: #8b949e;
+  font-weight: 600;
+}
+
+.toggle-btn.active {
+  background: linear-gradient(135deg, #a855f7 0%, #00d4ff 100%);
+  border-color: transparent;
+  color: #ffffff;
+}
+
+/* Card specific colors */
+.cortex-card:hover {
+  border-color: #a855f7;
+}
+
+.memory-card:hover {
+  border-color: #00d4ff;
+}
+
+.ghost-card:hover {
+  border-color: #22c55e;
+}
+
+.agents-card:hover {
+  border-color: #f59e0b;
+}
+
+/* ============================================
+   Cortex View
+   ============================================ */
+.cortex-view .action-btn {
+  background: linear-gradient(135deg, #a855f7 0%, #00d4ff 100%);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.predictions-list {
+  background: #161b22;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.prediction-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #21262d;
+}
+
+.prediction-item:last-child {
+  border-bottom: none;
+}
+
+.pred-app {
+  color: #f0f6fc;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.pred-confidence {
+  color: #a855f7;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.insights-scroll {
+  max-height: 200px;
+}
+
+.insight-item {
+  background: #161b22;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.insight-title {
+  color: #f0f6fc;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.insight-desc {
+  color: #8b949e;
+  font-size: 12px;
+}
+
+/* ============================================
+   Memory View
+   ============================================ */
+.memory-view .search-bar {
+  margin-bottom: 12px;
+}
+
+.search-entry {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #f0f6fc;
+  font-size: 13px;
+}
+
+.search-entry:focus {
+  border-color: #00d4ff;
+}
+
+.search-btn {
+  background: #00d4ff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-left: 8px;
+  font-size: 14px;
+}
+
+.stats-bar {
+  margin-bottom: 12px;
+}
+
+.stat {
+  color: #8b949e;
+  font-size: 11px;
+  margin-right: 16px;
+}
+
+.results-scroll {
+  max-height: 280px;
+}
+
+.result-item {
+  background: #161b22;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid transparent;
+}
+
+.result-item:hover {
+  border-color: #00d4ff;
+}
+
+.result-icon {
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.result-name {
+  color: #f0f6fc;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.result-path {
+  color: #8b949e;
+  font-size: 10px;
+}
+
+.result-score {
+  color: #00d4ff;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ============================================
+   Ghost View
+   ============================================ */
+.ghost-stats {
+  background: #161b22;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.ghost-stats .stat {
+  margin-right: 20px;
+  font-size: 12px;
+}
+
+.suggestions-scroll {
+  max-height: 300px;
+}
+
+.suggestion-item {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.sug-icon {
+  font-size: 16px;
+  margin-right: 8px;
+}
+
+.sug-title {
+  color: #f0f6fc;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.sug-confidence {
+  color: #22c55e;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.sug-desc {
+  color: #8b949e;
+  font-size: 12px;
+  margin: 8px 0;
+}
+
+.sug-actions {
+  margin-top: 8px;
+}
+
+.accept-btn {
+  background: #22c55e;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.accept-btn:hover {
+  background: #16a34a;
+}
+
+.reject-btn {
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 6px 12px;
+  color: #8b949e;
+  font-size: 11px;
+}
+
+.reject-btn:hover {
+  background: #f85149;
+  border-color: #f85149;
+  color: #ffffff;
+}
+
+/* ============================================
+   Agents View
+   ============================================ */
+.task-input {
+  margin-bottom: 16px;
+}
+
+.task-entry {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #f0f6fc;
+  font-size: 13px;
+}
+
+.task-entry:focus {
+  border-color: #f59e0b;
+}
+
+.run-btn {
+  background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-left: 8px;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.run-btn:hover {
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+}
+
+.agents-scroll {
+  max-height: 280px;
+}
+
+.agent-item {
+  background: #161b22;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border: 1px solid transparent;
+}
+
+.agent-item:hover {
+  border-color: #f59e0b;
+}
+
+.agent-icon {
+  font-size: 20px;
+  margin-right: 12px;
+}
+
+.agent-name {
+  color: #f0f6fc;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.agent-caps {
+  color: #8b949e;
+  font-size: 10px;
+}
+
+/* ============================================
+   Common Elements
+   ============================================ */
+.empty-hint {
+  color: #484f58;
+  font-size: 12px;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Scrollbar */
+.insights-scroll scrollbar,
+.results-scroll scrollbar,
+.suggestions-scroll scrollbar,
+.agents-scroll scrollbar {
+  background: transparent;
+}
+
+.insights-scroll scrollbar slider,
+.results-scroll scrollbar slider,
+.suggestions-scroll scrollbar slider,
+.agents-scroll scrollbar slider {
+  background: #30363d;
+  border-radius: 4px;
+  min-width: 6px;
+}
+
+.insights-scroll scrollbar slider:hover,
+.results-scroll scrollbar slider:hover,
+.suggestions-scroll scrollbar slider:hover,
+.agents-scroll scrollbar slider:hover {
+  background: #484f58;
+}

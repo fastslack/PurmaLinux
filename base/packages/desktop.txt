@@ -1,0 +1,26 @@
+# PurmaLinux Desktop - Packages
+# Paquetes específicos para versión Desktop
+
+# Window Manager
+openbox
+obconf
+
+# Compositor
+picom
+
+# AGS dependencies
+gjs
+libgtk-3-dev
+libgtk-layer-shell-dev
+libpulse-dev
+libdbusmenu-gtk3-dev
+libsoup-3.0-dev
+libadwaita-1-dev
+
+# Rofi
+rofi
+
+# Additional Desktop tools
+plank
+volumeicon-alsa
+cbatticon

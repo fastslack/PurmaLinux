@@ -1,0 +1,411 @@
+/**
+ * PurmaLinux - Vault Widget Styles
+ * AI Password Manager UI
+ */
+
+/* ============================================
+   Bar Button
+   ============================================ */
+.vault-button {
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 4px 10px;
+  transition: all 150ms ease;
+}
+
+.vault-button:hover {
+  background: #30363d;
+  border-color: #f59e0b;
+}
+
+.vault-btn-icon {
+  font-size: 14px;
+}
+
+.vault-btn-label {
+  font-size: 12px;
+  color: #c9d1d9;
+}
+
+/* ============================================
+   Popup Window
+   ============================================ */
+.vault-window {
+  background: transparent;
+}
+
+.vault-popup {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  min-width: 360px;
+  max-width: 400px;
+  min-height: 450px;
+  max-height: 550px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   Header
+   ============================================ */
+.vault-header {
+  background: #161b22;
+  padding: 12px 16px;
+  border-bottom: 1px solid #30363d;
+  border-radius: 12px 12px 0 0;
+}
+
+.vault-icon {
+  font-size: 18px;
+  margin-right: 8px;
+}
+
+.vault-title {
+  color: #f0f6fc;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.header-btn {
+  color: #8b949e;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  background: transparent;
+  margin-left: 4px;
+}
+
+.lock-btn:hover {
+  background: #21262d;
+  color: #f59e0b;
+}
+
+.close-btn:hover {
+  background: #f85149;
+  color: #ffffff;
+}
+
+/* ============================================
+   Unlock View
+   ============================================ */
+.unlock-view {
+  padding: 32px;
+}
+
+.unlock-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.unlock-title {
+  color: #f0f6fc;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.password-entry {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #f0f6fc;
+  font-size: 14px;
+  margin-bottom: 12px;
+  min-width: 250px;
+}
+
+.password-entry:focus {
+  border-color: #f59e0b;
+}
+
+.error-text {
+  color: #f85149;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+.unlock-btn {
+  background: #f59e0b;
+  color: #0d1117;
+  font-weight: 600;
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: none;
+}
+
+.unlock-btn:hover {
+  background: #fbbf24;
+}
+
+/* ============================================
+   Search Bar
+   ============================================ */
+.search-bar {
+  padding: 12px;
+  border-bottom: 1px solid #21262d;
+}
+
+.search-icon {
+  color: #8b949e;
+  margin-right: 8px;
+}
+
+.search-entry {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: #f0f6fc;
+  font-size: 13px;
+}
+
+.search-entry:focus {
+  border-color: #58a6ff;
+}
+
+.add-btn,
+.generate-btn {
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 6px 10px;
+  margin-left: 6px;
+  color: #8b949e;
+}
+
+.add-btn:hover {
+  background: #238636;
+  border-color: #2ea043;
+  color: #ffffff;
+}
+
+.generate-btn:hover {
+  background: #a855f7;
+  border-color: #c084fc;
+  color: #ffffff;
+}
+
+/* ============================================
+   Secrets List
+   ============================================ */
+.secrets-list {
+  padding: 8px;
+}
+
+.secret-item {
+  background: transparent;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  border: 1px solid transparent;
+}
+
+.secret-item:hover {
+  background: #161b22;
+  border-color: #30363d;
+}
+
+.secret-icon {
+  font-size: 20px;
+  margin-right: 12px;
+}
+
+.secret-name {
+  color: #f0f6fc;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.secret-username {
+  color: #8b949e;
+  font-size: 11px;
+}
+
+.secret-favorite {
+  font-size: 12px;
+  margin-right: 8px;
+}
+
+.copy-icon {
+  color: #484f58;
+  font-size: 14px;
+}
+
+.secret-item:hover .copy-icon {
+  color: #58a6ff;
+}
+
+/* ============================================
+   Empty State
+   ============================================ */
+.empty-state {
+  padding: 32px;
+}
+
+.empty-icon {
+  font-size: 48px;
+  color: #30363d;
+  margin-bottom: 16px;
+}
+
+.empty-title {
+  color: #8b949e;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.empty-hint {
+  color: #484f58;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+/* ============================================
+   Generate View
+   ============================================ */
+.generate-view,
+.add-view {
+  padding: 16px;
+}
+
+.back-btn {
+  background: transparent;
+  color: #58a6ff;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.back-btn:hover {
+  background: #21262d;
+}
+
+.view-title {
+  color: #f0f6fc;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.generate-options {
+  margin-bottom: 16px;
+}
+
+.generate-options label {
+  color: #8b949e;
+  margin-right: 8px;
+}
+
+.length-entry {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 6px 12px;
+  color: #f0f6fc;
+  width: 60px;
+}
+
+.generate-action-btn {
+  background: #a855f7;
+  color: #ffffff;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 16px;
+}
+
+.generate-action-btn:hover {
+  background: #c084fc;
+}
+
+.generated-result {
+  background: #161b22;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.generated-password {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  color: #22c55e;
+  background: #0d1117;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.password-strength {
+  color: #8b949e;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.copied-hint {
+  color: #22c55e;
+  font-size: 11px;
+}
+
+/* ============================================
+   Add Secret Form
+   ============================================ */
+.form-field {
+  margin-bottom: 12px;
+}
+
+.field-label {
+  color: #8b949e;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.form-entry {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: #f0f6fc;
+  font-size: 13px;
+}
+
+.form-entry:focus {
+  border-color: #58a6ff;
+}
+
+.save-btn {
+  background: #238636;
+  color: #ffffff;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  margin-top: 8px;
+}
+
+.save-btn:hover {
+  background: #2ea043;
+}
+
+/* ============================================
+   Scrollbar
+   ============================================ */
+.secrets-list scrollbar {
+  background: transparent;
+}
+
+.secrets-list scrollbar slider {
+  background: #30363d;
+  border-radius: 4px;
+  min-width: 6px;
+}
+
+.secrets-list scrollbar slider:hover {
+  background: #484f58;
+}

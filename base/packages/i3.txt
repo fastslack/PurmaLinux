@@ -1,0 +1,22 @@
+# PurmaLinux i3 - Packages
+# Paquetes específicos para versión i3
+
+# Window Manager
+i3-wm
+i3lock
+i3status
+
+# Compositor
+picom
+
+# Bar (Polybar se compila desde source para última versión)
+# polybar
+
+# Rofi
+rofi
+
+# Notifications
+dunst
+
+# Autotiling
+# python3-i3ipc (para autotiling script)

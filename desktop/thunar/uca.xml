@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  PurmaLinux - Thunar Custom Actions (UCA)
+  Acciones personalizadas con integración AI
+-->
+<actions>
+  <!-- ======================================
+       AI Organization Actions
+       ====================================== -->
+
+  <action>
+    <icon>folder-new</icon>
+    <name>🤖 Organizar con IA</name>
+    <submenu>Purma AI</submenu>
+    <unique-id>purma-organize-ai</unique-id>
+    <command>purma organize preview --path %f | zenity --text-info --title="Vista Previa de Organización" --width=600 --height=400</command>
+    <description>Organiza archivos usando inteligencia artificial</description>
+    <range></range>
+    <patterns>*</patterns>
+    <directories/>
+  </action>
+
+  <action>
+    <icon>folder-open</icon>
+    <name>🤖 Organizar (ejecutar)</name>
+    <submenu>Purma AI</submenu>
+    <unique-id>purma-organize-execute</unique-id>
+    <command>if zenity --question --title="Organizar con IA" --text="¿Organizar archivos en esta carpeta?"; then purma organize run --path %f --confirm && zenity --info --text="Organización completada"; fi</command>
+    <description>Ejecuta la organización AI en la carpeta</description>
+    <range></range>
+    <patterns>*</patterns>
+    <directories/>
+  </action>
+
+  <action>
+    <icon>emblem-synchronizing</icon>
+    <name>🔄 Habilitar Auto-Organización</name>
+    <submenu>Purma AI</submenu>
+    <unique-id>purma-auto-organize-enable</unique-id>
+    <command>purma sync add --path %f --organize auto && zenity --info --text="Auto-organización habilitada para esta carpeta"</command>
+    <description>Activa organización automática de nuevos archivos</description>
+    <range></range>
+    <patterns>*</patterns>
+    <directories/>
+  </action>
+
+  <!-- ======================================
+       Sync Actions
+       ====================================== -->
+
+  <action>
+    <icon>folder-remote</icon>
+    <name>📱 Sincronizar con Móvil</name>
+    <submenu>Purma Sync</submenu>
+    <unique-id>purma-sync-add</unique-id>
+    <command>purma sync add --path %f && zenity --info --text="Carpeta añadida para sincronización"</command>
+    <description>Añade carpeta para sincronizar con dispositivos móviles</description>
+    <range></range>
+    <patterns>*</patterns>
+    <directories/>
+  </action>
+
+  <action>
+    <icon>view-refresh</icon>
+    <name>🔄 Sincronizar Ahora</name>
+    <submenu>Purma Sync</submenu>
+    <unique-id>purma-sync-now</unique-id>
+    <command>purma sync now && zenity --info --text="Sincronización iniciada"</command>
+    <description>Fuerza sincronización inmediata</description>
+    <range></range>
+    <patterns>*</patterns>
+    <directories/>
+  </action>
+
+  <!-- ======================================
+       AI Analysis Actions
+       ====================================== -->
+
+  <action>
+    <icon>dialog-information</icon>
+    <name>🔍 Analizar con IA</name>
+    <submenu>Purma AI</submenu>
+    <unique-id>purma-analyze-file</unique-id>
+    <command>purma chat "Analiza este archivo: %f" | zenity --text-info --title="Análisis AI" --width=500 --height=300</command>
+    <description>Analiza el archivo seleccionado con IA</description>
+    <range>*</range>
+    <patterns>*</patterns>
+    <other-files/>
+  </action>
+
+  <action>
+    <icon>edit-find</icon>
+    <name>📄 OCR (extraer texto)</name>
+    <submenu>Purma AI</submenu>
+    <unique-id>purma-ocr</unique-id>
+    <command>purma lens ocr %f | zenity --text-info --title="Texto Extraído (OCR)" --width=500 --height=400</command>
+    <description>Extrae texto de imagen usando OCR</description>
+    <range>*</range>
+    <patterns>*.png;*.jpg;*.jpeg;*.gif;*.bmp;*.tiff</patterns>
+    <image-files/>
+  </action>
+
+  <action>
+    <icon>applications-science</icon>
+    <name>🧠 Indexar en Memory</name>
+    <submenu>Purma AI</submenu>
+    <unique-id>purma-memory-index</unique-id>
+    <command>purma memory index --path %f && zenity --info --text="Archivo indexado en Purma Memory"</command>
+    <description>Indexa para búsqueda semántica</description>
+    <range>*</range>
+    <patterns>*.txt;*.md;*.pdf;*.doc;*.docx;*.py;*.js;*.ts;*.json</patterns>
+    <text-files/>
+  </action>
+
+  <!-- ======================================
+       Code Actions
+       ====================================== -->
+
+  <action>
+    <icon>accessories-text-editor</icon>
+    <name>💻 Code Review</name>
+    <submenu>Purma AI</submenu>
+    <unique-id>purma-code-review</unique-id>
+    <command>purma agents ask --agent reviewer "Revisa este código: $(cat %f)" | zenity --text-info --title="Code Review" --width=600 --height=400</command>
+    <description>Hace code review con IA</description>
+    <range>*</range>
+    <patterns>*.py;*.js;*.ts;*.jsx;*.tsx;*.go;*.rs;*.c;*.cpp;*.java</patterns>
+    <text-files/>
+  </action>
+
+  <action>
+    <icon>help-faq</icon>
+    <name>❓ Explicar Código</name>
+    <submenu>Purma AI</submenu>
+    <unique-id>purma-explain-code</unique-id>
+    <command>purma chat "Explica qué hace este código: $(cat %f)" | zenity --text-info --title="Explicación" --width=600 --height=400</command>
+    <description>Explica el código seleccionado</description>
+    <range>*</range>
+    <patterns>*.py;*.js;*.ts;*.jsx;*.tsx;*.go;*.rs;*.c;*.cpp;*.java;*.sh</patterns>
+    <text-files/>
+  </action>
+
+  <!-- ======================================
+       Quick Actions
+       ====================================== -->
+
+  <action>
+    <icon>document-send</icon>
+    <name>💬 Preguntar sobre esto</name>
+    <submenu>Purma AI</submenu>
+    <unique-id>purma-ask-about</unique-id>
+    <command>question=$(zenity --entry --title="Pregunta" --text="¿Qué quieres saber sobre este archivo?") && purma chat "$question sobre el archivo %f" | zenity --text-info --title="Respuesta" --width=500 --height=300</command>
+    <description>Haz una pregunta sobre el archivo</description>
+    <range>*</range>
+    <patterns>*</patterns>
+    <other-files/>
+  </action>
+
+  <action>
+    <icon>document-save-as</icon>
+    <name>📝 Resumir Documento</name>
+    <submenu>Purma AI</submenu>
+    <unique-id>purma-summarize</unique-id>
+    <command>purma chat "Resume este documento de forma concisa: $(cat %f)" | zenity --text-info --title="Resumen" --width=500 --height=300</command>
+    <description>Genera resumen del documento</description>
+    <range>*</range>
+    <patterns>*.txt;*.md;*.pdf;*.doc;*.docx</patterns>
+    <text-files/>
+  </action>
+
+  <!-- ======================================
+       Terminal Actions
+       ====================================== -->
+
+  <action>
+    <icon>utilities-terminal</icon>
+    <name>🖥️ Abrir Terminal Aquí</name>
+    <unique-id>open-terminal-here</unique-id>
+    <command>kitty --directory %f</command>
+    <description>Abre terminal en esta ubicación</description>
+    <range></range>
+    <patterns>*</patterns>
+    <directories/>
+  </action>
+
+  <action>
+    <icon>utilities-terminal</icon>
+    <name>🖥️ Purma Bridge (Terminal AI)</name>
+    <unique-id>purma-bridge-here</unique-id>
+    <command>kitty --directory %f -e purma chat</command>
+    <description>Abre Purma Bridge en esta ubicación</description>
+    <range></range>
+    <patterns>*</patterns>
+    <directories/>
+  </action>
+
+</actions>

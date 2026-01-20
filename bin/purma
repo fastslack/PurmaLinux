@@ -1,0 +1,872 @@
+#!/usr/bin/env python3
+"""
+PurmaLinux - Unified CLI
+=========================
+Author: Matías Aguirre
+Company: Matware
+
+Comando unificado para controlar todo PurmaLinux desde la terminal.
+
+Uso:
+    purma <comando> [opciones]
+
+Comandos disponibles:
+    chat        - Interactuar con Purma AI
+    sync        - Gestionar sincronización de archivos
+    organize    - Organizar archivos con IA
+    vault       - Gestor de contraseñas
+    lens        - Captura y OCR
+    scribe      - Voz y transcripción
+    cortex      - Motor predictivo
+    memory      - Búsqueda semántica
+    ghost       - Sugerencias de automatización
+    agents      - Sistema multi-agente
+    status      - Estado del sistema
+    config      - Configuración
+    server      - Control del servidor
+"""
+
+import os
+import sys
+import json
+import argparse
+import subprocess
+from pathlib import Path
+from typing import Optional, List, Dict, Any
+import httpx
+from datetime import datetime
+
+# ============================================
+# Configuration
+# ============================================
+
+PURMA_HOME = Path.home() / ".purma"
+CONFIG_FILE = PURMA_HOME / "config.json"
+SERVER_URL = os.getenv("PURMA_SERVER", "http://127.0.0.1:11435")
+
+# Colors for terminal output
+class Colors:
+    HEADER = '\033[95m'
+    BLUE = '\033[94m'
+    CYAN = '\033[96m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    END = '\033[0m'
+    BOLD = '\033[1m'
+    DIM = '\033[2m'
+
+
+def print_header(text: str):
+    """Print colored header"""
+    print(f"\n{Colors.CYAN}{Colors.BOLD}{'═' * 50}{Colors.END}")
+    print(f"{Colors.CYAN}{Colors.BOLD}  {text}{Colors.END}")
+    print(f"{Colors.CYAN}{Colors.BOLD}{'═' * 50}{Colors.END}\n")
+
+
+def print_success(text: str):
+    print(f"{Colors.GREEN}✓ {text}{Colors.END}")
+
+
+def print_error(text: str):
+    print(f"{Colors.RED}✗ {text}{Colors.END}")
+
+
+def print_info(text: str):
+    print(f"{Colors.BLUE}ℹ {text}{Colors.END}")
+
+
+def print_warning(text: str):
+    print(f"{Colors.YELLOW}⚠ {text}{Colors.END}")
+
+
+def print_json(data: dict, indent: int = 2):
+    """Pretty print JSON data"""
+    print(json.dumps(data, indent=indent, ensure_ascii=False))
+
+
+def api_call(method: str, endpoint: str, data: dict = None, timeout: int = 30) -> dict:
+    """Make API call to Purma server"""
+    url = f"{SERVER_URL}{endpoint}"
+    try:
+        with httpx.Client(timeout=timeout) as client:
+            if method == "GET":
+                response = client.get(url, params=data)
+            elif method == "POST":
+                response = client.post(url, json=data)
+            elif method == "DELETE":
+                response = client.delete(url)
+            else:
+                return {"error": f"Método no soportado: {method}"}
+
+            return response.json()
+    except httpx.ConnectError:
+        return {"error": "No se puede conectar al servidor Purma. ¿Está corriendo?"}
+    except Exception as e:
+        return {"error": str(e)}
+
+
+def format_size(size_bytes: int) -> str:
+    """Format bytes to human readable"""
+    for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
+        if size_bytes < 1024:
+            return f"{size_bytes:.1f} {unit}"
+        size_bytes /= 1024
+    return f"{size_bytes:.1f} PB"
+
+
+# ============================================
+# Status Command
+# ============================================
+
+def cmd_status(args):
+    """Mostrar estado del sistema"""
+    print_header("Estado de PurmaLinux")
+
+    # Server status
+    result = api_call("GET", "/health")
+    if "error" in result:
+        print_error(f"Servidor: {result['error']}")
+    else:
+        print_success("Servidor: Activo")
+
+    # Integration status
+    result = api_call("GET", "/integration/status")
+    if "error" not in result:
+        print_info(f"Módulos registrados: {result.get('modules_registered', 0)}")
+        print_info(f"Módulos: {', '.join(result.get('modules', []))}")
+
+    # Sync status
+    result = api_call("GET", "/sync/status")
+    if "error" not in result:
+        print_info(f"Carpetas sincronizadas: {result.get('folders_count', 0)}")
+        print_info(f"Dispositivos: {result.get('devices_count', 0)} ({result.get('devices_online', 0)} online)")
+        print_info(f"Auto-organización: {result.get('auto_organize_folders', 0)} carpetas")
+
+    # Context
+    result = api_call("GET", "/integration/context")
+    if "error" not in result and "context" in result:
+        ctx = result["context"]
+        print(f"\n{Colors.DIM}Contexto actual:{Colors.END}")
+        print(f"  App: {ctx.get('current_app', 'ninguna')}")
+        print(f"  Espacio: {ctx.get('current_space', 'default')}")
+        print(f"  Vault: {'🔓' if ctx.get('vault_unlocked') else '🔒'}")
+
+
+# ============================================
+# Chat Command
+# ============================================
+
+def cmd_chat(args):
+    """Chat interactivo con Purma AI"""
+    if args.message:
+        # Single message mode
+        result = api_call("POST", "/chat", {"message": args.message})
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print(f"\n{Colors.CYAN}Purma:{Colors.END} {result.get('response', '')}\n")
+        return
+
+    # Interactive mode
+    print_header("Purma AI Chat")
+    print_info("Escribe tu mensaje o 'salir' para terminar\n")
+
+    while True:
+        try:
+            user_input = input(f"{Colors.GREEN}Tú:{Colors.END} ").strip()
+            if not user_input:
+                continue
+            if user_input.lower() in ['salir', 'exit', 'quit', 'q']:
+                print_info("¡Hasta luego!")
+                break
+
+            result = api_call("POST", "/chat", {"message": user_input}, timeout=60)
+            if "error" in result:
+                print_error(result["error"])
+            else:
+                print(f"\n{Colors.CYAN}Purma:{Colors.END} {result.get('response', '')}\n")
+
+        except KeyboardInterrupt:
+            print("\n")
+            print_info("¡Hasta luego!")
+            break
+        except EOFError:
+            break
+
+
+# ============================================
+# Sync Command
+# ============================================
+
+def cmd_sync(args):
+    """Gestionar sincronización"""
+    if args.sync_cmd == "status":
+        result = api_call("GET", "/sync/status")
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_header("Estado de Sincronización")
+            print_json(result)
+
+    elif args.sync_cmd == "add":
+        if not args.path:
+            print_error("Especifica una carpeta con --path")
+            return
+        result = api_call("POST", "/sync/folders", {
+            "path": args.path,
+            "name": args.name,
+            "organize_mode": args.organize or "disabled"
+        })
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_success(f"Carpeta añadida: {args.path}")
+            if args.organize:
+                print_info(f"Modo organización: {args.organize}")
+
+    elif args.sync_cmd == "list":
+        result = api_call("GET", "/sync/folders")
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_header("Carpetas Sincronizadas")
+            folders = result.get("folders", [])
+            if not folders:
+                print_info("No hay carpetas sincronizadas")
+            else:
+                for f in folders:
+                    mode_icon = "🤖" if f["organize_mode"] in ["auto", "smart"] else "📁"
+                    print(f"  {mode_icon} {f['name']}")
+                    print(f"     {Colors.DIM}{f['local_path']}{Colors.END}")
+                    print(f"     {f['file_count']} archivos, {format_size(f['total_size'])}")
+                    print(f"     Modo: {f['organize_mode']}")
+                    print()
+
+    elif args.sync_cmd == "remove":
+        if not args.folder_id:
+            print_error("Especifica el ID de la carpeta con --id")
+            return
+        result = api_call("DELETE", f"/sync/folders/{args.folder_id}")
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_success("Carpeta removida")
+
+    elif args.sync_cmd == "devices":
+        result = api_call("GET", "/sync/devices")
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_header("Dispositivos")
+            devices = result.get("devices", [])
+            if not devices:
+                print_info("No hay dispositivos registrados")
+            else:
+                for d in devices:
+                    status = "🟢" if d["is_online"] else "⚫"
+                    icon = {"linux": "🐧", "android": "🤖", "ios": "🍎"}.get(d["device_type"], "💻")
+                    print(f"  {status} {icon} {d['name']} ({d['device_type']})")
+                    print(f"     {Colors.DIM}Visto: {d['last_seen']}{Colors.END}")
+
+    elif args.sync_cmd == "now":
+        result = api_call("POST", "/sync/now", {"folder_id": args.folder_id})
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_success("Sincronización iniciada")
+
+
+# ============================================
+# Organize Command
+# ============================================
+
+def cmd_organize(args):
+    """Organizar archivos con IA"""
+    if args.organize_cmd == "preview":
+        if not args.path and not args.folder_id:
+            print_error("Especifica --path o --id")
+            return
+
+        if args.path:
+            # Direct path organization preview
+            result = api_call("POST", "/organize/preview", {"path": args.path})
+        else:
+            result = api_call("GET", f"/sync/folders/{args.folder_id}/suggest")
+
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_header("Vista Previa de Organización")
+            suggestions = result.get("suggestions", {})
+            total = result.get("total_files", 0)
+            print_info(f"Total de archivos a organizar: {total}\n")
+
+            for category, files in suggestions.items():
+                if files:
+                    icon = {"documents": "📄", "images": "🖼️", "videos": "🎬",
+                            "audio": "🎵", "code": "💻", "archives": "📦",
+                            "data": "🗃️"}.get(category, "📁")
+                    print(f"{icon} {Colors.BOLD}{category.upper()}{Colors.END} ({len(files)} archivos)")
+                    for f in files[:5]:  # Show first 5
+                        print(f"   {Colors.DIM}{f['file']} → {f['suggested_path']}{Colors.END}")
+                    if len(files) > 5:
+                        print(f"   {Colors.DIM}... y {len(files) - 5} más{Colors.END}")
+                    print()
+
+    elif args.organize_cmd == "run":
+        if not args.folder_id:
+            print_error("Especifica el ID de la carpeta con --id")
+            return
+
+        dry_run = not args.confirm
+        result = api_call("POST", f"/sync/folders/{args.folder_id}/organize", {
+            "dry_run": dry_run,
+            "by_date": args.by_date
+        })
+
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            moved = result.get("moved", [])
+            errors = result.get("errors", [])
+
+            if dry_run:
+                print_header("Vista Previa (dry-run)")
+                print_warning("Usa --confirm para ejecutar realmente")
+            else:
+                print_header("Organización Completada")
+
+            print_success(f"{len(moved)} archivos {'a mover' if dry_run else 'movidos'}")
+            if errors:
+                print_error(f"{len(errors)} errores")
+
+    elif args.organize_cmd == "enable":
+        if not args.folder_id:
+            print_error("Especifica el ID de la carpeta con --id")
+            return
+        mode = args.mode or "auto"
+        result = api_call("POST", f"/sync/folders/{args.folder_id}/organize-mode", {
+            "mode": mode
+        })
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_success(f"Organización automática habilitada (modo: {mode})")
+
+    elif args.organize_cmd == "disable":
+        if not args.folder_id:
+            print_error("Especifica el ID de la carpeta con --id")
+            return
+        result = api_call("POST", f"/sync/folders/{args.folder_id}/organize-mode", {
+            "mode": "disabled"
+        })
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_success("Organización automática deshabilitada")
+
+
+# ============================================
+# Vault Command
+# ============================================
+
+def cmd_vault(args):
+    """Gestor de contraseñas"""
+    if args.vault_cmd == "status":
+        result = api_call("GET", "/vault/status")
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            status = result.get("status", "unknown")
+            print(f"Vault: {'🔓 Desbloqueado' if status == 'unlocked' else '🔒 Bloqueado'}")
+
+    elif args.vault_cmd == "unlock":
+        import getpass
+        password = getpass.getpass("Master password: ")
+        result = api_call("POST", "/vault/unlock", {"master_password": password})
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_success("Vault desbloqueado")
+
+    elif args.vault_cmd == "lock":
+        result = api_call("POST", "/vault/lock")
+        print_success("Vault bloqueado")
+
+    elif args.vault_cmd == "list":
+        result = api_call("GET", "/vault/secrets")
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            secrets = result.get("secrets", [])
+            print_header("Secretos")
+            for s in secrets:
+                print(f"  🔑 {s['name']} ({s['category']})")
+
+    elif args.vault_cmd == "get":
+        if not args.name:
+            print_error("Especifica el nombre del secreto")
+            return
+        result = api_call("GET", f"/vault/secrets/{args.name}")
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            # Copy to clipboard
+            try:
+                subprocess.run(["wl-copy", result.get("password", "")],
+                             capture_output=True, check=True)
+                print_success("Contraseña copiada al clipboard")
+            except Exception:
+                print_info(f"Password: {result.get('password', '')}")
+
+    elif args.vault_cmd == "generate":
+        length = args.length or 16
+        result = api_call("GET", f"/vault/generate?length={length}")
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            password = result.get("password", "")
+            print(f"Contraseña generada: {Colors.CYAN}{password}{Colors.END}")
+            try:
+                subprocess.run(["wl-copy", password], capture_output=True, check=True)
+                print_success("Copiada al clipboard")
+            except Exception:
+                pass
+
+
+# ============================================
+# Cortex Command
+# ============================================
+
+def cmd_cortex(args):
+    """Motor predictivo"""
+    if args.cortex_cmd == "status":
+        result = api_call("GET", "/cortex/status")
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_json(result)
+
+    elif args.cortex_cmd == "predict":
+        result = api_call("GET", "/cortex/predict")
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_header("Predicciones")
+            predictions = result.get("predictions", [])
+            for p in predictions:
+                conf = int(p.get("confidence", 0) * 100)
+                bar = "█" * (conf // 10) + "░" * (10 - conf // 10)
+                print(f"  {p['app']} [{bar}] {conf}%")
+
+    elif args.cortex_cmd == "learn":
+        if args.stop:
+            result = api_call("POST", "/cortex/stop")
+            print_success("Aprendizaje detenido")
+        else:
+            result = api_call("POST", "/cortex/start")
+            print_success("Aprendizaje iniciado")
+
+    elif args.cortex_cmd == "patterns":
+        result = api_call("GET", "/cortex/patterns")
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_header("Patrones Aprendidos")
+            print_json(result)
+
+
+# ============================================
+# Memory Command
+# ============================================
+
+def cmd_memory(args):
+    """Búsqueda semántica"""
+    if args.memory_cmd == "status":
+        result = api_call("GET", "/memory/status")
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_json(result)
+
+    elif args.memory_cmd == "index":
+        if not args.path:
+            print_error("Especifica --path")
+            return
+        result = api_call("POST", "/memory/index/directory", {
+            "path": args.path,
+            "recursive": args.recursive
+        })
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_success(f"Indexados {result.get('indexed', 0)} archivos")
+
+    elif args.memory_cmd == "search":
+        if not args.query:
+            print_error("Especifica la búsqueda")
+            return
+        result = api_call("GET", "/memory/search", {"q": args.query, "limit": args.limit or 10})
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_header(f"Resultados para '{args.query}'")
+            results = result.get("results", [])
+            for r in results:
+                print(f"  📄 {r['filename']}")
+                print(f"     {Colors.DIM}{r['path']}{Colors.END}")
+                if r.get("snippet"):
+                    print(f"     {r['snippet'][:100]}...")
+                print()
+
+    elif args.memory_cmd == "ask":
+        if not args.question:
+            print_error("Especifica la pregunta")
+            return
+        result = api_call("POST", "/memory/ask", {"question": args.question})
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print(f"\n{Colors.CYAN}Respuesta:{Colors.END} {result.get('answer', '')}\n")
+            if result.get("sources"):
+                print(f"{Colors.DIM}Fuentes: {', '.join(result['sources'])}{Colors.END}")
+
+
+# ============================================
+# Ghost Command
+# ============================================
+
+def cmd_ghost(args):
+    """Sugerencias de automatización"""
+    if args.ghost_cmd == "status":
+        result = api_call("GET", "/ghost/status")
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_json(result)
+
+    elif args.ghost_cmd == "suggestions":
+        result = api_call("GET", "/ghost/suggestions")
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_header("Sugerencias de Ghost")
+            suggestions = result.get("suggestions", [])
+            for s in suggestions:
+                print(f"  💡 {s['title']}")
+                print(f"     {Colors.DIM}{s['description']}{Colors.END}")
+                print(f"     Confianza: {int(s.get('confidence', 0) * 100)}%")
+                print()
+
+    elif args.ghost_cmd == "start":
+        result = api_call("POST", "/ghost/start")
+        print_success("Ghost observando")
+
+    elif args.ghost_cmd == "stop":
+        result = api_call("POST", "/ghost/stop")
+        print_success("Ghost detenido")
+
+
+# ============================================
+# Agents Command
+# ============================================
+
+def cmd_agents(args):
+    """Sistema multi-agente"""
+    if args.agents_cmd == "list":
+        result = api_call("GET", "/agents/list")
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_header("Agentes Disponibles")
+            agents = result.get("agents", [])
+            for a in agents:
+                print(f"  {a['icon']} {Colors.BOLD}{a['name']}{Colors.END}")
+                print(f"     {Colors.DIM}{a['description']}{Colors.END}")
+                print()
+
+    elif args.agents_cmd == "run":
+        if not args.task:
+            print_error("Especifica la tarea")
+            return
+        print_info("Ejecutando tarea con agentes...")
+        result = api_call("POST", "/agents/run", {"task": args.task}, timeout=120)
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print_header("Resultado")
+            print(result.get("result", ""))
+
+    elif args.agents_cmd == "ask":
+        if not args.agent or not args.question:
+            print_error("Especifica --agent y la pregunta")
+            return
+        result = api_call("POST", f"/agents/{args.agent}/ask", {
+            "task": args.question
+        }, timeout=60)
+        if "error" in result:
+            print_error(result["error"])
+        else:
+            print(f"\n{Colors.CYAN}{args.agent}:{Colors.END} {result.get('result', '')}\n")
+
+
+# ============================================
+# Server Command
+# ============================================
+
+def cmd_server(args):
+    """Control del servidor"""
+    if args.server_cmd == "start":
+        print_info("Iniciando servidor Purma...")
+        subprocess.Popen(
+            ["python3", "-m", "uvicorn", "purma_server:app",
+             "--host", "127.0.0.1", "--port", "11435"],
+            cwd=str(Path(__file__).parent.parent / "ai" / "server"),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+        print_success("Servidor iniciado en http://127.0.0.1:11435")
+
+    elif args.server_cmd == "stop":
+        subprocess.run(["pkill", "-f", "purma_server"], capture_output=True)
+        print_success("Servidor detenido")
+
+    elif args.server_cmd == "restart":
+        subprocess.run(["pkill", "-f", "purma_server"], capture_output=True)
+        import time
+        time.sleep(1)
+        subprocess.Popen(
+            ["python3", "-m", "uvicorn", "purma_server:app",
+             "--host", "127.0.0.1", "--port", "11435"],
+            cwd=str(Path(__file__).parent.parent / "ai" / "server"),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+        print_success("Servidor reiniciado")
+
+    elif args.server_cmd == "logs":
+        log_file = PURMA_HOME / "logs" / "server.log"
+        if log_file.exists():
+            subprocess.run(["tail", "-f", str(log_file)])
+        else:
+            print_info("No hay logs disponibles")
+
+
+# ============================================
+# Config Command
+# ============================================
+
+def cmd_config(args):
+    """Configuración"""
+    if args.config_cmd == "show":
+        if CONFIG_FILE.exists():
+            config = json.loads(CONFIG_FILE.read_text())
+            print_json(config)
+        else:
+            print_info("No hay configuración personalizada")
+
+    elif args.config_cmd == "set":
+        if not args.key or not args.value:
+            print_error("Especifica --key y --value")
+            return
+
+        config = {}
+        if CONFIG_FILE.exists():
+            config = json.loads(CONFIG_FILE.read_text())
+
+        config[args.key] = args.value
+        CONFIG_FILE.parent.mkdir(parents=True, exist_ok=True)
+        CONFIG_FILE.write_text(json.dumps(config, indent=2))
+        print_success(f"Configuración guardada: {args.key} = {args.value}")
+
+    elif args.config_cmd == "reset":
+        if CONFIG_FILE.exists():
+            CONFIG_FILE.unlink()
+        print_success("Configuración reseteada")
+
+
+# ============================================
+# Main Parser
+# ============================================
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="PurmaLinux - CLI Unificado",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Ejemplos:
+  purma status                    # Ver estado del sistema
+  purma chat "hola purma"         # Chat rápido
+  purma chat                      # Chat interactivo
+  purma sync add --path ~/Docs    # Añadir carpeta para sync
+  purma organize preview --path ~/Downloads
+  purma vault unlock              # Desbloquear vault
+  purma cortex predict            # Ver predicciones
+  purma memory search "informe"   # Buscar en memoria
+  purma agents run "analiza este código"
+        """
+    )
+
+    subparsers = parser.add_subparsers(dest="command", help="Comando a ejecutar")
+
+    # Status
+    parser_status = subparsers.add_parser("status", help="Estado del sistema")
+
+    # Chat
+    parser_chat = subparsers.add_parser("chat", help="Chat con Purma AI")
+    parser_chat.add_argument("message", nargs="?", help="Mensaje (opcional, modo interactivo si no se especifica)")
+
+    # Sync
+    parser_sync = subparsers.add_parser("sync", help="Sincronización de archivos")
+    sync_sub = parser_sync.add_subparsers(dest="sync_cmd")
+
+    sync_status = sync_sub.add_parser("status", help="Estado de sync")
+    sync_add = sync_sub.add_parser("add", help="Añadir carpeta")
+    sync_add.add_argument("--path", required=True, help="Ruta de la carpeta")
+    sync_add.add_argument("--name", help="Nombre de la carpeta")
+    sync_add.add_argument("--organize", choices=["disabled", "manual", "auto", "smart"],
+                         help="Modo de organización")
+
+    sync_list = sync_sub.add_parser("list", help="Listar carpetas")
+    sync_remove = sync_sub.add_parser("remove", help="Remover carpeta")
+    sync_remove.add_argument("--id", dest="folder_id", required=True, help="ID de carpeta")
+
+    sync_devices = sync_sub.add_parser("devices", help="Ver dispositivos")
+    sync_now = sync_sub.add_parser("now", help="Sincronizar ahora")
+    sync_now.add_argument("--id", dest="folder_id", help="ID de carpeta específica")
+
+    # Organize
+    parser_organize = subparsers.add_parser("organize", help="Organizar archivos con IA")
+    org_sub = parser_organize.add_subparsers(dest="organize_cmd")
+
+    org_preview = org_sub.add_parser("preview", help="Vista previa")
+    org_preview.add_argument("--path", help="Ruta de la carpeta")
+    org_preview.add_argument("--id", dest="folder_id", help="ID de carpeta sync")
+
+    org_run = org_sub.add_parser("run", help="Ejecutar organización")
+    org_run.add_argument("--id", dest="folder_id", required=True, help="ID de carpeta")
+    org_run.add_argument("--confirm", action="store_true", help="Ejecutar realmente")
+    org_run.add_argument("--by-date", action="store_true", help="Organizar por fecha")
+
+    org_enable = org_sub.add_parser("enable", help="Habilitar auto-organización")
+    org_enable.add_argument("--id", dest="folder_id", required=True)
+    org_enable.add_argument("--mode", choices=["auto", "smart"], default="auto")
+
+    org_disable = org_sub.add_parser("disable", help="Deshabilitar auto-organización")
+    org_disable.add_argument("--id", dest="folder_id", required=True)
+
+    # Vault
+    parser_vault = subparsers.add_parser("vault", help="Gestor de contraseñas")
+    vault_sub = parser_vault.add_subparsers(dest="vault_cmd")
+
+    vault_sub.add_parser("status", help="Estado del vault")
+    vault_sub.add_parser("unlock", help="Desbloquear")
+    vault_sub.add_parser("lock", help="Bloquear")
+    vault_sub.add_parser("list", help="Listar secretos")
+
+    vault_get = vault_sub.add_parser("get", help="Obtener secreto")
+    vault_get.add_argument("name", help="Nombre del secreto")
+
+    vault_gen = vault_sub.add_parser("generate", help="Generar contraseña")
+    vault_gen.add_argument("--length", type=int, default=16, help="Longitud")
+
+    # Cortex
+    parser_cortex = subparsers.add_parser("cortex", help="Motor predictivo")
+    cortex_sub = parser_cortex.add_subparsers(dest="cortex_cmd")
+
+    cortex_sub.add_parser("status", help="Estado")
+    cortex_sub.add_parser("predict", help="Ver predicciones")
+    cortex_learn = cortex_sub.add_parser("learn", help="Control de aprendizaje")
+    cortex_learn.add_argument("--stop", action="store_true", help="Detener aprendizaje")
+    cortex_sub.add_parser("patterns", help="Ver patrones")
+
+    # Memory
+    parser_memory = subparsers.add_parser("memory", help="Búsqueda semántica")
+    memory_sub = parser_memory.add_subparsers(dest="memory_cmd")
+
+    memory_sub.add_parser("status", help="Estado")
+
+    memory_index = memory_sub.add_parser("index", help="Indexar archivos")
+    memory_index.add_argument("--path", required=True, help="Ruta")
+    memory_index.add_argument("--recursive", action="store_true", help="Recursivo")
+
+    memory_search = memory_sub.add_parser("search", help="Buscar")
+    memory_search.add_argument("query", help="Búsqueda")
+    memory_search.add_argument("--limit", type=int, default=10)
+
+    memory_ask = memory_sub.add_parser("ask", help="Preguntar con RAG")
+    memory_ask.add_argument("question", help="Pregunta")
+
+    # Ghost
+    parser_ghost = subparsers.add_parser("ghost", help="Sugerencias")
+    ghost_sub = parser_ghost.add_subparsers(dest="ghost_cmd")
+
+    ghost_sub.add_parser("status", help="Estado")
+    ghost_sub.add_parser("suggestions", help="Ver sugerencias")
+    ghost_sub.add_parser("start", help="Iniciar observación")
+    ghost_sub.add_parser("stop", help="Detener observación")
+
+    # Agents
+    parser_agents = subparsers.add_parser("agents", help="Multi-agente")
+    agents_sub = parser_agents.add_subparsers(dest="agents_cmd")
+
+    agents_sub.add_parser("list", help="Listar agentes")
+
+    agents_run = agents_sub.add_parser("run", help="Ejecutar tarea")
+    agents_run.add_argument("task", help="Descripción de la tarea")
+
+    agents_ask = agents_sub.add_parser("ask", help="Preguntar a agente")
+    agents_ask.add_argument("--agent", required=True, help="Nombre del agente")
+    agents_ask.add_argument("question", help="Pregunta")
+
+    # Server
+    parser_server = subparsers.add_parser("server", help="Control del servidor")
+    server_sub = parser_server.add_subparsers(dest="server_cmd")
+
+    server_sub.add_parser("start", help="Iniciar servidor")
+    server_sub.add_parser("stop", help="Detener servidor")
+    server_sub.add_parser("restart", help="Reiniciar servidor")
+    server_sub.add_parser("logs", help="Ver logs")
+
+    # Config
+    parser_config = subparsers.add_parser("config", help="Configuración")
+    config_sub = parser_config.add_subparsers(dest="config_cmd")
+
+    config_sub.add_parser("show", help="Mostrar configuración")
+
+    config_set = config_sub.add_parser("set", help="Establecer valor")
+    config_set.add_argument("--key", required=True)
+    config_set.add_argument("--value", required=True)
+
+    config_sub.add_parser("reset", help="Resetear configuración")
+
+    # Parse and execute
+    args = parser.parse_args()
+
+    if not args.command:
+        parser.print_help()
+        return
+
+    commands = {
+        "status": cmd_status,
+        "chat": cmd_chat,
+        "sync": cmd_sync,
+        "organize": cmd_organize,
+        "vault": cmd_vault,
+        "cortex": cmd_cortex,
+        "memory": cmd_memory,
+        "ghost": cmd_ghost,
+        "agents": cmd_agents,
+        "server": cmd_server,
+        "config": cmd_config,
+    }
+
+    if args.command in commands:
+        commands[args.command](args)
+    else:
+        parser.print_help()
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,133 @@
+/**
+ * ╔══════════════════════════════════════════════════════════════════════════════╗
+ * ║                                                                              ║
+ * ║     Aurora Power Menu                                                        ║
+ * ║     PurmaLinux - System Control                                              ║
+ * ║                                                                              ║
+ * ╚══════════════════════════════════════════════════════════════════════════════╝
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   Aurora Color Palette
+   ═══════════════════════════════════════════════════════════════════════════════ */
+* {
+    void:       #0a0e14;
+    space:      #0d1117;
+    nebula:     #161b22;
+    cosmic:     #21262d;
+    stardust:   #30363d;
+    moonlight:  #8b949e;
+    starlight:  #c9d1d9;
+    plasma:     #f0f6fc;
+    cyan:       #00d4ff;
+    purple:     #a855f7;
+    pink:       #ec4899;
+    green:      #22c55e;
+    yellow:     #f59e0b;
+    red:        #ef4444;
+
+    transparent: rgba(0, 0, 0, 0);
+    background-color: @transparent;
+    text-color: @plasma;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   Window - Centered compact design
+   ═══════════════════════════════════════════════════════════════════════════════ */
+window {
+    location: center;
+    anchor: center;
+    width: 400px;
+
+    background-color: @space;
+    border: 2px solid;
+    border-color: @red;
+    border-radius: 20px;
+
+    box-shadow: 0 12px 48px rgba(239, 68, 68, 0.2);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   Main Container
+   ═══════════════════════════════════════════════════════════════════════════════ */
+mainbox {
+    spacing: 0;
+    children: [inputbar, listview];
+    padding: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   Header
+   ═══════════════════════════════════════════════════════════════════════════════ */
+inputbar {
+    background-color: @nebula;
+    padding: 20px;
+    spacing: 12px;
+    border-radius: 20px 20px 0 0;
+    children: [prompt];
+}
+
+prompt {
+    background-color: @transparent;
+    text-color: @red;
+    padding: 0;
+    font: "JetBrains Mono Bold 14";
+    horizontal-align: 0.5;
+}
+
+entry {
+    enabled: false;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   List View - Grid layout
+   ═══════════════════════════════════════════════════════════════════════════════ */
+listview {
+    lines: 5;
+    columns: 1;
+    fixed-height: true;
+    spacing: 8px;
+    padding: 16px;
+    scrollbar: false;
+    background-color: @space;
+    border-radius: 0 0 20px 20px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   Elements (Power options)
+   ═══════════════════════════════════════════════════════════════════════════════ */
+element {
+    padding: 16px 20px;
+    spacing: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    background-color: @nebula;
+    border: 1px solid @cosmic;
+}
+
+element normal.normal {
+    background-color: @nebula;
+    text-color: @starlight;
+}
+
+element selected.normal {
+    background-color: @cosmic;
+    text-color: @plasma;
+    border-color: @red;
+}
+
+element-icon {
+    size: 28px;
+    cursor: inherit;
+}
+
+element-text {
+    vertical-align: 0.5;
+    horizontal-align: 0;
+    cursor: inherit;
+    font: "JetBrains Mono Medium 12";
+}
+
+element-text selected {
+    text-color: @red;
+}

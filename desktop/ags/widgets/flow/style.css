@@ -1,0 +1,335 @@
+/**
+ * PurmaLinux - Flow Widget Styles
+ * Automation by demonstration UI
+ */
+
+/* ============================================
+   Bar Button
+   ============================================ */
+.flow-button {
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 4px 10px;
+  transition: all 150ms ease;
+}
+
+.flow-button:hover {
+  background: #30363d;
+  border-color: #f0883e;
+}
+
+.flow-btn-icon {
+  font-size: 14px;
+  color: #f0883e;
+}
+
+.flow-btn-icon.recording {
+  color: #f85149;
+  animation: pulse-record 1s infinite;
+}
+
+@keyframes pulse-record {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.flow-btn-label {
+  font-size: 12px;
+  color: #c9d1d9;
+}
+
+/* ============================================
+   Popup Window
+   ============================================ */
+.flow-window {
+  background: transparent;
+}
+
+.flow-popup {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  min-width: 340px;
+  max-width: 400px;
+  min-height: 300px;
+  max-height: 500px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   Header
+   ============================================ */
+.flow-header {
+  background: #161b22;
+  padding: 12px 16px;
+  border-bottom: 1px solid #30363d;
+  border-radius: 12px 12px 0 0;
+}
+
+.flow-title {
+  color: #f0f6fc;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.flow-refresh,
+.flow-close {
+  color: #8b949e;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  background: transparent;
+}
+
+.flow-refresh:hover {
+  background: #21262d;
+  color: #f0883e;
+}
+
+.flow-close:hover {
+  background: #f85149;
+  color: #ffffff;
+}
+
+/* ============================================
+   Content Area
+   ============================================ */
+.flow-content {
+  min-height: 200px;
+}
+
+.flows-scroll {
+  min-height: 150px;
+}
+
+.flows-list {
+  padding: 8px;
+}
+
+/* ============================================
+   Flow Items
+   ============================================ */
+.flow-item {
+  background: transparent;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: all 150ms ease;
+}
+
+.flow-item:hover {
+  background: #21262d;
+  border-color: #30363d;
+}
+
+.flow-item.running {
+  background: #0d419d;
+  border-color: #58a6ff;
+}
+
+.flow-item.disabled {
+  opacity: 0.5;
+}
+
+.flow-icon {
+  font-size: 24px;
+  min-width: 32px;
+}
+
+.flow-name {
+  color: #f0f6fc;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.flow-item.running .flow-name {
+  color: #ffffff;
+}
+
+.flow-runs {
+  color: #8b949e;
+  font-size: 10px;
+  background: #21262d;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.flow-desc {
+  color: #8b949e;
+  font-size: 11px;
+}
+
+.flow-item.running .flow-desc {
+  color: #c9d1d9;
+}
+
+.flow-status {
+  color: #3fb950;
+  font-size: 14px;
+}
+
+.flow-item.running .flow-status {
+  color: #58a6ff;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   Action Bar
+   ============================================ */
+.flow-actions {
+  background: #161b22;
+  padding: 12px;
+  border-top: 1px solid #30363d;
+  border-radius: 0 0 12px 12px;
+}
+
+.action-btn {
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  border: 1px solid #30363d;
+}
+
+.action-btn.record {
+  background: #b62324;
+  border-color: #f85149;
+  color: #ffffff;
+}
+
+.action-btn.record:hover {
+  background: #da3633;
+}
+
+.action-btn.create {
+  background: #21262d;
+  color: #c9d1d9;
+}
+
+.action-btn.create:hover {
+  background: #30363d;
+  border-color: #a371f7;
+  color: #a371f7;
+}
+
+/* ============================================
+   Recording View
+   ============================================ */
+.recording-view {
+  padding: 32px;
+}
+
+.recording-indicator {
+  padding: 20px;
+  background: #b62324;
+  border-radius: 50%;
+}
+
+.recording-icon {
+  font-size: 32px;
+  color: #ffffff;
+}
+
+.recording-icon.pulse {
+  animation: pulse-record 1s infinite;
+}
+
+.recording-title {
+  color: #f0f6fc;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.recording-hint {
+  color: #8b949e;
+  font-size: 12px;
+  text-align: center;
+}
+
+.recording-count {
+  color: #f0883e;
+  font-size: 24px;
+  font-weight: 600;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.stop-recording-btn {
+  background: #21262d;
+  border: 1px solid #f85149;
+  color: #f85149;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-top: 16px;
+}
+
+.stop-recording-btn:hover {
+  background: #f85149;
+  color: #ffffff;
+}
+
+/* ============================================
+   States
+   ============================================ */
+.flows-loading {
+  padding: 32px;
+  color: #8b949e;
+  font-size: 13px;
+}
+
+.flows-error {
+  padding: 24px;
+  spacing: 8px;
+}
+
+.error-icon {
+  font-size: 32px;
+  color: #f85149;
+}
+
+.error-text {
+  color: #ffa198;
+  font-size: 12px;
+}
+
+.flows-empty {
+  padding: 32px;
+}
+
+.empty-icon {
+  font-size: 48px;
+  color: #30363d;
+}
+
+.empty-title {
+  color: #8b949e;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.empty-hint {
+  color: #484f58;
+  font-size: 11px;
+}
+
+/* ============================================
+   Scrollbar
+   ============================================ */
+.flows-scroll scrollbar {
+  background: transparent;
+}
+
+.flows-scroll scrollbar slider {
+  background: #30363d;
+  border-radius: 4px;
+  min-width: 6px;
+}
+
+.flows-scroll scrollbar slider:hover {
+  background: #484f58;
+}

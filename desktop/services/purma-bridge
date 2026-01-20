@@ -1,0 +1,589 @@
+#!/usr/bin/env python3
+"""
+PurmaLinux Bridge - AI-Augmented Terminal Wrapper
+Usage:
+    purma-bridge                    # Start interactive shell
+    purma-bridge "command"          # Run single command with analysis
+    purma-bridge -t "natural text"  # Translate natural language
+    purma-bridge -e                 # Explain last error
+"""
+
+import argparse
+import json
+import os
+import readline
+import shlex
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+import httpx
+
+# ============================================
+# Configuration
+# ============================================
+
+PURMA_SERVER = "http://localhost:8787"
+HISTORY_FILE = Path.home() / ".config" / "purma" / "bridge_readline_history"
+MAX_HISTORY = 1000
+
+# Colors
+class Colors:
+    RESET = "\033[0m"
+    BOLD = "\033[1m"
+    DIM = "\033[2m"
+
+    RED = "\033[31m"
+    GREEN = "\033[32m"
+    YELLOW = "\033[33m"
+    BLUE = "\033[34m"
+    MAGENTA = "\033[35m"
+    CYAN = "\033[36m"
+    WHITE = "\033[37m"
+
+    BG_RED = "\033[41m"
+    BG_YELLOW = "\033[43m"
+
+    # Risk colors
+    SAFE = GREEN
+    LOW = CYAN
+    MEDIUM = YELLOW
+    HIGH = "\033[38;5;208m"  # Orange
+    CRITICAL = RED + BOLD
+
+
+# ============================================
+# API Client
+# ============================================
+
+def call_api(method: str, endpoint: str, data: dict = None, timeout: int = 30) -> dict:
+    """Call Purma Bridge API"""
+    try:
+        url = f"{PURMA_SERVER}{endpoint}"
+        if method == "GET":
+            response = httpx.get(url, timeout=timeout)
+        else:
+            response = httpx.post(url, json=data or {}, timeout=timeout)
+
+        if response.status_code == 200:
+            return response.json()
+        return {"error": f"API error: {response.status_code}"}
+    except Exception as e:
+        return {"error": str(e)}
+
+
+def call_api_async(method: str, endpoint: str, data: dict = None):
+    """Call API without blocking (fire and forget)"""
+    import threading
+    thread = threading.Thread(target=call_api, args=(method, endpoint, data))
+    thread.daemon = True
+    thread.start()
+
+
+# ============================================
+# Display Functions
+# ============================================
+
+def print_colored(text: str, color: str = Colors.RESET):
+    """Print colored text"""
+    print(f"{color}{text}{Colors.RESET}")
+
+
+def print_risk_badge(risk: str):
+    """Print risk level badge"""
+    badges = {
+        "safe": (Colors.SAFE, "SAFE"),
+        "low": (Colors.LOW, "LOW"),
+        "medium": (Colors.MEDIUM, "MEDIUM"),
+        "high": (Colors.HIGH, "HIGH"),
+        "critical": (Colors.CRITICAL + Colors.BG_RED, "CRITICAL"),
+    }
+    color, label = badges.get(risk, (Colors.WHITE, risk.upper()))
+    print(f"  {color}[{label}]{Colors.RESET}", end="")
+
+
+def print_analysis(analysis: dict):
+    """Print command analysis"""
+    print()
+    print(f"{Colors.BOLD}Command Analysis:{Colors.RESET}")
+    print_risk_badge(analysis.get("risk", "safe"))
+    print(f" {Colors.DIM}{analysis.get('description', '')}{Colors.RESET}")
+
+    effects = analysis.get("effects", [])
+    if effects:
+        print(f"\n  {Colors.CYAN}Effects:{Colors.RESET}")
+        for effect in effects:
+            print(f"    • {effect}")
+
+    warnings = analysis.get("warnings", [])
+    if warnings:
+        print(f"\n  {Colors.YELLOW}Warnings:{Colors.RESET}")
+        for warning in warnings:
+            print(f"    {warning}")
+
+    paths = analysis.get("affected_paths", [])
+    if paths:
+        print(f"\n  {Colors.BLUE}Affected paths:{Colors.RESET}")
+        for path in paths[:5]:
+            print(f"    📁 {path}")
+        if len(paths) > 5:
+            print(f"    ... and {len(paths) - 5} more")
+
+    print()
+
+
+def print_error_explanation(explanation: dict):
+    """Print error explanation with solutions"""
+    print()
+    print(f"{Colors.RED}{Colors.BOLD}Error: {explanation.get('error_type', 'Unknown')}{Colors.RESET}")
+    print()
+    print(f"{Colors.WHITE}{explanation.get('explanation', '')}{Colors.RESET}")
+    print()
+    print(f"{Colors.DIM}Cause: {explanation.get('cause', 'Unknown')}{Colors.RESET}")
+
+    solutions = explanation.get("solutions", [])
+    if solutions:
+        print(f"\n{Colors.GREEN}{Colors.BOLD}Solutions:{Colors.RESET}")
+        for i, sol in enumerate(solutions, 1):
+            print(f"\n  {Colors.CYAN}{i}. {sol.get('description', '')}{Colors.RESET}")
+            cmd = sol.get("command", "")
+            if cmd:
+                print(f"     {Colors.YELLOW}$ {cmd}{Colors.RESET}")
+
+    docs = explanation.get("docs_url")
+    if docs:
+        print(f"\n  {Colors.BLUE}📖 Docs: {docs}{Colors.RESET}")
+
+    print()
+
+
+def print_suggestions(suggestions: list):
+    """Print command suggestions"""
+    print()
+    print(f"{Colors.BOLD}Suggestions:{Colors.RESET}")
+    for i, sug in enumerate(suggestions, 1):
+        confidence = sug.get("confidence", 0)
+        conf_bar = "█" * int(confidence * 5) + "░" * (5 - int(confidence * 5))
+        source = sug.get("source", "ai")
+        source_icon = "🤖" if source == "ai" else "📜"
+
+        print(f"\n  {Colors.CYAN}{i}. {sug.get('command', '')}{Colors.RESET}")
+        print(f"     {Colors.DIM}{sug.get('description', '')}{Colors.RESET}")
+        print(f"     {source_icon} {conf_bar} {int(confidence * 100)}%")
+    print()
+
+
+def print_sandbox_preview(preview: dict):
+    """Print sandbox preview"""
+    print()
+    print(f"{Colors.MAGENTA}{Colors.BOLD}🔮 Sandbox Preview:{Colors.RESET}")
+
+    would_affect = preview.get("would_affect", [])
+    if would_affect:
+        print(f"\n  {Colors.YELLOW}Would affect:{Colors.RESET}")
+        for item in would_affect[:10]:
+            print(f"    • {item}")
+        if len(would_affect) > 10:
+            print(f"    ... and {len(would_affect) - 10} more")
+
+    output = preview.get("simulated_output")
+    if output:
+        print(f"\n  {Colors.CYAN}Output preview:{Colors.RESET}")
+        for line in output.split("\n")[:10]:
+            print(f"    {line}")
+
+    print()
+
+
+# ============================================
+# Command Processing
+# ============================================
+
+def analyze_command(command: str) -> dict:
+    """Analyze a command before execution"""
+    result = call_api("POST", "/bridge/analyze", {"command": command})
+    return result.get("analysis", {})
+
+
+def translate_natural_language(text: str) -> list:
+    """Translate natural language to commands"""
+    result = call_api("POST", "/bridge/translate", {"text": text}, timeout=60)
+    return result.get("suggestions", [])
+
+
+def explain_last_error() -> dict:
+    """Get explanation for last error"""
+    result = call_api("GET", "/bridge/last-error")
+    return result.get("explanation", {})
+
+
+def get_suggestions(partial: str) -> list:
+    """Get command suggestions"""
+    result = call_api("POST", "/bridge/suggest", {"input": partial})
+    return result.get("suggestions", [])
+
+
+def sandbox_preview(command: str) -> dict:
+    """Get sandbox preview"""
+    result = call_api("POST", "/bridge/sandbox", {"command": command})
+    return result.get("preview", {})
+
+
+def record_to_history(command: str, output: str, exit_code: int, duration: float):
+    """Record command to history (async)"""
+    call_api_async("POST", "/bridge/history", {
+        "command": command,
+        "output": output[:2000],
+        "exit_code": exit_code,
+        "duration": duration,
+        "working_dir": os.getcwd(),
+    })
+
+
+# ============================================
+# Command Execution
+# ============================================
+
+def execute_command(command: str, analyze: bool = True, confirm_high: bool = True) -> int:
+    """Execute a command with optional analysis"""
+
+    if not command.strip():
+        return 0
+
+    # Skip analysis for simple commands
+    simple_prefixes = ("cd ", "echo ", "pwd", "ls", "cat ", "clear", "exit")
+    skip_analysis = any(command.startswith(p) for p in simple_prefixes)
+
+    analysis = None
+    if analyze and not skip_analysis:
+        analysis = analyze_command(command)
+
+        if analysis:
+            risk = analysis.get("risk", "safe")
+
+            # Show warnings for medium+ risk
+            if risk in ("medium", "high", "critical"):
+                print_analysis(analysis)
+
+            # Require confirmation for high/critical
+            if risk in ("high", "critical") and confirm_high:
+                if analysis.get("sandbox_available"):
+                    print(f"{Colors.MAGENTA}[s] Sandbox preview  ", end="")
+                print(f"{Colors.GREEN}[y] Execute  {Colors.RED}[n] Cancel{Colors.RESET}")
+                choice = input(f"{Colors.BOLD}> {Colors.RESET}").strip().lower()
+
+                if choice == "s":
+                    preview = sandbox_preview(command)
+                    print_sandbox_preview(preview)
+                    print(f"{Colors.GREEN}[y] Execute  {Colors.RED}[n] Cancel{Colors.RESET}")
+                    choice = input(f"{Colors.BOLD}> {Colors.RESET}").strip().lower()
+
+                if choice not in ("y", "yes"):
+                    print(f"{Colors.YELLOW}Cancelled.{Colors.RESET}")
+                    return 1
+
+    # Execute the command
+    start_time = time.time()
+
+    try:
+        # Handle cd specially
+        if command.startswith("cd "):
+            path = command[3:].strip()
+            path = os.path.expanduser(path)
+            os.chdir(path)
+            return 0
+
+        # Run the command
+        result = subprocess.run(
+            command,
+            shell=True,
+            capture_output=False,
+        )
+
+        duration = time.time() - start_time
+        exit_code = result.returncode
+
+        # Record to history (async)
+        record_to_history(command, "", exit_code, duration)
+
+        return exit_code
+
+    except KeyboardInterrupt:
+        print(f"\n{Colors.YELLOW}Interrupted{Colors.RESET}")
+        return 130
+    except Exception as e:
+        print(f"{Colors.RED}Error: {e}{Colors.RESET}")
+        return 1
+
+
+def execute_with_error_capture(command: str) -> int:
+    """Execute command and capture errors for explanation"""
+    start_time = time.time()
+
+    try:
+        result = subprocess.run(
+            command,
+            shell=True,
+            capture_output=True,
+            text=True,
+        )
+
+        duration = time.time() - start_time
+
+        # Print output
+        if result.stdout:
+            print(result.stdout, end="")
+
+        # Handle error
+        if result.returncode != 0:
+            if result.stderr:
+                print(f"{Colors.RED}{result.stderr}{Colors.RESET}", end="")
+
+            # Offer to explain
+            print(f"\n{Colors.YELLOW}Command failed (exit {result.returncode}). "
+                  f"[e] Explain  [Enter] Continue{Colors.RESET}")
+            choice = input().strip().lower()
+
+            if choice == "e":
+                explanation = call_api("POST", "/bridge/explain", {
+                    "command": command,
+                    "error": result.stderr,
+                    "exit_code": result.returncode,
+                }, timeout=60)
+
+                if "explanation" in explanation:
+                    print_error_explanation(explanation["explanation"])
+
+        # Record to history
+        record_to_history(command, result.stdout + result.stderr, result.returncode, duration)
+
+        return result.returncode
+
+    except KeyboardInterrupt:
+        print(f"\n{Colors.YELLOW}Interrupted{Colors.RESET}")
+        return 130
+
+
+# ============================================
+# Interactive Shell
+# ============================================
+
+def get_prompt() -> str:
+    """Get the shell prompt"""
+    cwd = os.getcwd()
+    home = os.path.expanduser("~")
+    if cwd.startswith(home):
+        cwd = "~" + cwd[len(home):]
+
+    # Shorten if too long
+    if len(cwd) > 40:
+        parts = cwd.split("/")
+        if len(parts) > 3:
+            cwd = "/".join(["..."] + parts[-2:])
+
+    return f"{Colors.BLUE}⚡ {Colors.CYAN}{cwd}{Colors.RESET} $ "
+
+
+def setup_readline():
+    """Setup readline for better input"""
+    HISTORY_FILE.parent.mkdir(parents=True, exist_ok=True)
+
+    try:
+        readline.read_history_file(str(HISTORY_FILE))
+    except FileNotFoundError:
+        pass
+
+    readline.set_history_length(MAX_HISTORY)
+
+    # Enable tab completion (basic)
+    readline.parse_and_bind("tab: complete")
+
+
+def save_readline_history():
+    """Save readline history"""
+    try:
+        readline.write_history_file(str(HISTORY_FILE))
+    except Exception:
+        pass
+
+
+def interactive_shell():
+    """Run interactive shell"""
+    setup_readline()
+
+    print(f"{Colors.BOLD}{Colors.CYAN}")
+    print("  ⚡ Purma Bridge - AI Terminal")
+    print(f"{Colors.RESET}{Colors.DIM}")
+    print("  Type naturally or use commands. '?' for help.")
+    print(f"{Colors.RESET}")
+
+    try:
+        while True:
+            try:
+                prompt = get_prompt()
+                user_input = input(prompt).strip()
+
+                if not user_input:
+                    continue
+
+                # Special commands
+                if user_input == "?":
+                    print_help()
+                    continue
+
+                if user_input == "exit" or user_input == "quit":
+                    break
+
+                if user_input.startswith("?? "):
+                    # Natural language query
+                    query = user_input[3:]
+                    suggestions = translate_natural_language(query)
+                    if suggestions:
+                        print_suggestions(suggestions)
+                        print(f"{Colors.DIM}[1-{len(suggestions)}] Run suggestion  [Enter] Cancel{Colors.RESET}")
+                        choice = input().strip()
+                        if choice.isdigit():
+                            idx = int(choice) - 1
+                            if 0 <= idx < len(suggestions):
+                                execute_with_error_capture(suggestions[idx]["command"])
+                    else:
+                        print(f"{Colors.YELLOW}No suggestions found.{Colors.RESET}")
+                    continue
+
+                if user_input.startswith("?e"):
+                    # Explain last error
+                    explanation = explain_last_error()
+                    if explanation:
+                        print_error_explanation(explanation)
+                    else:
+                        print(f"{Colors.DIM}No recent error to explain.{Colors.RESET}")
+                    continue
+
+                if user_input.startswith("?s "):
+                    # Sandbox preview
+                    command = user_input[3:]
+                    preview = sandbox_preview(command)
+                    print_sandbox_preview(preview)
+                    continue
+
+                if user_input.startswith("?a "):
+                    # Analyze without executing
+                    command = user_input[3:]
+                    analysis = analyze_command(command)
+                    print_analysis(analysis)
+                    continue
+
+                if user_input.startswith("?h "):
+                    # Search history
+                    query = user_input[3:]
+                    result = call_api("POST", "/bridge/history/search", {"query": query})
+                    entries = result.get("entries", [])
+                    if entries:
+                        print(f"\n{Colors.BOLD}History matches:{Colors.RESET}")
+                        for entry in entries[:10]:
+                            print(f"  {Colors.CYAN}{entry.get('command', '')}{Colors.RESET}")
+                            if entry.get("intent"):
+                                print(f"    {Colors.DIM}{entry['intent']}{Colors.RESET}")
+                    else:
+                        print(f"{Colors.DIM}No matches found.{Colors.RESET}")
+                    continue
+
+                # Regular command execution
+                execute_with_error_capture(user_input)
+
+            except EOFError:
+                break
+            except KeyboardInterrupt:
+                print()
+                continue
+
+    finally:
+        save_readline_history()
+        print(f"\n{Colors.DIM}Goodbye!{Colors.RESET}")
+
+
+def print_help():
+    """Print help"""
+    print(f"""
+{Colors.BOLD}Purma Bridge - AI Terminal{Colors.RESET}
+
+{Colors.CYAN}Special Commands:{Colors.RESET}
+  ?? <text>     Translate natural language to command
+  ?a <cmd>      Analyze command without executing
+  ?s <cmd>      Sandbox preview (what would happen)
+  ?e            Explain last error
+  ?h <query>    Search command history
+  ?             Show this help
+  exit          Exit shell
+
+{Colors.CYAN}Examples:{Colors.RESET}
+  ?? find all python files larger than 1MB
+  ?? delete node_modules folders recursively
+  ?a rm -rf ./build
+  ?s git push --force origin main
+
+{Colors.DIM}Commands are analyzed for safety before execution.
+High-risk commands require confirmation.{Colors.RESET}
+""")
+
+
+# ============================================
+# Main
+# ============================================
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Purma Bridge - AI-Augmented Terminal"
+    )
+    parser.add_argument("command", nargs="?", help="Command to execute")
+    parser.add_argument("-t", "--translate", metavar="TEXT",
+                        help="Translate natural language to command")
+    parser.add_argument("-e", "--explain", action="store_true",
+                        help="Explain last error")
+    parser.add_argument("-a", "--analyze", metavar="CMD",
+                        help="Analyze command without executing")
+    parser.add_argument("-s", "--sandbox", metavar="CMD",
+                        help="Sandbox preview")
+    parser.add_argument("--no-confirm", action="store_true",
+                        help="Skip confirmation for high-risk commands")
+
+    args = parser.parse_args()
+
+    # Handle specific modes
+    if args.translate:
+        suggestions = translate_natural_language(args.translate)
+        if suggestions:
+            print_suggestions(suggestions)
+        else:
+            print("No suggestions found.")
+        return
+
+    if args.explain:
+        explanation = explain_last_error()
+        if explanation:
+            print_error_explanation(explanation)
+        else:
+            print("No recent error to explain.")
+        return
+
+    if args.analyze:
+        analysis = analyze_command(args.analyze)
+        print_analysis(analysis)
+        return
+
+    if args.sandbox:
+        preview = sandbox_preview(args.sandbox)
+        print_sandbox_preview(preview)
+        return
+
+    # Execute single command
+    if args.command:
+        sys.exit(execute_command(args.command, confirm_high=not args.no_confirm))
+
+    # Interactive shell
+    interactive_shell()
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,37 @@
+#!/bin/bash
+#
+# PurmaLinux - Purma Chat Launcher
+# Abre el cliente de chat según el entorno
+#
+
+PURMA_DIR="$HOME/.local/share/purma"
+
+# Check if running in graphical environment
+if [[ -n "$DISPLAY" ]] || [[ -n "$WAYLAND_DISPLAY" ]]; then
+    # Check if AGS is running (Desktop mode)
+    if pgrep -x "ags" > /dev/null 2>&1; then
+        # Toggle AGS chat sidebar via dbus or direct call
+        ags -r "togglePurmaChat()" 2>/dev/null || \
+        gdbus call --session \
+            --dest com.github.Aylur.ags \
+            --object-path /com/github/Aylur/ags \
+            --method com.github.Aylur.ags.Run \
+            "togglePurmaChat()" 2>/dev/null || \
+        # Fallback to terminal
+        exec kitty \
+            --title "Purma AI" \
+            -o initial_window_width=450 \
+            -o initial_window_height=800 \
+            -e "$PURMA_DIR/venv/bin/python" "$PURMA_DIR/chat/purma-chat-cli.py"
+    else
+        # i3 or other WM - open in terminal
+        exec kitty \
+            --title "Purma AI" \
+            -o initial_window_width=450 \
+            -o initial_window_height=800 \
+            -e "$PURMA_DIR/venv/bin/python" "$PURMA_DIR/chat/purma-chat-cli.py"
+    fi
+else
+    # No graphical environment - run CLI directly
+    exec "$PURMA_DIR/venv/bin/python" "$PURMA_DIR/chat/purma-chat-cli.py"
+fi

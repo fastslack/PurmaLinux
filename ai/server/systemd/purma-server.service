@@ -1,0 +1,33 @@
+# PurmaLinux - Purma AI Server Service
+# /etc/systemd/user/purma-server.service
+#
+# Este servicio corre como usuario (no root) para mantener
+# el sandbox del agente dentro del directorio home.
+
+[Unit]
+Description=Purma AI Server
+Documentation=https://github.com/purmalinux/purmalinux
+After=network.target ollama.service
+Wants=ollama.service
+
+[Service]
+Type=simple
+ExecStart=%h/.local/share/purma/venv/bin/python %h/.local/share/purma/server/purma_server.py
+WorkingDirectory=%h/.local/share/purma/server
+Restart=on-failure
+RestartSec=5
+
+# Environment
+Environment="OLLAMA_HOST=http://127.0.0.1:11434"
+Environment="PURMA_MODEL=purma"
+Environment="PURMA_SERVER_HOST=127.0.0.1"
+Environment="PURMA_SERVER_PORT=11435"
+Environment="HOME=%h"
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=purma-server
+
+[Install]
+WantedBy=default.target

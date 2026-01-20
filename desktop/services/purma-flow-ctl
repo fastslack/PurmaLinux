@@ -1,0 +1,243 @@
+#!/bin/bash
+# PurmaLinux - Flow Control Script
+# Keyboard shortcut helper for Flow automation
+
+PURMA_SERVER="http://localhost:8787"
+RECORDER_PORT="8790"
+
+show_notification() {
+    local title="$1"
+    local message="$2"
+    local icon="${3:-system-run}"
+    notify-send -i "$icon" "$title" "$message" 2>/dev/null
+}
+
+# Toggle Flow popup via AGS
+toggle_popup() {
+    ags -r "togglePurmaFlow()" 2>/dev/null || \
+    gdbus call --session \
+        --dest org.Aylur.ags \
+        --object-path /org/Aylur/ags \
+        --method org.Aylur.ags.RunJs \
+        "togglePurmaFlow()" 2>/dev/null
+}
+
+# Toggle recording via AGS
+toggle_recording_ags() {
+    ags -r "togglePurmaRecording()" 2>/dev/null
+}
+
+# Start recording
+start_recording() {
+    local name="${1:-Nueva grabacion}"
+    local result=$(curl -s -X POST "${PURMA_SERVER}/flow/recording/start?name=$(echo "$name" | jq -sRr @uri)" 2>/dev/null)
+
+    if echo "$result" | grep -q '"success":true'; then
+        show_notification "Purma Flow" "Grabacion iniciada" "media-record"
+    else
+        show_notification "Purma Flow" "Error al iniciar grabacion" "dialog-error"
+    fi
+}
+
+# Stop recording
+stop_recording() {
+    local result=$(curl -s -X POST "${PURMA_SERVER}/flow/recording/stop" 2>/dev/null)
+
+    if echo "$result" | grep -q '"success":true'; then
+        local count=$(echo "$result" | grep -o '"actions_count":[0-9]*' | cut -d: -f2)
+        show_notification "Purma Flow" "Grabacion terminada: ${count:-0} acciones" "media-playback-stop"
+    else
+        show_notification "Purma Flow" "Error al detener grabacion" "dialog-error"
+    fi
+}
+
+# Toggle recording
+toggle_recording() {
+    local status=$(curl -s "${PURMA_SERVER}/flow/recording/status" 2>/dev/null)
+
+    if echo "$status" | grep -q '"recording":true'; then
+        stop_recording
+    else
+        start_recording "$1"
+    fi
+}
+
+# Get recording status
+recording_status() {
+    curl -s "${PURMA_SERVER}/flow/recording/status" 2>/dev/null | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+if data.get('recording'):
+    print(f'Grabando: {data.get(\"name\", \"unnamed\")}')
+    print(f'Acciones: {data.get(\"actions_count\", 0)}')
+else:
+    print('No hay grabacion activa')
+" 2>/dev/null
+}
+
+# Run a flow by name or ID
+run_flow() {
+    local flow_name="$1"
+
+    if [ -z "$flow_name" ]; then
+        echo "Usage: purma-flow-ctl run <flow-name-or-id>"
+        exit 1
+    fi
+
+    # Try to run by ID first
+    local result=$(curl -s -X POST "${PURMA_SERVER}/flows/${flow_name}/run" 2>/dev/null)
+
+    if echo "$result" | grep -q '"success":true'; then
+        show_notification "Purma Flow" "Flow ejecutado: $flow_name"
+    else
+        # Try to find by name
+        local flows=$(curl -s "${PURMA_SERVER}/flows" 2>/dev/null)
+        local flow_id=$(echo "$flows" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+for f in data.get('flows', []):
+    if f.get('name', '').lower() == '${flow_name}'.lower() or f.get('id', '').lower() == '${flow_name}'.lower():
+        print(f['id'])
+        break
+" 2>/dev/null)
+
+        if [ -n "$flow_id" ]; then
+            result=$(curl -s -X POST "${PURMA_SERVER}/flows/${flow_id}/run" 2>/dev/null)
+            if echo "$result" | grep -q '"success":true'; then
+                show_notification "Purma Flow" "Flow ejecutado: $flow_name"
+            else
+                show_notification "Purma Flow" "Error al ejecutar flow" "dialog-error"
+            fi
+        else
+            show_notification "Purma Flow" "Flow no encontrado: $flow_name" "dialog-error"
+        fi
+    fi
+}
+
+# List all flows
+list_flows() {
+    curl -s "${PURMA_SERVER}/flows" 2>/dev/null | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+print('\n⚡ Purma Flows\n')
+for f in data.get('flows', []):
+    icon = f.get('icon', '⚡')
+    name = f.get('name', f['id'])
+    runs = f.get('run_count', 0)
+    steps = f.get('steps_count', 0)
+    enabled = '' if f.get('enabled', True) else ' (deshabilitado)'
+    print(f'  {icon} {name}{enabled}')
+    print(f'     {steps} pasos | {runs} ejecuciones')
+print()
+" 2>/dev/null
+}
+
+# Create flow from description using AI
+create_flow() {
+    local description="$1"
+
+    if [ -z "$description" ]; then
+        # Open dialog
+        description=$(zenity --entry \
+            --title="Purma Flow" \
+            --text="Describe lo que quieres automatizar:" \
+            --width=400 2>/dev/null)
+    fi
+
+    if [ -z "$description" ]; then
+        echo "No description provided"
+        exit 1
+    fi
+
+    show_notification "Purma Flow" "Creando flow con IA..." "system-run"
+
+    local result=$(curl -s -X POST \
+        "${PURMA_SERVER}/flows?from_description=$(echo "$description" | jq -sRr @uri)&name=AI+Flow" \
+        2>/dev/null)
+
+    if echo "$result" | grep -q '"success":true'; then
+        local name=$(echo "$result" | grep -o '"name":"[^"]*"' | cut -d'"' -f4)
+        show_notification "Purma Flow" "Flow creado: $name" "emblem-ok"
+    else
+        show_notification "Purma Flow" "Error al crear flow" "dialog-error"
+    fi
+}
+
+# Show rofi menu
+rofi_menu() {
+    local flows=$(curl -s "${PURMA_SERVER}/flows" 2>/dev/null)
+    local recording=$(echo "$flows" | grep -o '"recording":[^,}]*' | cut -d: -f2)
+
+    local options=$(echo "$flows" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+for f in data.get('flows', []):
+    icon = f.get('icon', '⚡')
+    name = f.get('name', f['id'])
+    print(f'{icon} {name}')
+print('---')
+print(' Grabar nueva accion')
+print(' Crear con IA')
+" 2>/dev/null)
+
+    local selected=$(echo "$options" | rofi -dmenu -i -p "Flow" -theme-str 'window {width: 320px;}')
+
+    if [ -n "$selected" ]; then
+        if [[ "$selected" == *"Grabar"* ]]; then
+            toggle_recording
+        elif [[ "$selected" == *"Crear con IA"* ]]; then
+            create_flow
+        elif [[ "$selected" != "---" ]]; then
+            local name=$(echo "$selected" | sed 's/^[^ ]* //')
+            run_flow "$name"
+        fi
+    fi
+}
+
+# Main command handler
+case "$1" in
+    toggle)
+        toggle_popup
+        ;;
+    record)
+        toggle_recording "$2"
+        ;;
+    start)
+        start_recording "$2"
+        ;;
+    stop)
+        stop_recording
+        ;;
+    status)
+        recording_status
+        ;;
+    run)
+        run_flow "$2"
+        ;;
+    list)
+        list_flows
+        ;;
+    create)
+        create_flow "$2"
+        ;;
+    menu|rofi)
+        rofi_menu
+        ;;
+    *)
+        echo "PurmaLinux Flow Control"
+        echo ""
+        echo "Usage: purma-flow-ctl <command> [args]"
+        echo ""
+        echo "Commands:"
+        echo "  toggle              Toggle Flow popup"
+        echo "  record [name]       Toggle recording"
+        echo "  start [name]        Start recording"
+        echo "  stop                Stop recording"
+        echo "  status              Get recording status"
+        echo "  run <name>          Run a flow"
+        echo "  list                List all flows"
+        echo "  create [desc]       Create flow with AI"
+        echo "  menu                Show rofi selection"
+        exit 1
+        ;;
+esac

@@ -1,0 +1,475 @@
+/**
+ * PurmaLinux - Bridge Widget Styles
+ * AI-augmented terminal interface
+ */
+
+/* ============================================
+   Bar Button
+   ============================================ */
+.bridge-button {
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 4px 10px;
+  transition: all 150ms ease;
+}
+
+.bridge-button:hover {
+  background: #30363d;
+  border-color: #58a6ff;
+}
+
+.bridge-btn-icon {
+  font-size: 14px;
+  color: #58a6ff;
+}
+
+.bridge-btn-label {
+  font-size: 12px;
+  color: #c9d1d9;
+}
+
+/* ============================================
+   Popup Window
+   ============================================ */
+.bridge-window {
+  background: transparent;
+}
+
+.bridge-popup {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  min-width: 400px;
+  max-width: 480px;
+  min-height: 350px;
+  max-height: 550px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   Header
+   ============================================ */
+.bridge-header {
+  background: #161b22;
+  padding: 12px 16px;
+  border-bottom: 1px solid #30363d;
+  border-radius: 12px 12px 0 0;
+}
+
+.bridge-title {
+  color: #f0f6fc;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.header-btn {
+  color: #8b949e;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  background: transparent;
+  margin-left: 4px;
+}
+
+.history-btn:hover {
+  background: #21262d;
+  color: #a371f7;
+}
+
+.terminal-btn:hover {
+  background: #21262d;
+  color: #58a6ff;
+}
+
+.close-btn:hover {
+  background: #f85149;
+  color: #ffffff;
+}
+
+/* ============================================
+   Input Bar
+   ============================================ */
+.input-bar {
+  background: #161b22;
+  padding: 12px;
+  border-bottom: 1px solid #30363d;
+}
+
+.input-prompt {
+  color: #58a6ff;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.input-entry {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: #f0f6fc;
+  font-size: 13px;
+  caret-color: #58a6ff;
+}
+
+.input-entry:focus {
+  border-color: #58a6ff;
+  box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.2);
+}
+
+.input-send {
+  background: #238636;
+  border: 1px solid #2ea043;
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.input-send:hover {
+  background: #2ea043;
+}
+
+.input-send:insensitive {
+  opacity: 0.5;
+}
+
+/* ============================================
+   Quick Actions
+   ============================================ */
+.quick-actions {
+  padding: 8px 12px;
+  border-bottom: 1px solid #21262d;
+}
+
+.quick-action {
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 8px 4px;
+}
+
+.quick-action:hover {
+  background: #30363d;
+  border-color: #58a6ff;
+}
+
+.quick-icon {
+  font-size: 16px;
+  color: #8b949e;
+}
+
+.quick-action:hover .quick-icon {
+  color: #58a6ff;
+}
+
+.quick-label {
+  font-size: 9px;
+  color: #8b949e;
+}
+
+/* ============================================
+   Suggestions List
+   ============================================ */
+.suggestions-scroll {
+  min-height: 150px;
+}
+
+.suggestions-list {
+  padding: 8px;
+}
+
+.suggestion-item {
+  background: transparent;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: all 150ms ease;
+}
+
+.suggestion-item:hover {
+  background: #21262d;
+  border-color: #30363d;
+}
+
+.suggestion-num {
+  background: #58a6ff;
+  color: #0d1117;
+  font-size: 10px;
+  font-weight: bold;
+  min-width: 18px;
+  min-height: 18px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.suggestion-command {
+  color: #f0f6fc;
+  font-size: 12px;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.suggestion-confidence {
+  color: #3fb950;
+  font-size: 10px;
+  font-weight: bold;
+  background: rgba(63, 185, 80, 0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.suggestion-source {
+  color: #8b949e;
+  font-size: 10px;
+  margin-right: 6px;
+}
+
+.suggestion-desc {
+  color: #8b949e;
+  font-size: 11px;
+}
+
+/* ============================================
+   Analysis Panel
+   ============================================ */
+.analysis-panel {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  margin: 8px;
+  padding: 12px;
+}
+
+.analysis-header {
+  margin-bottom: 8px;
+}
+
+.analysis-title {
+  color: #8b949e;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.analysis-desc {
+  color: #c9d1d9;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.analysis-warnings {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #30363d;
+}
+
+.warnings-title {
+  color: #d29922;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.warning-item {
+  color: #ffa657;
+  font-size: 11px;
+}
+
+/* ============================================
+   Risk Badges
+   ============================================ */
+.risk-badge {
+  padding: 3px 8px;
+  border-radius: 4px;
+  spacing: 4px;
+}
+
+.risk-badge.risk-safe {
+  background: rgba(63, 185, 80, 0.15);
+}
+
+.risk-badge.risk-low {
+  background: rgba(88, 166, 255, 0.15);
+}
+
+.risk-badge.risk-medium {
+  background: rgba(210, 153, 34, 0.15);
+}
+
+.risk-badge.risk-high {
+  background: rgba(248, 81, 73, 0.15);
+}
+
+.risk-badge.risk-critical {
+  background: rgba(255, 123, 114, 0.25);
+}
+
+.risk-icon {
+  font-size: 12px;
+}
+
+.risk-badge.risk-safe .risk-icon { color: #3fb950; }
+.risk-badge.risk-low .risk-icon { color: #58a6ff; }
+.risk-badge.risk-medium .risk-icon { color: #d29922; }
+.risk-badge.risk-high .risk-icon { color: #f85149; }
+.risk-badge.risk-critical .risk-icon { color: #ff7b72; }
+
+.risk-label {
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.risk-badge.risk-safe .risk-label { color: #3fb950; }
+.risk-badge.risk-low .risk-label { color: #58a6ff; }
+.risk-badge.risk-medium .risk-label { color: #d29922; }
+.risk-badge.risk-high .risk-label { color: #f85149; }
+.risk-badge.risk-critical .risk-label { color: #ff7b72; }
+
+/* ============================================
+   History View
+   ============================================ */
+.view-header {
+  background: #161b22;
+  padding: 8px 12px;
+  border-bottom: 1px solid #30363d;
+}
+
+.back-btn {
+  background: transparent;
+  color: #58a6ff;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.back-btn:hover {
+  background: #21262d;
+}
+
+.view-title {
+  color: #8b949e;
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+.history-scroll {
+  min-height: 200px;
+}
+
+.history-view {
+  padding: 8px;
+}
+
+.history-item {
+  background: transparent;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+}
+
+.history-item:hover {
+  background: #21262d;
+  border-color: #30363d;
+}
+
+.history-status {
+  min-width: 3px;
+  min-height: 32px;
+  border-radius: 2px;
+}
+
+.history-command {
+  color: #f0f6fc;
+  font-size: 11px;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.history-intent {
+  color: #8b949e;
+  font-size: 10px;
+}
+
+.history-time {
+  color: #484f58;
+  font-size: 9px;
+}
+
+.history-risk {
+  font-size: 14px;
+}
+
+.history-risk.risk-safe { color: #3fb950; }
+.history-risk.risk-low { color: #58a6ff; }
+.history-risk.risk-medium { color: #d29922; }
+.history-risk.risk-high { color: #f85149; }
+.history-risk.risk-critical { color: #ff7b72; }
+
+/* ============================================
+   States
+   ============================================ */
+.suggestions-loading {
+  padding: 32px;
+  color: #8b949e;
+  font-size: 13px;
+}
+
+.loading-spinner {
+  font-size: 16px;
+  color: #58a6ff;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.suggestions-error,
+.history-empty,
+.suggestions-empty {
+  padding: 32px;
+}
+
+.error-icon {
+  font-size: 24px;
+  color: #f85149;
+  margin-right: 8px;
+}
+
+.empty-icon {
+  font-size: 48px;
+  color: #30363d;
+}
+
+.empty-text {
+  color: #8b949e;
+  font-size: 13px;
+}
+
+.empty-hint {
+  color: #484f58;
+  font-size: 11px;
+  font-style: italic;
+}
+
+/* ============================================
+   Scrollbar
+   ============================================ */
+.suggestions-scroll scrollbar,
+.history-scroll scrollbar {
+  background: transparent;
+}
+
+.suggestions-scroll scrollbar slider,
+.history-scroll scrollbar slider {
+  background: #30363d;
+  border-radius: 4px;
+  min-width: 6px;
+}
+
+.suggestions-scroll scrollbar slider:hover,
+.history-scroll scrollbar slider:hover {
+  background: #484f58;
+}

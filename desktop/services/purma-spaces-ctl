@@ -1,0 +1,209 @@
+#!/bin/bash
+# PurmaLinux - Spaces Control Script
+# Keyboard shortcut helper for Spaces management
+
+PURMA_SERVER="http://localhost:8787"
+
+show_notification() {
+    local title="$1"
+    local message="$2"
+    local icon="${3:-workspace-switcher}"
+    notify-send -i "$icon" "$title" "$message" 2>/dev/null
+}
+
+# Toggle Spaces popup via AGS
+toggle_popup() {
+    ags -r "togglePurmaSpaces()" 2>/dev/null || \
+    gdbus call --session \
+        --dest org.Aylur.ags \
+        --object-path /org/Aylur/ags \
+        --method org.Aylur.ags.RunJs \
+        "togglePurmaSpaces()" 2>/dev/null
+}
+
+# Quick switch to next/previous space
+quick_switch() {
+    local direction="${1:-next}"
+    local result=$(curl -s -X POST "${PURMA_SERVER}/spaces/switch?direction=${direction}" 2>/dev/null)
+
+    if echo "$result" | grep -q '"success":true'; then
+        local space=$(echo "$result" | grep -o '"space":"[^"]*"' | cut -d'"' -f4)
+        show_notification "Purma Spaces" "Cambiado a: $space"
+    else
+        show_notification "Purma Spaces" "No hay mas spaces" "dialog-warning"
+    fi
+}
+
+# Activate specific space by ID or name
+activate_space() {
+    local space_name="$1"
+
+    if [ -z "$space_name" ]; then
+        echo "Usage: purma-spaces-ctl activate <space-name>"
+        exit 1
+    fi
+
+    # Try to activate by ID first
+    local result=$(curl -s -X POST "${PURMA_SERVER}/spaces/${space_name}/activate" 2>/dev/null)
+
+    if echo "$result" | grep -q '"success":true'; then
+        show_notification "Purma Spaces" "Activado: $space_name"
+    else
+        # Try to find by name
+        local spaces=$(curl -s "${PURMA_SERVER}/spaces" 2>/dev/null)
+        local space_id=$(echo "$spaces" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+for s in data.get('spaces', []):
+    if s.get('name', '').lower() == '${space_name}'.lower() or s.get('id', '').lower() == '${space_name}'.lower():
+        print(s['id'])
+        break
+" 2>/dev/null)
+
+        if [ -n "$space_id" ]; then
+            result=$(curl -s -X POST "${PURMA_SERVER}/spaces/${space_id}/activate" 2>/dev/null)
+            if echo "$result" | grep -q '"success":true'; then
+                show_notification "Purma Spaces" "Activado: $space_name"
+            else
+                show_notification "Purma Spaces" "Error al activar: $space_name" "dialog-error"
+            fi
+        else
+            show_notification "Purma Spaces" "Space no encontrado: $space_name" "dialog-error"
+        fi
+    fi
+}
+
+# Create space from template
+create_from_template() {
+    local template="$1"
+
+    if [ -z "$template" ]; then
+        echo "Usage: purma-spaces-ctl create <template>"
+        exit 1
+    fi
+
+    local result=$(curl -s -X POST "${PURMA_SERVER}/spaces?template=${template}&name=${template}" 2>/dev/null)
+
+    if echo "$result" | grep -q '"success":true'; then
+        show_notification "Purma Spaces" "Space creado: $template"
+        # Activate it
+        activate_space "$template"
+    else
+        show_notification "Purma Spaces" "Error al crear space" "dialog-error"
+    fi
+}
+
+# Show rofi menu for space selection
+rofi_menu() {
+    local spaces=$(curl -s "${PURMA_SERVER}/spaces" 2>/dev/null)
+    local active=$(echo "$spaces" | grep -o '"active":"[^"]*"' | cut -d'"' -f4)
+
+    # Parse spaces into rofi format
+    local options=$(echo "$spaces" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+active = data.get('active', '')
+for s in data.get('spaces', []):
+    icon = s.get('icon', '')
+    name = s.get('name', s['id'])
+    marker = ' *' if s['id'] == active else ''
+    print(f'{icon} {name}{marker}')
+# Add templates section
+print('---')
+print(' + Nuevo: Work')
+print(' + Nuevo: Code')
+print(' + Nuevo: Gaming')
+print(' + Nuevo: Focus')
+" 2>/dev/null)
+
+    local selected=$(echo "$options" | rofi -dmenu -i -p "Spaces" -theme-str 'window {width: 300px;}')
+
+    if [ -n "$selected" ]; then
+        if [[ "$selected" == *"Nuevo:"* ]]; then
+            local template=$(echo "$selected" | sed 's/.*Nuevo: //' | tr '[:upper:]' '[:lower:]')
+            create_from_template "$template"
+        elif [[ "$selected" != "---" ]]; then
+            local name=$(echo "$selected" | sed 's/^[^ ]* //' | sed 's/ \*$//')
+            activate_space "$name"
+        fi
+    fi
+}
+
+# List spaces in terminal
+list_spaces() {
+    curl -s "${PURMA_SERVER}/spaces" 2>/dev/null | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+active = data.get('active', '')
+print('\n Purma Spaces\n')
+for s in data.get('spaces', []):
+    icon = s.get('icon', '')
+    name = s.get('name', s['id'])
+    desc = s.get('description', '')[:40]
+    marker = ' (activo)' if s['id'] == active else ''
+    print(f'  {icon} {name}{marker}')
+    if desc:
+        print(f'     {desc}')
+print()
+print('Templates: work, code, design, gaming, focus, media')
+print()
+" 2>/dev/null
+}
+
+# Main command handler
+case "$1" in
+    toggle)
+        toggle_popup
+        ;;
+    next)
+        quick_switch "next"
+        ;;
+    prev|previous)
+        quick_switch "prev"
+        ;;
+    activate)
+        activate_space "$2"
+        ;;
+    create)
+        create_from_template "$2"
+        ;;
+    menu|rofi)
+        rofi_menu
+        ;;
+    list)
+        list_spaces
+        ;;
+    work)
+        activate_space "work"
+        ;;
+    code)
+        activate_space "coding"
+        ;;
+    focus)
+        activate_space "focus"
+        ;;
+    gaming)
+        activate_space "gaming"
+        ;;
+    *)
+        echo "PurmaLinux Spaces Control"
+        echo ""
+        echo "Usage: purma-spaces-ctl <command> [args]"
+        echo ""
+        echo "Commands:"
+        echo "  toggle              Toggle Spaces popup"
+        echo "  next                Switch to next space"
+        echo "  prev                Switch to previous space"
+        echo "  activate <name>     Activate specific space"
+        echo "  create <template>   Create space from template"
+        echo "  menu                Show rofi selection menu"
+        echo "  list                List all spaces"
+        echo ""
+        echo "Quick access:"
+        echo "  work                Activate work space"
+        echo "  code                Activate coding space"
+        echo "  focus               Activate focus space"
+        echo "  gaming              Activate gaming space"
+        exit 1
+        ;;
+esac

@@ -1,0 +1,579 @@
+/**
+ * PurmaLinux - Scribe Widget Styles
+ * AI Voice Assistant UI
+ */
+
+/* ============================================
+   Bar Button
+   ============================================ */
+.scribe-button {
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 4px 10px;
+  transition: all 150ms ease;
+}
+
+.scribe-button:hover {
+  background: #30363d;
+  border-color: #22c55e;
+}
+
+.scribe-btn-icon {
+  font-size: 14px;
+}
+
+.scribe-btn-label {
+  font-size: 12px;
+  color: #c9d1d9;
+}
+
+/* ============================================
+   Popup Window
+   ============================================ */
+.scribe-window {
+  background: transparent;
+}
+
+.scribe-popup {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  min-width: 360px;
+  max-width: 400px;
+  min-height: 450px;
+  max-height: 550px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   Header
+   ============================================ */
+.scribe-header {
+  background: #161b22;
+  padding: 12px 16px;
+  border-bottom: 1px solid #30363d;
+  border-radius: 12px 12px 0 0;
+}
+
+.scribe-icon {
+  font-size: 18px;
+  margin-right: 8px;
+}
+
+.scribe-title {
+  color: #f0f6fc;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.header-btn {
+  color: #8b949e;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  background: transparent;
+  margin-left: 4px;
+}
+
+.history-btn:hover {
+  background: #21262d;
+  color: #22c55e;
+}
+
+.close-btn:hover {
+  background: #f85149;
+  color: #ffffff;
+}
+
+/* ============================================
+   Main View
+   ============================================ */
+.main-view {
+  padding: 32px;
+}
+
+.main-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.main-title {
+  color: #f0f6fc;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.main-hint {
+  color: #8b949e;
+  font-size: 12px;
+  margin-bottom: 32px;
+}
+
+.action-buttons {
+  margin-top: 16px;
+}
+
+.action-btn {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  padding: 16px 12px;
+  margin: 0 6px;
+  min-width: 90px;
+  transition: all 150ms ease;
+}
+
+.action-btn:hover {
+  border-color: #22c55e;
+  background: #21262d;
+}
+
+.action-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.action-label {
+  color: #c9d1d9;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.record-btn:hover {
+  border-color: #f85149;
+}
+
+.record-btn:hover .action-icon {
+  color: #f85149;
+}
+
+.quick-btn:hover {
+  border-color: #fbbf24;
+}
+
+.quick-btn:hover .action-icon {
+  color: #fbbf24;
+}
+
+.speak-btn:hover {
+  border-color: #a855f7;
+}
+
+.speak-btn:hover .action-icon {
+  color: #a855f7;
+}
+
+/* ============================================
+   Recording View
+   ============================================ */
+.recording-view {
+  padding: 32px;
+}
+
+.recording-indicator {
+  margin-bottom: 16px;
+}
+
+.recording-dot {
+  color: #f85149;
+  font-size: 24px;
+  margin-right: 8px;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.recording-text {
+  color: #f85149;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.recording-duration {
+  color: #f0f6fc;
+  font-size: 48px;
+  font-weight: 300;
+  font-family: "JetBrains Mono", monospace;
+  margin-bottom: 24px;
+}
+
+.waveform {
+  margin-bottom: 32px;
+}
+
+.wave-bar {
+  color: #22c55e;
+  font-size: 24px;
+  margin: 0 4px;
+  animation: wave 0.5s ease-in-out infinite;
+}
+
+.wave-bar:nth-child(1) { animation-delay: 0s; }
+.wave-bar:nth-child(2) { animation-delay: 0.1s; }
+.wave-bar:nth-child(3) { animation-delay: 0.2s; }
+.wave-bar:nth-child(4) { animation-delay: 0.3s; }
+.wave-bar:nth-child(5) { animation-delay: 0.2s; }
+.wave-bar:nth-child(6) { animation-delay: 0.1s; }
+.wave-bar:nth-child(7) { animation-delay: 0s; }
+
+@keyframes wave {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.stop-btn {
+  background: #f85149;
+  color: #ffffff;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 12px;
+}
+
+.stop-btn:hover {
+  background: #da3633;
+}
+
+.cancel-btn {
+  background: transparent;
+  color: #8b949e;
+  font-size: 12px;
+  padding: 8px 16px;
+  border-radius: 6px;
+}
+
+.cancel-btn:hover {
+  background: #21262d;
+  color: #f0f6fc;
+}
+
+/* ============================================
+   Transcription View
+   ============================================ */
+.transcription-view {
+  padding: 16px;
+}
+
+.back-btn {
+  background: transparent;
+  color: #58a6ff;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.back-btn:hover {
+  background: #21262d;
+}
+
+.view-title {
+  color: #f0f6fc;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.transcription-content {
+  background: #161b22;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.transcription-scroll {
+  min-height: 120px;
+  max-height: 200px;
+}
+
+.transcription-text {
+  color: #f0f6fc;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.transcription-meta {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #30363d;
+}
+
+.meta-label {
+  color: #8b949e;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.summary-text {
+  color: #22c55e;
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.transcription-actions {
+  margin-top: 16px;
+}
+
+.action-small-btn {
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-right: 8px;
+  color: #c9d1d9;
+  font-size: 12px;
+}
+
+.copy-btn:hover {
+  background: #58a6ff;
+  border-color: #58a6ff;
+  color: #ffffff;
+}
+
+.speak-result-btn:hover {
+  background: #a855f7;
+  border-color: #a855f7;
+  color: #ffffff;
+}
+
+/* ============================================
+   Loading State
+   ============================================ */
+.loading-box {
+  padding: 32px;
+}
+
+.loading-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  color: #8b949e;
+  font-size: 14px;
+}
+
+/* ============================================
+   History View
+   ============================================ */
+.history-view {
+  padding: 16px;
+}
+
+.history-scroll {
+  max-height: 350px;
+}
+
+.history-item {
+  background: transparent;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  border: 1px solid transparent;
+}
+
+.history-item:hover {
+  background: #161b22;
+  border-color: #30363d;
+}
+
+.history-icon {
+  font-size: 20px;
+  margin-right: 12px;
+  color: #22c55e;
+}
+
+.history-text {
+  color: #f0f6fc;
+  font-size: 13px;
+}
+
+.history-date {
+  color: #8b949e;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.history-arrow {
+  color: #484f58;
+  font-size: 14px;
+}
+
+.history-item:hover .history-arrow {
+  color: #22c55e;
+}
+
+/* ============================================
+   Speak View
+   ============================================ */
+.speak-view {
+  padding: 16px;
+}
+
+.voice-selector {
+  margin-bottom: 16px;
+}
+
+.voice-label {
+  color: #8b949e;
+  font-size: 12px;
+  margin-right: 12px;
+}
+
+.voice-options {
+  margin-top: 8px;
+}
+
+.voice-btn {
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin-right: 6px;
+  color: #c9d1d9;
+  font-size: 11px;
+}
+
+.voice-btn:hover {
+  border-color: #a855f7;
+}
+
+.voice-btn.selected {
+  background: #a855f7;
+  border-color: #a855f7;
+  color: #ffffff;
+}
+
+.speak-input {
+  margin-bottom: 16px;
+}
+
+.input-label {
+  color: #8b949e;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.text-scroll {
+  min-height: 150px;
+  max-height: 200px;
+}
+
+.speak-entry {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 12px;
+  color: #f0f6fc;
+  font-size: 14px;
+  min-height: 150px;
+}
+
+.speak-entry:focus {
+  border-color: #a855f7;
+}
+
+.speak-action-btn {
+  background: #a855f7;
+  color: #ffffff;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+}
+
+.speak-action-btn:hover {
+  background: #c084fc;
+}
+
+/* ============================================
+   Empty State
+   ============================================ */
+.empty-state {
+  padding: 32px;
+}
+
+.empty-icon {
+  font-size: 48px;
+  color: #30363d;
+  margin-bottom: 16px;
+}
+
+.empty-title {
+  color: #8b949e;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.empty-hint {
+  color: #484f58;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+/* ============================================
+   Error Banner
+   ============================================ */
+.error-banner {
+  background: #f8514933;
+  border-bottom: 1px solid #f85149;
+  padding: 8px 12px;
+}
+
+.error-banner .error-text {
+  color: #f85149;
+  font-size: 12px;
+}
+
+.error-dismiss {
+  background: transparent;
+  color: #f85149;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.error-dismiss:hover {
+  background: #f8514933;
+}
+
+/* ============================================
+   Scrollbar
+   ============================================ */
+.transcription-scroll scrollbar,
+.history-scroll scrollbar,
+.text-scroll scrollbar {
+  background: transparent;
+}
+
+.transcription-scroll scrollbar slider,
+.history-scroll scrollbar slider,
+.text-scroll scrollbar slider {
+  background: #30363d;
+  border-radius: 4px;
+  min-width: 6px;
+}
+
+.transcription-scroll scrollbar slider:hover,
+.history-scroll scrollbar slider:hover,
+.text-scroll scrollbar slider:hover {
+  background: #484f58;
+}

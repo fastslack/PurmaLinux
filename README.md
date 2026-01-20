@@ -6,6 +6,10 @@
 ![Python](https://img.shields.io/badge/Python-3.11+-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
+> **Autor:** Matías Aguirre
+> **Empresa:** [Matware](https://matware.nl)
+> **Proyecto:** PurmaLinux
+
 ## Filosofia
 
 PurmaLinux no es solo una distribucion Linux con herramientas AI agregadas. Es un sistema operativo donde la inteligencia artificial esta integrada desde el nucleo, permitiendo:

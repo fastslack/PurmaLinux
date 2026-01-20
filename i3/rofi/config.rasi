@@ -1,0 +1,24 @@
+/**
+ * PurmaLinux i3 - Rofi Configuration
+ */
+
+configuration {
+  modes: "drun,run,window,ssh";
+  show-icons: true;
+  icon-theme: "Papirus-Dark";
+  terminal: "kitty";
+  font: "JetBrains Mono 11";
+  drun-display-format: "{name}";
+  window-format: "{w} · {c} · {t}";
+
+  display-drun: " Apps";
+  display-run: " Run";
+  display-window: " Windows";
+  display-ssh: " SSH";
+
+  kb-cancel: "Escape,Control+c";
+  kb-accept-entry: "Return,KP_Enter";
+  kb-remove-to-eol: "";
+}
+
+@theme "purma-i3"

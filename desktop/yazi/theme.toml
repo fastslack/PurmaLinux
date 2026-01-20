@@ -1,0 +1,217 @@
+# PurmaLinux - Yazi Theme (Aurora)
+# Tema que coincide con el tema Aurora de PurmaLinux
+
+[manager]
+cwd = { fg = "#00d4ff" }
+
+# Hovered
+hovered         = { fg = "#0d1117", bg = "#00d4ff" }
+preview_hovered = { underline = true }
+
+# Find
+find_keyword  = { fg = "#f59e0b", bold = true, italic = true, underline = true }
+find_position = { fg = "#a855f7", bg = "reset", italic = true }
+
+# Marker
+marker_selected = { fg = "#22c55e", bg = "#22c55e" }
+marker_copied   = { fg = "#f59e0b", bg = "#f59e0b" }
+marker_cut      = { fg = "#ef4444", bg = "#ef4444" }
+
+# Tab
+tab_active   = { fg = "#0d1117", bg = "#00d4ff" }
+tab_inactive = { fg = "#8b949e", bg = "#21262d" }
+tab_width    = 1
+
+# Border
+border_symbol = "│"
+border_style  = { fg = "#30363d" }
+
+# Highlighting
+syntect_theme = "~/.config/yazi/Catppuccin-mocha.tmTheme"
+
+[status]
+separator_open  = ""
+separator_close = ""
+separator_style = { fg = "#30363d", bg = "#30363d" }
+
+# Mode
+mode_normal = { fg = "#0d1117", bg = "#00d4ff", bold = true }
+mode_select = { fg = "#0d1117", bg = "#22c55e", bold = true }
+mode_unset  = { fg = "#0d1117", bg = "#a855f7", bold = true }
+
+# Progress
+progress_label  = { fg = "#f0f6fc", bold = true }
+progress_normal = { fg = "#00d4ff", bg = "#21262d" }
+progress_error  = { fg = "#ef4444", bg = "#21262d" }
+
+# Permissions
+permissions_t = { fg = "#00d4ff" }
+permissions_r = { fg = "#f59e0b" }
+permissions_w = { fg = "#ef4444" }
+permissions_x = { fg = "#22c55e" }
+permissions_s = { fg = "#8b949e" }
+
+[input]
+border   = { fg = "#00d4ff" }
+title    = {}
+value    = {}
+selected = { reversed = true }
+
+[select]
+border   = { fg = "#00d4ff" }
+active   = { fg = "#a855f7" }
+inactive = {}
+
+[tasks]
+border  = { fg = "#00d4ff" }
+title   = {}
+hovered = { underline = true }
+
+[which]
+cols            = 3
+mask            = { bg = "#0d1117" }
+cand            = { fg = "#00d4ff" }
+rest            = { fg = "#8b949e" }
+desc            = { fg = "#a855f7" }
+separator       = "  "
+separator_style = { fg = "#30363d" }
+
+[help]
+on      = { fg = "#a855f7" }
+exec    = { fg = "#00d4ff" }
+desc    = { fg = "#8b949e" }
+hovered = { bg = "#21262d", bold = true }
+footer  = { fg = "#0d1117", bg = "#f0f6fc" }
+
+[filetype]
+rules = [
+  # Images
+  { mime = "image/*", fg = "#a855f7" },
+
+  # Videos
+  { mime = "video/*", fg = "#f59e0b" },
+
+  # Audio
+  { mime = "audio/*", fg = "#22c55e" },
+
+  # Archives
+  { mime = "application/zip", fg = "#ef4444" },
+  { mime = "application/x-tar", fg = "#ef4444" },
+  { mime = "application/x-gzip", fg = "#ef4444" },
+  { mime = "application/x-7z-compressed", fg = "#ef4444" },
+  { mime = "application/x-rar", fg = "#ef4444" },
+
+  # Documents
+  { mime = "application/pdf", fg = "#ec4899" },
+  { mime = "application/doc*", fg = "#00d4ff" },
+  { mime = "application/vnd.openxmlformats*", fg = "#00d4ff" },
+
+  # Fallback
+  { name = "*", fg = "#c9d1d9" },
+  { name = "*/", fg = "#00d4ff" },
+]
+
+[icon]
+rules = [
+  # Programming
+  { name = "*.py", text = "" },
+  { name = "*.js", text = "" },
+  { name = "*.ts", text = "" },
+  { name = "*.jsx", text = "" },
+  { name = "*.tsx", text = "" },
+  { name = "*.go", text = "" },
+  { name = "*.rs", text = "" },
+  { name = "*.c", text = "" },
+  { name = "*.cpp", text = "" },
+  { name = "*.h", text = "" },
+  { name = "*.java", text = "" },
+  { name = "*.rb", text = "" },
+  { name = "*.php", text = "" },
+  { name = "*.swift", text = "" },
+  { name = "*.kt", text = "" },
+  { name = "*.lua", text = "" },
+  { name = "*.sh", text = "" },
+  { name = "*.bash", text = "" },
+  { name = "*.zsh", text = "" },
+
+  # Web
+  { name = "*.html", text = "" },
+  { name = "*.css", text = "" },
+  { name = "*.scss", text = "" },
+  { name = "*.sass", text = "" },
+  { name = "*.vue", text = "" },
+  { name = "*.svelte", text = "" },
+
+  # Config
+  { name = "*.json", text = "" },
+  { name = "*.yaml", text = "" },
+  { name = "*.yml", text = "" },
+  { name = "*.toml", text = "" },
+  { name = "*.xml", text = "" },
+  { name = "*.ini", text = "" },
+  { name = "*.conf", text = "" },
+  { name = ".gitignore", text = "" },
+  { name = ".env", text = "" },
+
+  # Docs
+  { name = "*.md", text = "" },
+  { name = "*.txt", text = "" },
+  { name = "*.pdf", text = "" },
+  { name = "*.doc", text = "" },
+  { name = "*.docx", text = "" },
+
+  # Media
+  { name = "*.png", text = "" },
+  { name = "*.jpg", text = "" },
+  { name = "*.jpeg", text = "" },
+  { name = "*.gif", text = "" },
+  { name = "*.svg", text = "" },
+  { name = "*.webp", text = "" },
+  { name = "*.mp4", text = "" },
+  { name = "*.mkv", text = "" },
+  { name = "*.avi", text = "" },
+  { name = "*.mov", text = "" },
+  { name = "*.mp3", text = "" },
+  { name = "*.flac", text = "" },
+  { name = "*.wav", text = "" },
+  { name = "*.ogg", text = "" },
+
+  # Archives
+  { name = "*.zip", text = "" },
+  { name = "*.tar", text = "" },
+  { name = "*.gz", text = "" },
+  { name = "*.rar", text = "" },
+  { name = "*.7z", text = "" },
+
+  # Data
+  { name = "*.db", text = "" },
+  { name = "*.sqlite", text = "" },
+  { name = "*.sql", text = "" },
+
+  # Special files
+  { name = "Dockerfile", text = "" },
+  { name = "docker-compose.yml", text = "" },
+  { name = "Makefile", text = "" },
+  { name = "CMakeLists.txt", text = "" },
+  { name = "package.json", text = "" },
+  { name = "Cargo.toml", text = "" },
+  { name = "go.mod", text = "" },
+  { name = "requirements.txt", text = "" },
+
+  # Directories
+  { name = ".git/", text = "" },
+  { name = "node_modules/", text = "" },
+  { name = "__pycache__/", text = "" },
+  { name = ".venv/", text = "" },
+  { name = "target/", text = "" },
+  { name = "dist/", text = "" },
+  { name = "build/", text = "" },
+
+  # Purma specific
+  { name = ".purma/", text = "🧠" },
+  { name = "_organized/", text = "🤖" },
+
+  # Defaults
+  { name = "*/", text = "" },
+  { name = "*", text = "" },
+]

@@ -1,0 +1,15 @@
+[Unit]
+Description=PurmaLinux Spaces Restore
+Documentation=https://github.com/purmalinux
+After=graphical-session.target purma-ai-server.service
+Wants=purma-ai-server.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/purma-spaces restore
+RemainAfterExit=yes
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

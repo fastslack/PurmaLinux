@@ -1,0 +1,94 @@
+# PurmaLinux - Core Packages
+# Paquetes esenciales para el sistema base
+
+# Build tools
+build-essential
+git
+curl
+wget
+unzip
+cmake
+pkg-config
+
+# Audio (Pipewire)
+pipewire
+pipewire-audio
+pipewire-pulse
+wireplumber
+
+# Xorg
+xorg
+xinit
+xclip
+xdotool
+xsel
+
+# Display Manager
+lightdm
+lightdm-gtk-greeter
+
+# Network
+network-manager
+network-manager-gnome
+
+# Filesystem
+thunar
+thunar-archive-plugin
+gvfs
+gvfs-backends
+udisks2
+
+# System utilities
+htop
+btop
+neofetch
+tree
+ripgrep
+fd-find
+fzf
+jq
+yq
+
+# Terminal
+kitty
+tmux
+
+# Fonts
+fonts-noto
+fonts-noto-color-emoji
+fonts-jetbrains-mono
+fonts-font-awesome
+
+# Themes
+arc-theme
+papirus-icon-theme
+adwaita-icon-theme
+
+# Media
+imv
+mpv
+pavucontrol
+
+# Screenshots/Recording
+maim
+slop
+ffmpeg
+
+# Notifications base
+libnotify-bin
+
+# GTK/Qt theming
+lxappearance
+qt5ct
+
+# Polkit
+policykit-1
+policykit-1-gnome
+
+# Misc
+feh
+nitrogen
+brightnessctl
+playerctl
+acpi
+upower

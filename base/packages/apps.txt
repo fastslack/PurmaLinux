@@ -1,0 +1,88 @@
+# PurmaLinux - User Applications
+# Aplicaciones de usuario que deben estar instaladas y preconfiguradas
+# 
+# Formato:
+# nombre-paquete                    # Descripción breve
+# nombre-paquete [CONFIG]           # Requiere configuración personalizada
+# nombre-paquete [FLATPAK]          # Instalar vía Flatpak
+# nombre-paquete [AUR/PPA]          # Requiere repositorio adicional
+#
+# Las configuraciones personalizadas van en: base/configs/apps/
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Navegadores Web
+# ═══════════════════════════════════════════════════════════════════════════════
+firefox [CONFIG]                    # Navegador principal
+# chromium                          # Navegador alternativo
+# brave-browser [PPA]               # Navegador con privacidad
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Editores de Código
+# ═══════════════════════════════════════════════════════════════════════════════
+# code [SNAP/DEB]                   # Visual Studio Code
+# vscodium [FLATPAK]                # VS Code sin telemetría
+neovim [CONFIG]                     # Editor de texto avanzado
+vim                                 # Editor clásico
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Desarrollo
+# ═══════════════════════════════════════════════════════════════════════════════
+# docker.io [CONFIG]                # Contenedores
+# docker-compose                    # Orquestación de contenedores
+# podman                            # Alternativa a Docker
+git                                 # Control de versiones (ya en core.txt)
+# gh                                # GitHub CLI
+# lazygit                           # Git TUI
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Comunicación
+# ═══════════════════════════════════════════════════════════════════════════════
+# slack [SNAP/FLATPAK]              # Comunicación de equipo
+# discord [FLATPAK]                 # Chat y voz
+# telegram-desktop                  # Mensajería
+# signal-desktop [FLATPAK]          # Mensajería privada
+# zoom [DEB]                        # Videoconferencias
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Productividad
+# ═══════════════════════════════════════════════════════════════════════════════
+# libreoffice                       # Suite ofimática
+# obsidian [FLATPAK]                # Notas markdown
+# notion [FLATPAK]                  # Workspace colaborativo
+# todoist [FLATPAK]                 # Gestor de tareas
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Media
+# ═══════════════════════════════════════════════════════════════════════════════
+# vlc                               # Reproductor multimedia
+# spotify [SNAP/FLATPAK]            # Música streaming
+# gimp                              # Editor de imágenes
+# inkscape                          # Editor vectorial
+# blender                           # Modelado 3D
+# kdenlive                          # Editor de video
+# obs-studio                        # Grabación y streaming
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Utilidades
+# ═══════════════════════════════════════════════════════════════════════════════
+# flameshot                         # Screenshots avanzadas
+# peek                              # Grabador de GIFs
+# timeshift                         # Backups del sistema
+# gparted                           # Gestor de particiones
+# baobab                            # Analizador de disco
+# dconf-editor                      # Editor de configuraciones
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Gaming (opcional)
+# ═══════════════════════════════════════════════════════════════════════════════
+# steam [FLATPAK]                   # Plataforma de juegos
+# lutris                            # Gestor de juegos
+# gamemode                          # Optimización para gaming
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Notas
+# ═══════════════════════════════════════════════════════════════════════════════
+# - Las aplicaciones comentadas (#) no se instalan por defecto
+# - Descomentar las que quieras incluir en la instalación base
+# - Agregar nuevas aplicaciones siguiendo el formato
+# - Marcar con [CONFIG] si necesita configuración personalizada

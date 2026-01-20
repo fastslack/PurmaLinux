@@ -1,0 +1,488 @@
+/**
+ * PurmaLinux - Lens Widget Styles
+ * Contextual Vision System UI
+ */
+
+/* ============================================
+   Bar Button
+   ============================================ */
+.lens-button {
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 4px 10px;
+  transition: all 150ms ease;
+}
+
+.lens-button:hover {
+  background: #30363d;
+  border-color: #a371f7;
+}
+
+.lens-btn-icon {
+  font-size: 14px;
+  color: #a371f7;
+}
+
+.lens-btn-label {
+  font-size: 12px;
+  color: #c9d1d9;
+}
+
+/* ============================================
+   Popup Window
+   ============================================ */
+.lens-window {
+  background: transparent;
+}
+
+.lens-popup {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  min-width: 380px;
+  max-width: 440px;
+  min-height: 380px;
+  max-height: 550px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   Header
+   ============================================ */
+.lens-header {
+  background: #161b22;
+  padding: 12px 16px;
+  border-bottom: 1px solid #30363d;
+  border-radius: 12px 12px 0 0;
+}
+
+.lens-title {
+  color: #f0f6fc;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.header-btn {
+  color: #8b949e;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  background: transparent;
+  margin-left: 4px;
+}
+
+.history-btn:hover {
+  background: #21262d;
+  color: #a371f7;
+}
+
+.close-btn:hover {
+  background: #f85149;
+  color: #ffffff;
+}
+
+/* ============================================
+   Content Area
+   ============================================ */
+.lens-content {
+  padding: 16px;
+  min-height: 300px;
+}
+
+/* ============================================
+   Capture Buttons
+   ============================================ */
+.capture-buttons {
+  margin-bottom: 16px;
+}
+
+.capture-btn {
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 12px 8px;
+  transition: all 150ms ease;
+}
+
+.capture-btn:hover {
+  background: #30363d;
+}
+
+.capture-btn.fullscreen:hover {
+  border-color: #a371f7;
+}
+
+.capture-btn.region:hover {
+  border-color: #58a6ff;
+}
+
+.capture-btn.window:hover {
+  border-color: #3fb950;
+}
+
+.capture-btn .btn-icon {
+  font-size: 24px;
+  color: #8b949e;
+}
+
+.capture-btn.fullscreen:hover .btn-icon { color: #a371f7; }
+.capture-btn.region:hover .btn-icon { color: #58a6ff; }
+.capture-btn.window:hover .btn-icon { color: #3fb950; }
+
+.capture-btn .btn-label {
+  font-size: 11px;
+  color: #8b949e;
+}
+
+/* ============================================
+   Capture Preview
+   ============================================ */
+.capture-preview {
+  min-height: 150px;
+}
+
+.preview-loading,
+.preview-error,
+.preview-empty {
+  padding: 32px;
+}
+
+.loading-icon {
+  font-size: 32px;
+  color: #a371f7;
+}
+
+.loading-icon.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  color: #8b949e;
+  font-size: 13px;
+}
+
+.error-icon {
+  font-size: 32px;
+  color: #f85149;
+}
+
+.error-text {
+  color: #ffa198;
+  font-size: 12px;
+}
+
+.empty-icon {
+  font-size: 48px;
+  color: #30363d;
+}
+
+.empty-title {
+  color: #8b949e;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.empty-hint {
+  color: #484f58;
+  font-size: 11px;
+}
+
+.capture-info {
+  background: #161b22;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.capture-size {
+  color: #f0f6fc;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.capture-path {
+  color: #8b949e;
+  font-size: 11px;
+}
+
+/* ============================================
+   Back Button
+   ============================================ */
+.back-btn {
+  background: transparent;
+  color: #58a6ff;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.back-btn:hover {
+  background: #21262d;
+}
+
+/* ============================================
+   Analysis Panel
+   ============================================ */
+.analysis-panel {
+  background: #161b22;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.analysis-section,
+.ocr-section {
+  padding: 8px 0;
+}
+
+.analysis-section {
+  border-bottom: 1px solid #21262d;
+  padding-bottom: 12px;
+  margin-bottom: 8px;
+}
+
+.section-icon {
+  font-size: 16px;
+  color: #a371f7;
+  margin-right: 8px;
+}
+
+.section-title {
+  color: #8b949e;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.content-type {
+  background: #21262d;
+  color: #a371f7;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.analysis-desc {
+  color: #c9d1d9;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-top: 8px;
+}
+
+.error-detected {
+  background: rgba(248, 81, 73, 0.15);
+  border: 1px solid rgba(248, 81, 73, 0.3);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-top: 8px;
+}
+
+.error-badge-icon {
+  font-size: 14px;
+  color: #f85149;
+}
+
+.error-badge-text {
+  color: #ffa198;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.text-count {
+  color: #8b949e;
+  font-size: 10px;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.ocr-preview {
+  background: #0d1117;
+  border: 1px solid #21262d;
+  border-radius: 6px;
+  padding: 8px;
+  color: #c9d1d9;
+  font-size: 11px;
+  font-family: "JetBrains Mono", monospace;
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+.copy-text-btn {
+  background: #238636;
+  border: 1px solid #2ea043;
+  color: #ffffff;
+  font-size: 11px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+.copy-text-btn:hover {
+  background: #2ea043;
+}
+
+/* ============================================
+   Suggestions Panel
+   ============================================ */
+.suggestions-panel {
+  background: #161b22;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.panel-title {
+  color: #8b949e;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.suggestion-item {
+  background: transparent;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+}
+
+.suggestion-item:hover {
+  background: #21262d;
+  border-color: #30363d;
+}
+
+.suggestion-icon {
+  font-size: 18px;
+  color: #58a6ff;
+  min-width: 24px;
+}
+
+.suggestion-title {
+  color: #f0f6fc;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.suggestion-desc {
+  color: #8b949e;
+  font-size: 10px;
+}
+
+.suggestion-arrow {
+  color: #484f58;
+  font-size: 12px;
+}
+
+.suggestion-item:hover .suggestion-arrow {
+  color: #58a6ff;
+}
+
+/* ============================================
+   Extracted Data Panel
+   ============================================ */
+.extracted-panel {
+  background: #161b22;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.data-group {
+  margin-top: 8px;
+}
+
+.data-label {
+  color: #8b949e;
+  font-size: 10px;
+  margin-bottom: 4px;
+}
+
+.data-item {
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin-bottom: 4px;
+  font-size: 11px;
+}
+
+.data-item.url {
+  color: #58a6ff;
+}
+
+.data-item.email {
+  color: #a371f7;
+}
+
+.data-item:hover {
+  background: #30363d;
+}
+
+/* ============================================
+   History View
+   ============================================ */
+.history-view {
+  padding: 8px;
+}
+
+.history-item {
+  background: transparent;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+}
+
+.history-item:hover {
+  background: #21262d;
+  border-color: #30363d;
+}
+
+.history-icon {
+  font-size: 18px;
+  color: #8b949e;
+}
+
+.history-type {
+  color: #f0f6fc;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.history-preview {
+  color: #8b949e;
+  font-size: 10px;
+}
+
+.history-time {
+  color: #484f58;
+  font-size: 10px;
+}
+
+.history-empty {
+  padding: 32px;
+}
+
+/* ============================================
+   Scrollbar
+   ============================================ */
+.lens-content scrollbar {
+  background: transparent;
+}
+
+.lens-content scrollbar slider {
+  background: #30363d;
+  border-radius: 4px;
+  min-width: 6px;
+}
+
+.lens-content scrollbar slider:hover {
+  background: #484f58;
+}

@@ -1,0 +1,257 @@
+# PurmaLinux - Yazi Keymap
+# Keybindings con integración Purma AI
+
+[manager]
+keymap = [
+  # Navigation
+  { on = ["k"],       run = "arrow -1",                desc = "Move cursor up" },
+  { on = ["j"],       run = "arrow 1",                 desc = "Move cursor down" },
+  { on = ["K"],       run = "arrow -5",                desc = "Move cursor up 5" },
+  { on = ["J"],       run = "arrow 5",                 desc = "Move cursor down 5" },
+  { on = ["<Up>"],    run = "arrow -1",                desc = "Move cursor up" },
+  { on = ["<Down>"],  run = "arrow 1",                 desc = "Move cursor down" },
+  { on = ["<C-u>"],   run = "arrow -50%",              desc = "Move cursor up half page" },
+  { on = ["<C-d>"],   run = "arrow 50%",               desc = "Move cursor down half page" },
+  { on = ["<C-b>"],   run = "arrow -100%",             desc = "Move cursor up full page" },
+  { on = ["<C-f>"],   run = "arrow 100%",              desc = "Move cursor down full page" },
+
+  { on = ["h"],       run = "leave",                   desc = "Go to parent directory" },
+  { on = ["l"],       run = "enter",                   desc = "Enter directory" },
+  { on = ["<Left>"],  run = "leave",                   desc = "Go to parent directory" },
+  { on = ["<Right>"], run = "enter",                   desc = "Enter directory" },
+  { on = ["<Enter>"], run = "open",                    desc = "Open file" },
+  { on = ["o"],       run = "open",                    desc = "Open file" },
+  { on = ["O"],       run = "open --interactive",      desc = "Open file interactively" },
+  { on = ["<C-Enter>"], run = "open --interactive",    desc = "Open file interactively" },
+
+  { on = ["g", "g"],  run = "arrow -99999999",         desc = "Move cursor to top" },
+  { on = ["G"],       run = "arrow 99999999",          desc = "Move cursor to bottom" },
+
+  # Go to
+  { on = ["g", "h"],  run = "cd ~",                    desc = "Go to home" },
+  { on = ["g", "c"],  run = "cd ~/.config",            desc = "Go to config" },
+  { on = ["g", "d"],  run = "cd ~/Downloads",          desc = "Go to downloads" },
+  { on = ["g", "D"],  run = "cd ~/Documents",          desc = "Go to documents" },
+  { on = ["g", "p"],  run = "cd ~/Pictures",           desc = "Go to pictures" },
+  { on = ["g", "v"],  run = "cd ~/Videos",             desc = "Go to videos" },
+  { on = ["g", "m"],  run = "cd ~/Music",              desc = "Go to music" },
+  { on = ["g", "t"],  run = "cd /tmp",                 desc = "Go to tmp" },
+  { on = ["g", "/"],  run = "cd /",                    desc = "Go to root" },
+  { on = ["g", "."],  run = "cd ~/.purma",             desc = "Go to Purma data" },
+
+  # Selection
+  { on = ["<Space>"], run = ["select --state=none", "arrow 1"], desc = "Toggle selection" },
+  { on = ["v"],       run = "visual_mode",             desc = "Visual mode" },
+  { on = ["V"],       run = "visual_mode --unset",     desc = "Exit visual mode" },
+  { on = ["<C-a>"],   run = "select_all --state=true", desc = "Select all" },
+  { on = ["<C-r>"],   run = "select_all --state=none", desc = "Inverse selection" },
+
+  # Operations
+  { on = ["y"],       run = "yank",                    desc = "Yank (copy)" },
+  { on = ["x"],       run = "yank --cut",              desc = "Cut" },
+  { on = ["p"],       run = "paste",                   desc = "Paste" },
+  { on = ["P"],       run = "paste --force",           desc = "Paste (overwrite)" },
+  { on = ["-"],       run = "link",                    desc = "Symlink" },
+  { on = ["_"],       run = "link --relative",         desc = "Relative symlink" },
+  { on = ["d"],       run = "remove",                  desc = "Delete (trash)" },
+  { on = ["D"],       run = "remove --permanently",    desc = "Delete permanently" },
+  { on = ["a"],       run = "create",                  desc = "Create file/directory" },
+  { on = ["r"],       run = "rename --cursor=before_ext", desc = "Rename" },
+  { on = [";"],       run = "shell",                   desc = "Run shell command" },
+  { on = [":"],       run = "shell --block",           desc = "Run shell command (block)" },
+  { on = ["."],       run = "hidden toggle",           desc = "Toggle hidden files" },
+
+  # Find/Search
+  { on = ["/"],       run = "find --smart",            desc = "Find" },
+  { on = ["?"],       run = "find --previous --smart", desc = "Find previous" },
+  { on = ["n"],       run = "find_arrow",              desc = "Find next" },
+  { on = ["N"],       run = "find_arrow --previous",   desc = "Find previous" },
+  { on = ["s"],       run = "search fd",               desc = "Search files" },
+  { on = ["S"],       run = "search rg",               desc = "Search in files" },
+  { on = ["<C-s>"],   run = "search none",             desc = "Cancel search" },
+
+  # Filter/Sort
+  { on = ["f"],       run = "filter --smart",          desc = "Filter" },
+  { on = ["z", "s"],  run = "sort modified --reverse", desc = "Sort by modified" },
+  { on = ["z", "S"],  run = "sort size --reverse",     desc = "Sort by size" },
+  { on = ["z", "n"],  run = "sort natural",            desc = "Sort by name" },
+  { on = ["z", "e"],  run = "sort extension",          desc = "Sort by extension" },
+
+  # Tabs
+  { on = ["t"],       run = "tab_create --current",    desc = "New tab" },
+  { on = ["<C-c>"],   run = "close",                   desc = "Close tab" },
+  { on = ["1"],       run = "tab_switch 0",            desc = "Tab 1" },
+  { on = ["2"],       run = "tab_switch 1",            desc = "Tab 2" },
+  { on = ["3"],       run = "tab_switch 2",            desc = "Tab 3" },
+  { on = ["4"],       run = "tab_switch 3",            desc = "Tab 4" },
+  { on = ["["],       run = "tab_switch -1 --relative", desc = "Previous tab" },
+  { on = ["]"],       run = "tab_switch 1 --relative",  desc = "Next tab" },
+
+  # Help/Quit
+  { on = ["~"],       run = "help",                    desc = "Help" },
+  { on = ["q"],       run = "close",                   desc = "Quit" },
+  { on = ["Q"],       run = "quit --no-cwd-file",      desc = "Quit without cwd" },
+  { on = ["<Esc>"],   run = "escape",                  desc = "Escape" },
+
+  # Copy paths
+  { on = ["c", "c"],  run = "copy path",               desc = "Copy path" },
+  { on = ["c", "d"],  run = "copy dirname",            desc = "Copy directory" },
+  { on = ["c", "f"],  run = "copy filename",           desc = "Copy filename" },
+  { on = ["c", "n"],  run = "copy name_without_ext",   desc = "Copy name without ext" },
+
+  # ======================================
+  # PURMA AI INTEGRATIONS
+  # ======================================
+
+  # AI Organization (prefix: A)
+  { on = ["A", "o"], run = "shell --block 'purma organize preview --path \"$PWD\" | less'", desc = "AI: Preview organization" },
+  { on = ["A", "O"], run = "shell 'purma organize run --path \"$PWD\" --confirm'", desc = "AI: Execute organization" },
+  { on = ["A", "a"], run = "shell 'purma sync add --path \"$PWD\" --organize auto && notify-send \"Purma\" \"Auto-organización habilitada\"'", desc = "AI: Enable auto-organize" },
+
+  # AI Analysis (prefix: A)
+  { on = ["A", "i"], run = "shell --block 'purma chat \"Analiza este archivo: $0\" | less'", desc = "AI: Analyze file" },
+  { on = ["A", "s"], run = "shell --block 'purma chat \"Resume este documento: $(cat $0)\" | less'", desc = "AI: Summarize" },
+  { on = ["A", "e"], run = "shell --block 'purma chat \"Explica qué hace este código: $(cat $0)\" | less'", desc = "AI: Explain code" },
+  { on = ["A", "r"], run = "shell --block 'purma agents ask --agent reviewer \"$(cat $0)\" | less'", desc = "AI: Code review" },
+
+  # Sync (prefix: A)
+  { on = ["A", "S"], run = "shell 'purma sync add --path \"$PWD\" && notify-send \"Purma\" \"Carpeta añadida para sync\"'", desc = "AI: Add to sync" },
+  { on = ["A", "y"], run = "shell 'purma sync now && notify-send \"Purma\" \"Sincronización iniciada\"'", desc = "AI: Sync now" },
+
+  # Memory (prefix: A)
+  { on = ["A", "m"], run = "shell 'purma memory index --path \"$0\" && notify-send \"Purma\" \"Archivo indexado\"'", desc = "AI: Index in memory" },
+  { on = ["A", "M"], run = "shell 'purma memory index --path \"$PWD\" --recursive && notify-send \"Purma\" \"Directorio indexado\"'", desc = "AI: Index directory" },
+
+  # OCR (prefix: A)
+  { on = ["A", "t"], run = "shell --block 'purma lens ocr \"$0\" | less'", desc = "AI: OCR extract text" },
+
+  # Quick AI Chat
+  { on = ["A", "c"], run = "shell --block 'purma chat'", desc = "AI: Open chat" },
+  { on = ["A", "?"], run = "shell --block 'read -p \"Pregunta: \" q && purma chat \"$q sobre $0\" | less'", desc = "AI: Ask about file" },
+
+  # Cortex/Predictions
+  { on = ["A", "p"], run = "shell --block 'purma cortex predict | less'", desc = "AI: Show predictions" },
+
+  # Ghost suggestions
+  { on = ["A", "g"], run = "shell --block 'purma ghost suggestions | less'", desc = "AI: Ghost suggestions" },
+]
+
+[tasks]
+keymap = [
+  { on = ["<Esc>"], run = "close", desc = "Close task manager" },
+  { on = ["w"],     run = "close", desc = "Close task manager" },
+  { on = ["k"],     run = "arrow -1", desc = "Move cursor up" },
+  { on = ["j"],     run = "arrow 1",  desc = "Move cursor down" },
+  { on = ["<Enter>"], run = "inspect", desc = "Inspect task" },
+  { on = ["x"],     run = "cancel", desc = "Cancel task" },
+  { on = ["~"],     run = "help",   desc = "Help" },
+]
+
+[select]
+keymap = [
+  { on = ["<Esc>"],   run = "close",          desc = "Cancel" },
+  { on = ["<C-c>"],   run = "close",          desc = "Cancel" },
+  { on = ["<Enter>"], run = "close --submit", desc = "Submit" },
+  { on = ["k"],       run = "arrow -1",       desc = "Move cursor up" },
+  { on = ["j"],       run = "arrow 1",        desc = "Move cursor down" },
+  { on = ["<Up>"],    run = "arrow -1",       desc = "Move cursor up" },
+  { on = ["<Down>"],  run = "arrow 1",        desc = "Move cursor down" },
+  { on = ["~"],       run = "help",           desc = "Help" },
+]
+
+[input]
+keymap = [
+  { on = ["<C-c>"],   run = "close",          desc = "Cancel" },
+  { on = ["<Enter>"], run = "close --submit", desc = "Submit" },
+  { on = ["<Esc>"],   run = "escape",         desc = "Escape or cancel" },
+
+  # Mode
+  { on = ["i"],       run = "insert",                              desc = "Insert mode" },
+  { on = ["a"],       run = "insert --append",                     desc = "Append mode" },
+  { on = ["I"],       run = ["move -999", "insert"],               desc = "Insert at start" },
+  { on = ["A"],       run = ["move 999", "insert --append"],       desc = "Append at end" },
+
+  # Character-wise movement
+  { on = ["h"],       run = "move -1", desc = "Move left" },
+  { on = ["l"],       run = "move 1",  desc = "Move right" },
+  { on = ["<Left>"],  run = "move -1", desc = "Move left" },
+  { on = ["<Right>"], run = "move 1",  desc = "Move right" },
+  { on = ["<C-b>"],   run = "move -1", desc = "Move left" },
+  { on = ["<C-f>"],   run = "move 1",  desc = "Move right" },
+
+  # Word-wise movement
+  { on = ["b"],       run = "backward",              desc = "Move to previous word" },
+  { on = ["w"],       run = "forward",               desc = "Move to next word" },
+  { on = ["e"],       run = "forward --end-of-word", desc = "Move to end of word" },
+  { on = ["<A-b>"],   run = "backward",              desc = "Move to previous word" },
+  { on = ["<A-f>"],   run = "forward --end-of-word", desc = "Move to end of word" },
+
+  # Line-wise movement
+  { on = ["0"],       run = "move -999", desc = "Move to start" },
+  { on = ["$"],       run = "move 999",  desc = "Move to end" },
+  { on = ["<C-a>"],   run = "move -999", desc = "Move to start" },
+  { on = ["<C-e>"],   run = "move 999",  desc = "Move to end" },
+  { on = ["<Home>"],  run = "move -999", desc = "Move to start" },
+  { on = ["<End>"],   run = "move 999",  desc = "Move to end" },
+
+  # Delete
+  { on = ["<Backspace>"], run = "backspace",         desc = "Delete character before cursor" },
+  { on = ["<Delete>"],    run = "backspace --under", desc = "Delete character under cursor" },
+  { on = ["<C-h>"],       run = "backspace",         desc = "Delete character before cursor" },
+  { on = ["<C-d>"],       run = "backspace --under", desc = "Delete character under cursor" },
+
+  # Kill
+  { on = ["<C-u>"], run = "kill bol",      desc = "Kill to start" },
+  { on = ["<C-k>"], run = "kill eol",      desc = "Kill to end" },
+  { on = ["<C-w>"], run = "kill backward", desc = "Kill word backward" },
+  { on = ["<A-d>"], run = "kill forward",  desc = "Kill word forward" },
+
+  # Cut/Yank/Paste
+  { on = ["d"],     run = "delete --cut",                              desc = "Cut" },
+  { on = ["D"],     run = ["delete --cut", "move 999"],                desc = "Cut to end" },
+  { on = ["c"],     run = "delete --cut --insert",                     desc = "Change" },
+  { on = ["C"],     run = ["delete --cut --insert", "move 999"],       desc = "Change to end" },
+  { on = ["x"],     run = ["delete --cut", "move 1 --in-operating"],   desc = "Cut char" },
+  { on = ["y"],     run = "yank",                                      desc = "Yank" },
+  { on = ["p"],     run = "paste",                                     desc = "Paste after" },
+  { on = ["P"],     run = "paste --before",                            desc = "Paste before" },
+
+  # Undo/Redo
+  { on = ["u"],     run = "undo", desc = "Undo" },
+  { on = ["<C-r>"], run = "redo", desc = "Redo" },
+
+  # Help
+  { on = ["~"],     run = "help", desc = "Help" },
+]
+
+[completion]
+keymap = [
+  { on = ["<C-c>"],   run = "close",                    desc = "Cancel" },
+  { on = ["<Tab>"],   run = "close --submit",           desc = "Submit" },
+  { on = ["<Enter>"], run = ["close --submit", "close_input --submit"], desc = "Submit" },
+
+  { on = ["<A-k>"],   run = "arrow -1", desc = "Move cursor up" },
+  { on = ["<A-j>"],   run = "arrow 1",  desc = "Move cursor down" },
+  { on = ["<Up>"],    run = "arrow -1", desc = "Move cursor up" },
+  { on = ["<Down>"],  run = "arrow 1",  desc = "Move cursor down" },
+  { on = ["<C-p>"],   run = "arrow -1", desc = "Move cursor up" },
+  { on = ["<C-n>"],   run = "arrow 1",  desc = "Move cursor down" },
+
+  { on = ["~"],       run = "help", desc = "Help" },
+]
+
+[help]
+keymap = [
+  { on = ["<Esc>"], run = "escape", desc = "Clear or cancel" },
+  { on = ["q"],     run = "close",  desc = "Close" },
+  { on = ["<C-c>"], run = "close",  desc = "Close" },
+
+  # Navigation
+  { on = ["k"],       run = "arrow -1", desc = "Move cursor up" },
+  { on = ["j"],       run = "arrow 1",  desc = "Move cursor down" },
+  { on = ["<Up>"],    run = "arrow -1", desc = "Move cursor up" },
+  { on = ["<Down>"],  run = "arrow 1",  desc = "Move cursor down" },
+
+  # Filtering
+  { on = ["/"], run = "filter", desc = "Filter" },
+]

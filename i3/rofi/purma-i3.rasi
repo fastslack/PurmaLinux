@@ -1,0 +1,88 @@
+/**
+ * PurmaLinux i3 - Rofi Theme
+ * Minimal tiling-friendly design
+ */
+
+* {
+  bg: #1a1b26;
+  bg-alt: #24283b;
+  fg: #c0caf5;
+  fg-dim: #565f89;
+  accent: #7aa2f7;
+  accent-alt: #bb9af7;
+  urgent: #f7768e;
+  transparent: rgba(0, 0, 0, 0);
+
+  background-color: @transparent;
+  text-color: @fg;
+}
+
+window {
+  width: 500px;
+  background-color: @bg;
+  border: 2px solid;
+  border-color: @accent;
+  border-radius: 0;
+  padding: 16px;
+}
+
+mainbox {
+  spacing: 12px;
+  children: [inputbar, listview];
+}
+
+inputbar {
+  background-color: @bg-alt;
+  padding: 10px 14px;
+  spacing: 10px;
+  children: [prompt, entry];
+}
+
+prompt {
+  background-color: @accent;
+  text-color: @bg;
+  padding: 4px 10px;
+  font-weight: bold;
+}
+
+entry {
+  placeholder: "Search...";
+  placeholder-color: @fg-dim;
+}
+
+listview {
+  lines: 10;
+  columns: 1;
+  fixed-height: true;
+  spacing: 2px;
+  scrollbar: false;
+}
+
+element {
+  padding: 8px 12px;
+  spacing: 10px;
+}
+
+element normal.normal,
+element alternate.normal {
+  background-color: @transparent;
+}
+
+element selected.normal {
+  background-color: @bg-alt;
+  text-color: @accent;
+  border-left: 3px solid;
+  border-color: @accent;
+}
+
+element-icon {
+  size: 22px;
+}
+
+element-text {
+  vertical-align: 0.5;
+}
+
+element-text selected {
+  text-color: @accent;
+}

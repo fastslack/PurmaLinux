@@ -1,0 +1,26 @@
+/**
+ * PurmaLinux Desktop - Rofi Configuration
+ * Launcher con tema oscuro
+ */
+
+configuration {
+  modes: "drun,run,window,filebrowser";
+  show-icons: true;
+  icon-theme: "Papirus-Dark";
+  terminal: "kitty";
+  font: "JetBrains Mono 12";
+  drun-display-format: "{name}";
+  window-format: "{w} · {c} · {t}";
+
+  /* AI Integration */
+  display-drun: " Apps";
+  display-run: " Run";
+  display-window: " Windows";
+  display-filebrowser: " Files";
+
+  kb-cancel: "Escape,Control+c";
+  kb-accept-entry: "Return,KP_Enter";
+  kb-remove-to-eol: "";
+}
+
+@theme "purma"

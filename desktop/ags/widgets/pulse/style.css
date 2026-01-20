@@ -1,0 +1,424 @@
+/**
+ * PurmaLinux - Pulse Widget Styles
+ * System health dashboard
+ */
+
+/* ============================================
+   Bar Button
+   ============================================ */
+.pulse-button {
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 4px 10px;
+  transition: all 150ms ease;
+}
+
+.pulse-button:hover {
+  background: #30363d;
+  border-color: #3fb950;
+}
+
+.pulse-btn-icon {
+  font-size: 14px;
+}
+
+.pulse-btn-score {
+  font-size: 11px;
+  font-weight: bold;
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* ============================================
+   Popup Window
+   ============================================ */
+.pulse-window {
+  background: transparent;
+}
+
+.pulse-popup {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  min-width: 360px;
+  max-width: 420px;
+  min-height: 400px;
+  max-height: 550px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   Header
+   ============================================ */
+.pulse-header {
+  background: #161b22;
+  padding: 12px 16px;
+  border-bottom: 1px solid #30363d;
+  border-radius: 12px 12px 0 0;
+}
+
+.pulse-title {
+  color: #f0f6fc;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.header-btn {
+  color: #8b949e;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  background: transparent;
+  margin-left: 4px;
+}
+
+.header-btn:hover {
+  background: #21262d;
+  color: #58a6ff;
+}
+
+.refresh-btn:hover {
+  color: #3fb950;
+}
+
+.close-btn:hover {
+  background: #f85149;
+  color: #ffffff;
+}
+
+/* ============================================
+   Content Area
+   ============================================ */
+.pulse-content {
+  padding: 16px;
+  min-height: 280px;
+}
+
+/* ============================================
+   Health Gauge
+   ============================================ */
+.health-gauge {
+  margin-bottom: 16px;
+}
+
+.gauge-circle {
+  min-width: 100px;
+  min-height: 100px;
+  border-radius: 50%;
+  border: 4px solid;
+  padding: 16px;
+}
+
+.gauge-score {
+  font-size: 32px;
+  font-weight: 700;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.gauge-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+.gauge-icon {
+  font-size: 24px;
+  margin-top: 8px;
+}
+
+/* ============================================
+   Metrics Grid
+   ============================================ */
+.metrics-grid {
+  padding: 8px;
+  background: #161b22;
+  border-radius: 8px;
+}
+
+.metric-bar {
+  padding: 8px;
+  spacing: 10px;
+}
+
+.metric-icon {
+  font-size: 18px;
+  color: #8b949e;
+  min-width: 24px;
+}
+
+.metric-label {
+  color: #c9d1d9;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.metric-value {
+  color: #f0f6fc;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.metric-bar-bg {
+  background: #21262d;
+  border-radius: 4px;
+  min-height: 6px;
+  margin-top: 4px;
+}
+
+.metric-bar-fill {
+  min-height: 6px;
+  border-radius: 4px;
+  transition: min-width 300ms ease;
+}
+
+/* ============================================
+   Battery Indicator
+   ============================================ */
+.battery-indicator {
+  background: #161b22;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-top: 8px;
+  spacing: 8px;
+}
+
+.battery-icon {
+  font-size: 18px;
+}
+
+.battery-percent {
+  font-size: 12px;
+  font-weight: 600;
+  color: #c9d1d9;
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* ============================================
+   Alerts Panel
+   ============================================ */
+.alerts-panel {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 12px;
+}
+
+.panel-title {
+  color: #d29922;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.alert-item {
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+}
+
+.alert-item.severity-warning {
+  background: rgba(210, 153, 34, 0.1);
+}
+
+.alert-item.severity-danger {
+  background: rgba(248, 81, 73, 0.1);
+}
+
+.alert-item.severity-critical {
+  background: rgba(255, 123, 114, 0.15);
+}
+
+.alert-icon {
+  font-size: 16px;
+}
+
+.alert-title {
+  color: #f0f6fc;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.alert-message {
+  color: #8b949e;
+  font-size: 10px;
+}
+
+/* ============================================
+   Insights View
+   ============================================ */
+.insights-view {
+  padding: 4px;
+}
+
+.insight-item {
+  background: transparent;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+}
+
+.insight-item:hover {
+  background: #21262d;
+  border-color: #30363d;
+}
+
+.insight-icon {
+  font-size: 20px;
+  color: #a371f7;
+}
+
+.insight-title {
+  color: #f0f6fc;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.insight-desc {
+  color: #8b949e;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.insight-action {
+  color: #58a6ff;
+  font-size: 14px;
+}
+
+.insights-empty {
+  padding: 32px;
+}
+
+.insights-empty .empty-icon {
+  font-size: 48px;
+  color: #3fb950;
+}
+
+.insights-empty .empty-text {
+  color: #f0f6fc;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.insights-empty .empty-hint {
+  color: #8b949e;
+  font-size: 11px;
+}
+
+/* ============================================
+   Process List
+   ============================================ */
+.process-list {
+  background: #161b22;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.process-title {
+  color: #8b949e;
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.process-item {
+  padding: 4px 0;
+}
+
+.process-name {
+  color: #c9d1d9;
+  font-size: 11px;
+}
+
+.process-value {
+  color: #58a6ff;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* ============================================
+   Network Stats
+   ============================================ */
+.network-stats {
+  background: #161b22;
+  border-radius: 8px;
+  padding: 10px 12px;
+  spacing: 8px;
+}
+
+.stat-icon {
+  font-size: 16px;
+  color: #58a6ff;
+}
+
+.stat-label {
+  color: #c9d1d9;
+  font-size: 12px;
+}
+
+.stat-value {
+  color: #8b949e;
+  font-size: 11px;
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* ============================================
+   Action Bar
+   ============================================ */
+.pulse-actions {
+  background: #161b22;
+  padding: 12px;
+  border-top: 1px solid #30363d;
+  border-radius: 0 0 12px 12px;
+}
+
+.action-btn {
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  border: 1px solid #30363d;
+}
+
+.action-btn.cleanup {
+  background: #21262d;
+  color: #3fb950;
+}
+
+.action-btn.cleanup:hover {
+  background: #238636;
+  border-color: #3fb950;
+  color: #ffffff;
+}
+
+.action-btn.terminal {
+  background: #21262d;
+  color: #c9d1d9;
+}
+
+.action-btn.terminal:hover {
+  background: #30363d;
+  border-color: #58a6ff;
+  color: #58a6ff;
+}
+
+/* ============================================
+   Scrollbar
+   ============================================ */
+.pulse-content scrollbar {
+  background: transparent;
+}
+
+.pulse-content scrollbar slider {
+  background: #30363d;
+  border-radius: 4px;
+  min-width: 6px;
+}
+
+.pulse-content scrollbar slider:hover {
+  background: #484f58;
+}

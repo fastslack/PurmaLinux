@@ -1,0 +1,746 @@
+/**
+ * PurmaLinux - Chat Widget Styles
+ * OpenCode-inspired design with tabs
+ */
+
+/* ============================================
+   Window & Panel
+   ============================================ */
+.purma-chat-window {
+  background: transparent;
+}
+
+.chat-panel {
+  background: #0d1117;
+  border-left: 1px solid #30363d;
+  min-width: 420px;
+  max-width: 480px;
+}
+
+/* ============================================
+   Header (Title Bar)
+   ============================================ */
+.chat-header {
+  background: #161b22;
+  padding: 10px 12px;
+  border-bottom: 1px solid #30363d;
+}
+
+.header-logo {
+  font-size: 20px;
+  color: #58a6ff;
+}
+
+.header-title {
+  color: #f0f6fc;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.status-indicator {
+  margin-left: 12px;
+  spacing: 6px;
+}
+
+.status-dot {
+  min-width: 8px;
+  min-height: 8px;
+  border-radius: 50%;
+  background: #484f58;
+}
+
+.status-dot.connected {
+  background: #3fb950;
+}
+
+.status-dot.ollama_down {
+  background: #d29922;
+}
+
+.status-dot.disconnected {
+  background: #f85149;
+}
+
+.status-text {
+  color: #8b949e;
+  font-size: 11px;
+}
+
+.header-buttons {
+  spacing: 2px;
+}
+
+.header-btn {
+  color: #8b949e;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.header-btn:hover {
+  background: #30363d;
+  color: #f0f6fc;
+}
+
+.header-btn.minimize:hover {
+  background: #f85149;
+  color: #ffffff;
+}
+
+/* ============================================
+   Tab Bar (OpenCode Style)
+   ============================================ */
+.tab-bar {
+  background: #010409;
+  border-bottom: 1px solid #30363d;
+  padding: 0;
+  min-height: 36px;
+}
+
+.tabs-container {
+  spacing: 0;
+}
+
+.tab {
+  background: transparent;
+  color: #8b949e;
+  padding: 8px 12px;
+  border-right: 1px solid #30363d;
+  border-radius: 0;
+  font-size: 12px;
+}
+
+.tab:hover {
+  background: #161b22;
+  color: #f0f6fc;
+}
+
+.tab.active {
+  background: #0d1117;
+  color: #f0f6fc;
+  border-bottom: 2px solid #58a6ff;
+  margin-bottom: -1px;
+}
+
+.tab-icon {
+  font-size: 12px;
+  color: #58a6ff;
+}
+
+.tab-name {
+  font-size: 12px;
+}
+
+.tab-close {
+  color: #8b949e;
+  padding: 0 4px;
+  margin-left: 4px;
+  border-radius: 4px;
+  font-size: 14px;
+  min-width: 16px;
+  min-height: 16px;
+}
+
+.tab-close:hover {
+  background: #f85149;
+  color: #ffffff;
+}
+
+.tab-add {
+  color: #8b949e;
+  padding: 8px 14px;
+  font-size: 14px;
+}
+
+.tab-add:hover {
+  background: #161b22;
+  color: #3fb950;
+}
+
+/* ============================================
+   Chat Content
+   ============================================ */
+.chat-content {
+  background: #0d1117;
+}
+
+.messages-area {
+  background: #0d1117;
+}
+
+.messages-container {
+  padding: 16px;
+  spacing: 16px;
+}
+
+/* ============================================
+   Messages
+   ============================================ */
+.message {
+  padding: 12px;
+  border-radius: 8px;
+  background: #161b22;
+  border: 1px solid #30363d;
+}
+
+.message.user {
+  background: #0d419d;
+  border-color: #1f6feb;
+}
+
+.message.error {
+  background: #490202;
+  border-color: #f85149;
+}
+
+.avatar {
+  min-width: 32px;
+  min-height: 32px;
+  border-radius: 50%;
+  background: #30363d;
+}
+
+.avatar label {
+  font-size: 16px;
+  color: #8b949e;
+}
+
+.avatar.user {
+  background: #1f6feb;
+}
+
+.avatar.user label {
+  color: #ffffff;
+}
+
+.avatar.assistant {
+  background: linear-gradient(135deg, #58a6ff, #a371f7);
+}
+
+.avatar.assistant label {
+  color: #ffffff;
+}
+
+.avatar.error {
+  background: #f85149;
+}
+
+.avatar.error label {
+  color: #ffffff;
+}
+
+.message-header {
+  margin-bottom: 6px;
+}
+
+.message-sender {
+  color: #f0f6fc;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.message-time {
+  color: #8b949e;
+  font-size: 11px;
+}
+
+.message-model {
+  color: #8b949e;
+  font-size: 10px;
+  background: #30363d;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.message-body {
+  /* Container for content */
+}
+
+.message-text {
+  color: #c9d1d9;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.message.user .message-text {
+  color: #ffffff;
+}
+
+.message.error .message-text {
+  color: #ffa198;
+}
+
+/* ============================================
+   Code Blocks (OpenCode Style)
+   ============================================ */
+.code-block {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  margin: 8px 0;
+  overflow: hidden;
+}
+
+.code-header {
+  background: #21262d;
+  padding: 6px 12px;
+  border-bottom: 1px solid #30363d;
+}
+
+.code-lang {
+  color: #8b949e;
+  font-size: 11px;
+  font-family: "JetBrains Mono", monospace;
+  hexpand: true;
+}
+
+.code-copy {
+  color: #8b949e;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.code-copy:hover {
+  background: #30363d;
+  color: #58a6ff;
+}
+
+.code-content {
+  color: #c9d1d9;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  padding: 12px;
+  background: #0d1117;
+}
+
+/* ============================================
+   Action Results
+   ============================================ */
+.actions-container {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #30363d;
+}
+
+.action-result {
+  background: #21262d;
+  border-radius: 6px;
+  padding: 8px 12px;
+  border-left: 3px solid #8b949e;
+}
+
+.action-result.success {
+  border-left-color: #3fb950;
+}
+
+.action-result.error {
+  border-left-color: #f85149;
+}
+
+.action-icon {
+  font-size: 12px;
+}
+
+.action-icon.success {
+  color: #3fb950;
+}
+
+.action-icon.error {
+  color: #f85149;
+}
+
+.action-type {
+  color: #58a6ff;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.action-desc {
+  color: #8b949e;
+  font-size: 11px;
+}
+
+.action-output {
+  color: #7ee787;
+  font-size: 11px;
+  font-family: "JetBrains Mono", monospace;
+  margin-top: 6px;
+  padding: 6px 8px;
+  background: #0d1117;
+  border-radius: 4px;
+}
+
+/* ============================================
+   Loading Animation
+   ============================================ */
+.loading-dots {
+  padding: 8px 0;
+  spacing: 4px;
+}
+
+.dot {
+  color: #58a6ff;
+  font-size: 8px;
+  animation: pulse 1.4s infinite;
+}
+
+.dot.delay-1 {
+  animation-delay: 0.2s;
+}
+
+.dot.delay-2 {
+  animation-delay: 0.4s;
+}
+
+@keyframes pulse {
+  0%, 80%, 100% {
+    opacity: 0.3;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   Welcome Screen
+   ============================================ */
+.welcome-screen {
+  padding: 32px;
+  spacing: 16px;
+}
+
+.welcome-icon {
+  font-size: 56px;
+  color: #58a6ff;
+}
+
+.welcome-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #f0f6fc;
+}
+
+.welcome-subtitle {
+  font-size: 14px;
+  color: #8b949e;
+}
+
+.suggestions {
+  margin-top: 24px;
+  spacing: 8px;
+}
+
+.suggestion {
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 12px 16px;
+  transition: all 150ms ease;
+}
+
+.suggestion:hover {
+  background: #30363d;
+  border-color: #58a6ff;
+}
+
+.suggestion-icon {
+  font-size: 16px;
+  color: #58a6ff;
+}
+
+.suggestion-text {
+  color: #c9d1d9;
+  font-size: 13px;
+}
+
+/* ============================================
+   Input Area
+   ============================================ */
+.input-area {
+  background: #161b22;
+  padding: 12px;
+  border-top: 1px solid #30363d;
+}
+
+.input-container {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.input-container:focus-within {
+  border-color: #58a6ff;
+  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
+}
+
+.chat-input {
+  background: transparent;
+  color: #c9d1d9;
+  border: none;
+  padding: 10px 12px;
+  font-size: 13px;
+}
+
+.chat-input:focus {
+  outline: none;
+}
+
+.send-button {
+  background: #238636;
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.send-button:hover {
+  background: #2ea043;
+}
+
+.send-button:insensitive {
+  opacity: 0.5;
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+.chat-footer {
+  background: #010409;
+  padding: 8px 12px;
+  border-top: 1px solid #30363d;
+}
+
+.footer-text {
+  color: #8b949e;
+  font-size: 11px;
+}
+
+.footer-btn {
+  color: #8b949e;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.footer-btn:hover {
+  background: #21262d;
+  color: #58a6ff;
+}
+
+/* ============================================
+   Scrollbar
+   ============================================ */
+scrollbar {
+  background: transparent;
+}
+
+scrollbar slider {
+  background: #30363d;
+  border-radius: 4px;
+  min-width: 6px;
+}
+
+scrollbar slider:hover {
+  background: #484f58;
+}
+
+/* ============================================
+   Command Palette & Agent Selector
+   ============================================ */
+.command-palette,
+.agent-selector {
+  background: #161b22;
+  border-bottom: 1px solid #30363d;
+  max-height: 300px;
+}
+
+.palette-header {
+  padding: 10px 12px;
+  border-bottom: 1px solid #30363d;
+  background: #21262d;
+}
+
+.palette-title {
+  color: #f0f6fc;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.palette-close {
+  color: #8b949e;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.palette-close:hover {
+  background: #f85149;
+  color: #ffffff;
+}
+
+.palette-list {
+  padding: 8px;
+  max-height: 240px;
+}
+
+/* Command Items */
+.command-item {
+  background: transparent;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+}
+
+.command-item:hover {
+  background: #21262d;
+  border-color: #30363d;
+}
+
+.command-icon {
+  font-size: 16px;
+  color: #58a6ff;
+  min-width: 24px;
+}
+
+.command-name {
+  color: #f0f6fc;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.command-desc {
+  color: #8b949e;
+  font-size: 11px;
+}
+
+.command-agent {
+  color: #a371f7;
+  font-size: 11px;
+  background: #21262d;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* Agent Items */
+.agent-item {
+  background: transparent;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 2px solid transparent;
+}
+
+.agent-item:hover {
+  background: #21262d;
+  border-color: #30363d;
+}
+
+.agent-item.active {
+  background: #0d419d;
+  border-color: #58a6ff;
+}
+
+.agent-icon {
+  font-size: 20px;
+  color: #58a6ff;
+  min-width: 28px;
+}
+
+.agent-item.active .agent-icon {
+  color: #ffffff;
+}
+
+.agent-name {
+  color: #f0f6fc;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.agent-item.active .agent-name {
+  color: #ffffff;
+}
+
+.agent-desc {
+  color: #8b949e;
+  font-size: 11px;
+}
+
+.agent-item.active .agent-desc {
+  color: #c9d1d9;
+}
+
+.agent-mode {
+  color: #8b949e;
+  font-size: 14px;
+}
+
+.agent-item.active .agent-mode {
+  color: #ffffff;
+}
+
+/* ============================================
+   Agent Badge (in input area)
+   ============================================ */
+.input-row {
+  spacing: 8px;
+}
+
+.agent-badge {
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+
+.agent-badge:hover {
+  background: #30363d;
+  border-color: #58a6ff;
+}
+
+.agent-badge-icon {
+  font-size: 14px;
+  color: #58a6ff;
+}
+
+.agent-badge-name {
+  color: #c9d1d9;
+  font-size: 12px;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.agent-badge-arrow {
+  color: #8b949e;
+  font-size: 10px;
+  margin-left: 4px;
+}
+
+/* ============================================
+   Welcome Hints
+   ============================================ */
+.welcome-hint {
+  margin-top: 24px;
+  padding: 12px 16px;
+  background: #21262d;
+  border-radius: 8px;
+  border: 1px solid #30363d;
+}
+
+.hint-text {
+  color: #8b949e;
+  font-size: 12px;
+}
+
+.hint-key {
+  color: #58a6ff;
+  font-size: 12px;
+  font-weight: 600;
+  background: #0d1117;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid #30363d;
+  font-family: "JetBrains Mono", monospace;
+}

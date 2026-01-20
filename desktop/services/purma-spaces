@@ -1,0 +1,121 @@
+#!/bin/bash
+# PurmaLinux - Spaces Persistence Script
+# Manages saving and restoring workspace states
+
+PURMA_SERVER="http://localhost:8787"
+CONFIG_DIR="${HOME}/.config/purma"
+STATE_FILE="${CONFIG_DIR}/spaces_state.json"
+LOG_FILE="${CONFIG_DIR}/spaces.log"
+
+# Ensure config directory exists
+mkdir -p "$CONFIG_DIR"
+
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOG_FILE"
+}
+
+# Wait for Purma server to be available
+wait_for_server() {
+    local max_attempts=30
+    local attempt=0
+
+    while [ $attempt -lt $max_attempts ]; do
+        if curl -s "${PURMA_SERVER}/health" > /dev/null 2>&1; then
+            log "Server available"
+            return 0
+        fi
+        attempt=$((attempt + 1))
+        sleep 1
+    done
+
+    log "Server not available after ${max_attempts} seconds"
+    return 1
+}
+
+# Save current state
+save_state() {
+    log "Saving spaces state..."
+
+    # Get current active space
+    local response=$(curl -s "${PURMA_SERVER}/spaces" 2>/dev/null)
+
+    if [ -n "$response" ]; then
+        echo "$response" > "$STATE_FILE"
+        log "State saved successfully"
+
+        # Save state for active space
+        local active=$(echo "$response" | grep -o '"active":"[^"]*"' | cut -d'"' -f4)
+        if [ -n "$active" ]; then
+            curl -s -X POST "${PURMA_SERVER}/spaces/${active}/save-state" > /dev/null 2>&1
+            log "Active space state saved: $active"
+        fi
+    else
+        log "Failed to save state - no response from server"
+    fi
+}
+
+# Restore last active space
+restore_state() {
+    log "Restoring spaces state..."
+
+    if [ ! -f "$STATE_FILE" ]; then
+        log "No state file found, skipping restore"
+        return 0
+    fi
+
+    # Wait for server
+    if ! wait_for_server; then
+        log "Cannot restore - server unavailable"
+        return 1
+    fi
+
+    # Get last active space from saved state
+    local active=$(grep -o '"active":"[^"]*"' "$STATE_FILE" | cut -d'"' -f4)
+
+    if [ -n "$active" ] && [ "$active" != "null" ]; then
+        log "Restoring space: $active"
+
+        # Activate the space
+        local result=$(curl -s -X POST "${PURMA_SERVER}/spaces/${active}/activate" 2>/dev/null)
+
+        if echo "$result" | grep -q '"success":true'; then
+            log "Space restored successfully: $active"
+
+            # Send notification
+            notify-send -i workspace-switcher "Purma Spaces" "Espacio restaurado: $active" 2>/dev/null
+        else
+            log "Failed to restore space: $active"
+        fi
+    else
+        log "No active space to restore"
+    fi
+}
+
+# Main command handler
+case "$1" in
+    save)
+        save_state
+        ;;
+    restore)
+        restore_state
+        ;;
+    status)
+        if [ -f "$STATE_FILE" ]; then
+            echo "State file: $STATE_FILE"
+            echo "Last saved: $(stat -c %y "$STATE_FILE" 2>/dev/null || stat -f %Sm "$STATE_FILE" 2>/dev/null)"
+            echo ""
+            cat "$STATE_FILE" | python3 -m json.tool 2>/dev/null || cat "$STATE_FILE"
+        else
+            echo "No state file found"
+        fi
+        ;;
+    *)
+        echo "Usage: purma-spaces {save|restore|status}"
+        echo ""
+        echo "Commands:"
+        echo "  save     Save current spaces state"
+        echo "  restore  Restore last active space"
+        echo "  status   Show current state file"
+        exit 1
+        ;;
+esac
