@@ -1,6 +1,12 @@
 """
 PurmaLinux Bridge - AI-Augmented Terminal
+==========================================
+Author: Matías Aguirre
+Company: Matware
+
 "A terminal that understands what you want to do, not just what you type"
+
+Uses local AI models (Ollama) as primary, with optional remote fallback.
 
 Features:
 - Natural language to command translation

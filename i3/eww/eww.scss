@@ -1,0 +1,409 @@
+// ╔══════════════════════════════════════════════════════════════════════════════╗
+// ║  PurmaLinux - EWW Styles (Aurora Theme)                                      ║
+// ║  Author: Matías Aguirre | Matware                                            ║
+// ╚══════════════════════════════════════════════════════════════════════════════╝
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  Aurora Color Palette
+// ═══════════════════════════════════════════════════════════════════════════════
+
+$bg-dark: #0d1117;
+$bg-secondary: #161b22;
+$bg-tertiary: #21262d;
+$border-color: #30363d;
+
+$text-primary: #f0f6fc;
+$text-secondary: #8b949e;
+$text-dim: #6e7681;
+
+$cyan: #00d4ff;
+$purple: #a855f7;
+$green: #22c55e;
+$orange: #f59e0b;
+$red: #ef4444;
+$pink: #ec4899;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  Global Styles
+// ═══════════════════════════════════════════════════════════════════════════════
+
+* {
+  all: unset;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 13px;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  Bar Button
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.models-button {
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: $bg-tertiary;
+  color: $text-secondary;
+  transition: all 200ms ease;
+
+  &:hover {
+    background: $bg-secondary;
+    color: $text-primary;
+  }
+
+  &.running {
+    color: $cyan;
+
+    &:hover {
+      background: rgba($cyan, 0.1);
+    }
+  }
+
+  &.stopped {
+    color: $red;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  Popup Window
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.models-popup {
+  background: $bg-dark;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  Header
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.models-header {
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid $border-color;
+
+  .models-icon {
+    font-size: 20px;
+  }
+
+  .models-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: $text-primary;
+  }
+
+  .refresh-btn,
+  .close-btn {
+    padding: 6px 10px;
+    border-radius: 6px;
+    color: $text-secondary;
+    margin-left: 8px;
+
+    &:hover {
+      background: $bg-tertiary;
+      color: $text-primary;
+    }
+  }
+
+  .close-btn:hover {
+    background: rgba($red, 0.2);
+    color: $red;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  Ollama Status
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.ollama-status {
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  background: $bg-secondary;
+
+  .status-dot {
+    font-size: 10px;
+  }
+
+  .status-text {
+    color: $text-secondary;
+  }
+
+  .model-count {
+    color: $text-dim;
+    margin-left: auto;
+  }
+
+  &.running {
+    border-left: 3px solid $green;
+
+    .status-dot {
+      color: $green;
+    }
+  }
+
+  &.stopped {
+    border-left: 3px solid $red;
+
+    .status-dot {
+      color: $red;
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  Navigation Tabs
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.nav-tabs {
+  margin-bottom: 12px;
+  padding: 4px;
+  background: $bg-secondary;
+  border-radius: 8px;
+
+  .nav-tab {
+    padding: 8px 16px;
+    border-radius: 6px;
+    color: $text-secondary;
+    transition: all 200ms ease;
+
+    &:hover {
+      background: $bg-tertiary;
+      color: $text-primary;
+    }
+
+    &.active {
+      background: $cyan;
+      color: $bg-dark;
+      font-weight: bold;
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  Content Area
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.models-content {
+  min-height: 300px;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  Model Items
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.model-item {
+  padding: 12px;
+  background: $bg-secondary;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: all 200ms ease;
+
+  &:hover {
+    background: $bg-tertiary;
+    border-color: $border-color;
+  }
+
+  &.is-installed {
+    opacity: 0.7;
+  }
+
+  .model-icon {
+    font-size: 24px;
+    min-width: 32px;
+  }
+
+  .model-name {
+    font-weight: bold;
+    color: $text-primary;
+  }
+
+  .model-desc {
+    font-size: 12px;
+    color: $text-secondary;
+  }
+
+  .model-size {
+    font-size: 11px;
+    color: $text-dim;
+    padding: 4px 8px;
+    background: $bg-dark;
+    border-radius: 4px;
+  }
+
+  .model-meta {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid $border-color;
+
+    .meta-item {
+      font-size: 11px;
+      color: $text-dim;
+    }
+  }
+
+  .recommended-badge {
+    color: $orange;
+  }
+
+  .installed-badge {
+    color: $green;
+    font-size: 16px;
+    padding: 4px 12px;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  Buttons
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.install-btn {
+  padding: 6px 16px;
+  background: $cyan;
+  color: $bg-dark;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 12px;
+  transition: all 200ms ease;
+
+  &:hover {
+    background: lighten($cyan, 10%);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &.installing {
+    background: $bg-tertiary;
+    color: $text-secondary;
+    cursor: wait;
+  }
+}
+
+.remove-btn {
+  padding: 6px 10px;
+  border-radius: 6px;
+  opacity: 0.6;
+  transition: all 200ms ease;
+
+  &:hover {
+    opacity: 1;
+    background: rgba($red, 0.2);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  Packs View
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.system-rec {
+  padding: 12px;
+  background: linear-gradient(135deg, rgba($purple, 0.1), rgba($cyan, 0.1));
+  border-radius: 8px;
+  border: 1px solid $border-color;
+
+  .rec-title {
+    font-weight: bold;
+    color: $text-primary;
+    margin-bottom: 4px;
+  }
+
+  .rec-info {
+    font-size: 12px;
+    color: $text-secondary;
+  }
+}
+
+.pack-item {
+  padding: 14px;
+  background: $bg-secondary;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: all 200ms ease;
+
+  &:hover {
+    background: $bg-tertiary;
+    border-color: $border-color;
+  }
+
+  &.recommended {
+    border-color: $cyan;
+    background: rgba($cyan, 0.05);
+  }
+
+  .pack-icon {
+    font-size: 28px;
+    min-width: 40px;
+  }
+
+  .pack-name {
+    font-weight: bold;
+    color: $text-primary;
+    font-size: 14px;
+  }
+
+  .pack-desc {
+    font-size: 12px;
+    color: $text-secondary;
+  }
+
+  .rec-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    background: $cyan;
+    color: $bg-dark;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  Empty States
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.empty-state {
+  padding: 40px 20px;
+  text-align: center;
+
+  .empty-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+  }
+
+  .empty-text {
+    font-size: 16px;
+    color: $text-primary;
+    margin-bottom: 8px;
+  }
+
+  .empty-hint {
+    font-size: 12px;
+    color: $text-dim;
+    font-family: monospace;
+    padding: 8px 16px;
+    background: $bg-secondary;
+    border-radius: 6px;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  Scrollbar
+// ═══════════════════════════════════════════════════════════════════════════════
+
+scrollbar {
+  background: transparent;
+
+  slider {
+    background: $border-color;
+    border-radius: 4px;
+    min-width: 6px;
+    min-height: 6px;
+
+    &:hover {
+      background: $text-dim;
+    }
+  }
+}

@@ -1,0 +1,326 @@
+; ╔══════════════════════════════════════════════════════════════════════════════╗
+; ║  PurmaLinux - EWW Widgets for i3                                             ║
+; ║  Author: Matías Aguirre | Matware                                            ║
+; ╚══════════════════════════════════════════════════════════════════════════════╝
+
+; ═══════════════════════════════════════════════════════════════════════════════
+;  Variables (polled from scripts)
+; ═══════════════════════════════════════════════════════════════════════════════
+
+; Models status
+(defpoll models-status :interval "5s" "scripts/models-status.sh")
+(defpoll models-list :interval "10s" "scripts/models-list.sh")
+(defpoll models-available :interval "30s" "scripts/models-available.sh")
+(defpoll models-packs :interval "60s" "scripts/models-packs.sh")
+(defpoll system-info :interval "60s" "scripts/system-info.sh")
+
+; Ollama status
+(defpoll ollama-running :interval "3s" "scripts/ollama-status.sh")
+
+; ═══════════════════════════════════════════════════════════════════════════════
+;  State Variables
+; ═══════════════════════════════════════════════════════════════════════════════
+
+(defvar models-visible false)
+(defvar models-view "installed") ; installed, available, packs
+(defvar installing "")
+
+; ═══════════════════════════════════════════════════════════════════════════════
+;  Models Bar Button (for Polybar or standalone)
+; ═══════════════════════════════════════════════════════════════════════════════
+
+(defwidget models-button []
+  (eventbox
+    :onclick "eww open --toggle models-popup"
+    :class "models-button ${ollama-running == 'true' ? 'running' : 'stopped'}"
+    (box
+      :space-evenly false
+      :spacing 4
+      (label :text "🤖")
+      (label
+        :text "${ollama-running == 'true' ? models-status : ''}"
+        :visible {ollama-running == "true"}))))
+
+; ═══════════════════════════════════════════════════════════════════════════════
+;  Models Popup Window
+; ═══════════════════════════════════════════════════════════════════════════════
+
+(defwidget models-popup []
+  (box
+    :class "models-popup"
+    :orientation "v"
+    :space-evenly false
+
+    ; Header
+    (box
+      :class "models-header"
+      :space-evenly false
+      (box
+        :hexpand true
+        :space-evenly false
+        :spacing 8
+        (label :class "models-icon" :text "🤖")
+        (label :class "models-title" :text "AI Models"))
+      (button
+        :class "refresh-btn"
+        :onclick "scripts/refresh-models.sh"
+        "↻")
+      (button
+        :class "close-btn"
+        :onclick "eww close models-popup"
+        "✕"))
+
+    ; Ollama Status
+    (box
+      :class "ollama-status ${ollama-running == 'true' ? 'running' : 'stopped'}"
+      :space-evenly false
+      :spacing 8
+      (label :class "status-dot" :text {ollama-running == "true" ? "●" : "○"})
+      (label :class "status-text" :text {ollama-running == "true" ? "Ollama Running" : "Ollama Stopped"})
+      (label
+        :class "model-count"
+        :text "${models-status} models"
+        :visible {ollama-running == "true"}))
+
+    ; Navigation Tabs
+    (box
+      :class "nav-tabs"
+      :space-evenly true
+      (button
+        :class "nav-tab ${models-view == 'installed' ? 'active' : ''}"
+        :onclick "eww update models-view='installed'"
+        (box :space-evenly false :spacing 4
+          (label :text "📦")
+          (label :text "Installed")))
+      (button
+        :class "nav-tab ${models-view == 'available' ? 'active' : ''}"
+        :onclick "eww update models-view='available'"
+        (box :space-evenly false :spacing 4
+          (label :text "🌐")
+          (label :text "Available")))
+      (button
+        :class "nav-tab ${models-view == 'packs' ? 'active' : ''}"
+        :onclick "eww update models-view='packs'"
+        (box :space-evenly false :spacing 4
+          (label :text "📚")
+          (label :text "Packs"))))
+
+    ; Content
+    (box
+      :class "models-content"
+      :vexpand true
+      (revealer
+        :reveal {models-view == "installed"}
+        :transition "slideright"
+        (models-installed))
+      (revealer
+        :reveal {models-view == "available"}
+        :transition "slideright"
+        (models-available-view))
+      (revealer
+        :reveal {models-view == "packs"}
+        :transition "slideright"
+        (models-packs-view)))))
+
+; ═══════════════════════════════════════════════════════════════════════════════
+;  Installed Models View
+; ═══════════════════════════════════════════════════════════════════════════════
+
+(defwidget models-installed []
+  (box
+    :class "installed-view"
+    :orientation "v"
+    :space-evenly false
+    (scroll
+      :vexpand true
+      :vscroll true
+      (box
+        :orientation "v"
+        :space-evenly false
+        :spacing 8
+        (for model in {jq(models-list, ".[]")}
+          (model-item-installed :model model))))))
+
+(defwidget model-item-installed [model]
+  (box
+    :class "model-item installed"
+    :space-evenly false
+    :spacing 12
+    (label :class "model-icon" :text {jq(model, ".icon") ?: "🤖"})
+    (box
+      :orientation "v"
+      :hexpand true
+      :space-evenly false
+      (label :class "model-name" :halign "start" :text {jq(model, ".name")})
+      (label :class "model-desc" :halign "start" :text {jq(model, ".category")}))
+    (label :class "model-size" :text {jq(model, ".size_human")})
+    (button
+      :class "remove-btn"
+      :onclick "scripts/remove-model.sh '${jq(model, ".name")}'"
+      :tooltip "Remove model"
+      "🗑️")))
+
+; ═══════════════════════════════════════════════════════════════════════════════
+;  Available Models View
+; ═══════════════════════════════════════════════════════════════════════════════
+
+(defwidget models-available-view []
+  (box
+    :class "available-view"
+    :orientation "v"
+    :space-evenly false
+    (scroll
+      :vexpand true
+      :vscroll true
+      (box
+        :orientation "v"
+        :space-evenly false
+        :spacing 8
+        (for model in {jq(models-available, ".[]")}
+          (model-item-available :model model))))))
+
+(defwidget model-item-available [model]
+  (box
+    :class "model-item ${jq(model, ".installed") == "true" ? 'is-installed' : ''}"
+    :orientation "v"
+    :space-evenly false
+    :spacing 4
+    (box
+      :space-evenly false
+      :spacing 12
+      (label :class "model-icon" :text {get-category-icon(jq(model, ".category"))})
+      (box
+        :orientation "v"
+        :hexpand true
+        :space-evenly false
+        (box
+          :space-evenly false
+          :spacing 8
+          (label :class "model-name" :halign "start" :text {jq(model, ".name") ?: jq(model, ".id")})
+          (label
+            :class "recommended-badge"
+            :text "⭐"
+            :visible {jq(model, ".recommended") == "true"}))
+        (label
+          :class "model-desc"
+          :halign "start"
+          :limit-width 40
+          :text {jq(model, ".description")}))
+      (revealer
+        :reveal {jq(model, ".installed") == "true"}
+        :transition "slideleft"
+        (label :class "installed-badge" :text "✓"))
+      (revealer
+        :reveal {jq(model, ".installed") != "true"}
+        :transition "slideleft"
+        (button
+          :class "install-btn ${installing == jq(model, ".id") ? 'installing' : ''}"
+          :onclick "scripts/install-model.sh '${jq(model, ".id")}'"
+          :sensitive {installing == ""}
+          {installing == jq(model, ".id") ? "..." : "Install"})))
+    (box
+      :class "model-meta"
+      :space-evenly false
+      :spacing 16
+      (label :class "meta-item" :text "📊 ${jq(model, ".parameters")}")
+      (label :class "meta-item" :text "💾 ${jq(model, ".size")}")
+      (label :class "meta-item" :text "🎮 ${jq(model, ".vram")}"))))
+
+; ═══════════════════════════════════════════════════════════════════════════════
+;  Packs View
+; ═══════════════════════════════════════════════════════════════════════════════
+
+(defwidget models-packs-view []
+  (box
+    :class "packs-view"
+    :orientation "v"
+    :space-evenly false
+    :spacing 12
+
+    ; System recommendation
+    (box
+      :class "system-rec"
+      :orientation "v"
+      :space-evenly false
+      (label :class "rec-title" :halign "start" :text "📊 System Analysis")
+      (label
+        :class "rec-info"
+        :halign "start"
+        :text "RAM: ${jq(system-info, ".ram_total_gb")}GB • Recommended: ${jq(system-info, ".recommended_pack")}"))
+
+    ; Packs list
+    (scroll
+      :vexpand true
+      :vscroll true
+      (box
+        :orientation "v"
+        :space-evenly false
+        :spacing 12
+        (pack-item :id "minimal" :name "Minimal" :desc "4GB RAM - Basic chat" :icon "🪶")
+        (pack-item :id "standard" :name "Standard" :desc "8GB RAM - Most users" :icon "📦")
+        (pack-item :id "developer" :name "Developer" :desc "16GB RAM - Full coding" :icon "💻")
+        (pack-item :id "creative" :name "Creative" :desc "16GB RAM - Image analysis" :icon "🎨")
+        (pack-item :id "poweruser" :name "Power User" :desc "32GB+ RAM - Everything" :icon "🚀")))))
+
+(defwidget pack-item [id name desc icon]
+  (box
+    :class "pack-item ${jq(system-info, ".recommended_pack") == id ? 'recommended' : ''}"
+    :space-evenly false
+    :spacing 12
+    (label :class "pack-icon" :text icon)
+    (box
+      :orientation "v"
+      :hexpand true
+      :space-evenly false
+      (box
+        :space-evenly false
+        :spacing 8
+        (label :class "pack-name" :halign "start" :text name)
+        (label
+          :class "rec-badge"
+          :text "Recommended"
+          :visible {jq(system-info, ".recommended_pack") == id}))
+      (label :class "pack-desc" :halign "start" :text desc))
+    (button
+      :class "install-btn ${installing == id ? 'installing' : ''}"
+      :onclick "scripts/install-pack.sh '${id}'"
+      :sensitive {installing == ""}
+      {installing == id ? "Installing..." : "Install"})))
+
+; ═══════════════════════════════════════════════════════════════════════════════
+;  Helper function for category icons
+; ═══════════════════════════════════════════════════════════════════════════════
+
+(defvar category-icons '{"general": "💬", "coding": "💻", "vision": "👁️", "embedding": "🔗", "chat": "💭", "uncensored": "🔓", "tiny": "🐜"}')
+
+; ═══════════════════════════════════════════════════════════════════════════════
+;  Window Definitions
+; ═══════════════════════════════════════════════════════════════════════════════
+
+; Main popup window
+(defwindow models-popup
+  :monitor 0
+  :geometry (geometry
+    :x "10px"
+    :y "50px"
+    :width "420px"
+    :height "500px"
+    :anchor "top right")
+  :stacking "overlay"
+  :exclusive false
+  :focusable true
+  (models-popup))
+
+; Bar button (can be embedded in polybar via eww)
+(defwindow models-bar
+  :monitor 0
+  :geometry (geometry
+    :x "0px"
+    :y "0px"
+    :width "80px"
+    :height "30px"
+    :anchor "top right")
+  :stacking "fg"
+  :exclusive false
+  :focusable false
+  (models-button))

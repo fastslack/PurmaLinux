@@ -1,9 +1,13 @@
 """
 PurmaLinux Flow - Automation by Demonstration
+=============================================
+Author: Matías Aguirre
+Company: Matware
+
 "Show Purma what you want and it will repeat it forever"
 
-Uses local AI agents (Ollama) and optionally remote (Anthropic/OpenAI)
-to analyze user actions and create intelligent workflows.
+Uses local AI models (Ollama) as primary engine, with optional
+remote providers as fallback for complex tasks.
 """
 
 import asyncio

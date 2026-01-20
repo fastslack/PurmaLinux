@@ -6,7 +6,7 @@ Author: Matías Aguirre
 Company: Matware
 
 Servidor completo de asistente de IA con:
-- Sistema de agentes personalizables (estilo OpenCode/Claude Code)
+- Sistema de agentes personalizables con modelos AI locales (Ollama)
 - Comandos rápidos (/organize, /search, /cleanup, etc.)
 - Gestión de archivos y sistema
 """
@@ -4644,6 +4644,89 @@ async def organize_preview(data: Dict[str, Any]):
 from purma_mobile_api import get_mobile_router
 
 app.include_router(get_mobile_router())
+
+
+# ============================================
+# Models API
+# ============================================
+
+from purma_models import get_model_manager, RECOMMENDED_MODELS, STARTER_PACKS
+
+@app.get("/models/status")
+async def models_status():
+    """Estado de Ollama y modelos"""
+    manager = get_model_manager()
+    status = await manager.check_ollama()
+    installed = await manager.get_installed_models() if status["running"] else []
+    return {
+        **status,
+        "installed_count": len(installed),
+        "installed": installed
+    }
+
+@app.get("/models/list")
+async def models_list():
+    """Lista modelos instalados"""
+    manager = get_model_manager()
+    return {"models": await manager.get_installed_models()}
+
+@app.get("/models/available")
+async def models_available(category: str = None):
+    """Lista modelos disponibles"""
+    manager = get_model_manager()
+    return {"models": await manager.get_available_models(category)}
+
+@app.get("/models/recommended")
+async def models_recommended():
+    """Modelos recomendados"""
+    manager = get_model_manager()
+    return {"models": await manager.get_recommended()}
+
+@app.get("/models/catalog")
+async def models_catalog():
+    """Catálogo completo de modelos"""
+    return {"catalog": RECOMMENDED_MODELS}
+
+@app.get("/models/packs")
+async def models_packs():
+    """Starter packs disponibles"""
+    return {"packs": STARTER_PACKS}
+
+@app.get("/models/system-info")
+async def models_system_info():
+    """Info del sistema para recomendaciones"""
+    manager = get_model_manager()
+    return await manager.get_system_info()
+
+@app.post("/models/install/{model_id}")
+async def models_install(model_id: str):
+    """Instalar un modelo"""
+    manager = get_model_manager()
+    status = await manager.check_ollama()
+    if not status["running"]:
+        raise HTTPException(status_code=503, detail="Ollama is not running")
+    return await manager.install_model(model_id)
+
+@app.delete("/models/{model_id}")
+async def models_delete(model_id: str):
+    """Eliminar un modelo"""
+    manager = get_model_manager()
+    return await manager.uninstall_model(model_id)
+
+@app.post("/models/pack/{pack_id}")
+async def models_install_pack(pack_id: str):
+    """Instalar un starter pack"""
+    manager = get_model_manager()
+    status = await manager.check_ollama()
+    if not status["running"]:
+        raise HTTPException(status_code=503, detail="Ollama is not running")
+    return await manager.install_pack(pack_id)
+
+@app.get("/models/search")
+async def models_search(q: str):
+    """Buscar modelos"""
+    manager = get_model_manager()
+    return {"results": await manager.search_models(q)}
 
 
 # ============================================

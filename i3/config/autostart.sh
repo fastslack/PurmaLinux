@@ -110,6 +110,13 @@ fi
 # AGS (Aylur's GTK Shell) for Purma widgets
 command -v ags &> /dev/null && ags &
 
+# EWW (ElKowars Wacky Widgets) for Purma Models widget
+if command -v eww &> /dev/null; then
+    eww daemon &
+    # Optional: Open models bar button
+    # eww open models-bar &
+fi
+
 # ═══════════════════════════════════════════════════════════════════════════════
 #  XDG Autostart
 # ═══════════════════════════════════════════════════════════════════════════════

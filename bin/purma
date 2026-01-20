@@ -12,6 +12,7 @@ Uso:
 
 Comandos disponibles:
     chat        - Interactuar con Purma AI
+    models      - Gestionar modelos AI locales (Ollama)
     sync        - Gestionar sincronización de archivos
     organize    - Organizar archivos con IA
     vault       - Gestor de contraseñas
@@ -687,6 +688,113 @@ def cmd_config(args):
 
 
 # ============================================
+# Models Command
+# ============================================
+
+def cmd_models(args):
+    """Gestión de modelos AI locales"""
+    import asyncio
+
+    # Import the model manager
+    sys.path.insert(0, str(Path(__file__).parent.parent / "ai" / "server"))
+    from purma_models import (
+        get_model_manager,
+        cli_list_models,
+        cli_available_models,
+        cli_install_model,
+        cli_uninstall_model,
+        cli_show_packs,
+        cli_install_pack,
+        cli_recommend
+    )
+
+    if args.models_cmd == "list":
+        asyncio.run(cli_list_models())
+
+    elif args.models_cmd == "available":
+        asyncio.run(cli_available_models())
+
+    elif args.models_cmd == "recommended":
+        async def show_recommended():
+            manager = get_model_manager()
+            models = await manager.get_recommended()
+            print_header("Modelos Recomendados")
+            print(f"{'MODEL':<25} {'SIZE':<8} {'PARAMS':<10} {'DESCRIPTION'}")
+            print("─" * 90)
+            for m in models:
+                status = "✓" if m.get("installed") else " "
+                print(f"{status} {m['id']:<23} {m['size']:<8} {m['parameters']:<10} {m['description'][:40]}")
+            print()
+        asyncio.run(show_recommended())
+
+    elif args.models_cmd == "install":
+        if not args.model:
+            print_error("Especifica el modelo a instalar")
+            return
+        asyncio.run(cli_install_model(args.model))
+
+    elif args.models_cmd == "remove":
+        if not args.model:
+            print_error("Especifica el modelo a eliminar")
+            return
+        asyncio.run(cli_uninstall_model(args.model))
+
+    elif args.models_cmd == "packs":
+        asyncio.run(cli_show_packs())
+
+    elif args.models_cmd == "pack":
+        if not args.pack_id:
+            print_error("Especifica el pack a instalar")
+            return
+        asyncio.run(cli_install_pack(args.pack_id))
+
+    elif args.models_cmd == "search":
+        if not args.query:
+            print_error("Especifica el término de búsqueda")
+            return
+
+        async def search_models(query):
+            manager = get_model_manager()
+            models = await manager.search_models(query)
+            if not models:
+                print_info(f"No se encontraron modelos para '{query}'")
+                return
+            print_header(f"Resultados para '{query}'")
+            for m in models:
+                status = "✓ Installed" if m.get("installed") else ""
+                print(f"  {m['id']:<25} {status}")
+                print(f"     {Colors.DIM}{m['description']}{Colors.END}")
+                print(f"     Tags: {', '.join(m.get('tags', []))}")
+                print()
+        asyncio.run(search_models(args.query))
+
+    elif args.models_cmd == "recommend":
+        asyncio.run(cli_recommend())
+
+    else:
+        print_header("Purma Models - Gestor de Modelos AI")
+        print("""
+  Comandos disponibles:
+
+    purma models list              Listar modelos instalados
+    purma models available         Ver modelos disponibles
+    purma models recommended       Ver modelos recomendados
+    purma models install <model>   Instalar un modelo
+    purma models remove <model>    Eliminar un modelo
+    purma models packs             Ver starter packs
+    purma models pack <pack_id>    Instalar un pack
+    purma models search <query>    Buscar modelos
+    purma models recommend         Recomendación según tu sistema
+
+  Ejemplos:
+
+    purma models install llama3.2
+    purma models pack standard
+    purma models search coding
+        """)
+
+
+# ============================================
 # Main Parser
 # ============================================
 
@@ -841,6 +949,30 @@ Ejemplos:
 
     config_sub.add_parser("reset", help="Resetear configuración")
 
+    # Models
+    parser_models = subparsers.add_parser("models", help="Gestión de modelos AI")
+    models_sub = parser_models.add_subparsers(dest="models_cmd")
+
+    models_sub.add_parser("list", help="Listar modelos instalados")
+    models_sub.add_parser("available", help="Ver modelos disponibles")
+    models_sub.add_parser("recommended", help="Ver modelos recomendados")
+
+    models_install = models_sub.add_parser("install", help="Instalar modelo")
+    models_install.add_argument("model", help="Nombre del modelo")
+
+    models_remove = models_sub.add_parser("remove", help="Eliminar modelo")
+    models_remove.add_argument("model", help="Nombre del modelo")
+
+    models_sub.add_parser("packs", help="Ver starter packs")
+
+    models_pack = models_sub.add_parser("pack", help="Instalar starter pack")
+    models_pack.add_argument("pack_id", help="ID del pack")
+
+    models_search = models_sub.add_parser("search", help="Buscar modelos")
+    models_search.add_argument("query", help="Término de búsqueda")
+
+    models_sub.add_parser("recommend", help="Recomendación según tu sistema")
+
     # Parse and execute
     args = parser.parse_args()
 
@@ -860,6 +992,7 @@ Ejemplos:
         "agents": cmd_agents,
         "server": cmd_server,
         "config": cmd_config,
+        "models": cmd_models,
     }
 
     if args.command in commands:
