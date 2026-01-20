@@ -148,6 +148,9 @@ bindsym $mod+Ctrl+2 exec purma-spaces-ctl code
 bindsym $mod+Ctrl+3 exec purma-spaces-ctl focus
 bindsym $mod+Ctrl+4 exec purma-spaces-ctl gaming
 
+# Purma GameHub (Gaming)
+bindsym $mod+g exec ags -r "toggleGameHub()"
+
 # ═══════════════════════════════════════════════════════════════════════════════
 #  Keybindings - Screenshots (Purma Lens)
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -316,7 +319,7 @@ mode "gaps" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+g mode "gaps"
+bindsym $mod+Shift+g mode "gaps"
 
 # ═══════════════════════════════════════════════════════════════════════════════
 #  Media Keys
@@ -359,9 +362,14 @@ for_window [window_type="menu"] floating enable
 # Picture-in-picture
 for_window [title="Picture-in-Picture"] floating enable, sticky enable, border pixel 0
 
-# Steam
+# Gaming applications
 for_window [class="^Steam$"] floating enable
 for_window [class="^Steam$" title="^Steam$"] floating disable
+for_window [class="lutris"] floating enable
+for_window [class="heroic"] floating enable
+for_window [class="bottles"] floating enable
+for_window [class="goverlay"] floating enable, resize set 900 700
+for_window [class="corectrl"] floating enable, resize set 1000 800
 
 # File dialogs
 for_window [window_role="GtkFileChooserDialog"] floating enable, resize set 1000 700

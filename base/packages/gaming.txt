@@ -1,0 +1,108 @@
+# PurmaLinux Gaming - Packages
+# Paquetes para gaming en Linux
+
+# ═══════════════════════════════════════════════════════════════════
+# STEAM
+# ═══════════════════════════════════════════════════════════════════
+steam
+steam-devices
+
+# ═══════════════════════════════════════════════════════════════════
+# WINE & PROTON
+# ═══════════════════════════════════════════════════════════════════
+wine
+wine64
+wine32
+winetricks
+# proton-ge-custom (instalar manualmente o desde Lutris)
+
+# ═══════════════════════════════════════════════════════════════════
+# VULKAN (Essential for gaming)
+# ═══════════════════════════════════════════════════════════════════
+vulkan-tools
+vulkan-validationlayers
+# AMD
+mesa-vulkan-drivers
+libvulkan1
+# NVIDIA (si aplica)
+# nvidia-vulkan-icd
+
+# ═══════════════════════════════════════════════════════════════════
+# 32-BIT LIBRARIES (Required for most games)
+# ═══════════════════════════════════════════════════════════════════
+libc6-i386
+lib32z1
+lib32gcc-s1
+lib32stdc++6
+libgl1-mesa-dri:i386
+libgl1:i386
+mesa-vulkan-drivers:i386
+
+# ═══════════════════════════════════════════════════════════════════
+# GAME LAUNCHERS
+# ═══════════════════════════════════════════════════════════════════
+lutris
+# heroic-games-launcher (AppImage o Flatpak)
+# bottles (Flatpak recomendado)
+
+# ═══════════════════════════════════════════════════════════════════
+# PERFORMANCE & OPTIMIZATION
+# ═══════════════════════════════════════════════════════════════════
+gamemode
+# lib32-gamemode (AUR en Arch)
+mangohud
+# lib32-mangohud
+goverlay
+
+# ═══════════════════════════════════════════════════════════════════
+# GPU CONTROL
+# ═══════════════════════════════════════════════════════════════════
+# AMD
+corectrl
+radeontop
+
+# NVIDIA
+# nvidia-settings
+# nvtop
+
+# ═══════════════════════════════════════════════════════════════════
+# CONTROLLERS & INPUT
+# ═══════════════════════════════════════════════════════════════════
+joystick
+jstest-gtk
+antimicrox
+# sc-controller (Steam Controller)
+xboxdrv
+
+# ═══════════════════════════════════════════════════════════════════
+# AUDIO (Low latency for gaming)
+# ═══════════════════════════════════════════════════════════════════
+# pipewire ya instalado, configurar para low latency
+pipewire-alsa
+pipewire-jack
+
+# ═══════════════════════════════════════════════════════════════════
+# STREAMING & RECORDING
+# ═══════════════════════════════════════════════════════════════════
+obs-studio
+# gpu-screen-recorder (mejor rendimiento)
+
+# ═══════════════════════════════════════════════════════════════════
+# COMMUNICATION
+# ═══════════════════════════════════════════════════════════════════
+# discord (snap/flatpak/deb)
+
+# ═══════════════════════════════════════════════════════════════════
+# NATIVE GAMES
+# ═══════════════════════════════════════════════════════════════════
+# OpenRA - Open source RTS games (C&C, Red Alert, Dune 2000)
+# Instalar desde PPA: ppa:openra/release
+
+# ═══════════════════════════════════════════════════════════════════
+# EMULATORS (Optional)
+# ═══════════════════════════════════════════════════════════════════
+# retroarch
+# dolphin-emu
+# pcsx2
+# rpcs3
+# yuzu/ryujinx (Switch)

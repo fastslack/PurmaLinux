@@ -4645,6 +4645,14 @@ from purma_mobile_api import get_mobile_router
 
 app.include_router(get_mobile_router())
 
+# ============================================
+# GameHub API
+# ============================================
+
+from purma_gamehub import get_gamehub_router
+
+app.include_router(get_gamehub_router())
+
 
 # ============================================
 # Models API

@@ -12,6 +12,7 @@ import { LensWindow, LensButton, toggleLens, quickCapture } from "./widgets/lens
 import { VaultWindow, VaultButton, toggleVault } from "./widgets/vault/Vault.js";
 import { ScribeWindow, ScribeButton, toggleScribe } from "./widgets/scribe/Scribe.js";
 import { BrainWindow, BrainButton, toggleBrain } from "./widgets/brain/Brain.js";
+import { GameHubWindow, GameHubButton, toggleGameHub } from "./widgets/gamehub/GameHub.js";
 
 const notifications = await Service.import("notifications");
 const mpris = await Service.import("mpris");
@@ -268,6 +269,7 @@ function Right() {
     hpack: "end",
     spacing: 8,
     children: [
+      GameHubButton(),
       LensButton(),
       PulseButton(),
       BridgeButton(),
@@ -379,6 +381,7 @@ globalThis.purmaQuickCapture = quickCapture;
 globalThis.togglePurmaVault = toggleVault;
 globalThis.togglePurmaScribe = toggleScribe;
 globalThis.togglePurmaBrain = toggleBrain;
+globalThis.toggleGameHub = toggleGameHub;
 
 // ============================================
 // App Config
@@ -396,6 +399,7 @@ App.config({
     "./widgets/vault/style.css",
     "./widgets/scribe/style.css",
     "./widgets/brain/style.css",
+    "./widgets/gamehub/style.css",
   ].join("\n@import url('") + "');",
   windows: [
     Bar(),
@@ -409,6 +413,7 @@ App.config({
     VaultWindow(),
     ScribeWindow(),
     BrainWindow(),
+    GameHubWindow(),
   ],
 });
 

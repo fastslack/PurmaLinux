@@ -428,6 +428,48 @@
       <command>/ask-agent {name} {question} - Preguntar a agente específico</command>
     </chat_commands>
   </module>
+
+  <module name="Purma GameHub">
+    <shortcut>Super+G</shortcut>
+    <description>Centro unificado de gaming con escaneo de bibliotecas, ProtonDB y GameMode</description>
+    <backend>ai/server/purma_gamehub.py</backend>
+    <widget>desktop/ags/widgets/gamehub/GameHub.js</widget>
+    <style>desktop/ags/widgets/gamehub/style.css</style>
+    <accent_color>#8b5cf6 (gaming purple)</accent_color>
+    <api_endpoints>
+      <endpoint method="GET" path="/gamehub/status">/gamehub/status - Estado del sistema</endpoint>
+      <endpoint method="GET" path="/gamehub/games">/gamehub/games - Listar juegos</endpoint>
+      <endpoint method="POST" path="/gamehub/scan">/gamehub/scan - Escanear bibliotecas</endpoint>
+      <endpoint method="POST" path="/gamehub/launch/{id}">/gamehub/launch/{id} - Lanzar juego</endpoint>
+      <endpoint method="GET" path="/gamehub/protondb/{appid}">/gamehub/protondb/{appid} - Rating ProtonDB</endpoint>
+      <endpoint method="GET" path="/gamehub/gamemode">/gamehub/gamemode - Estado de GameMode</endpoint>
+      <endpoint method="POST" path="/gamehub/favorites/{id}">/gamehub/favorites/{id} - Toggle favorito</endpoint>
+    </api_endpoints>
+    <storage>SQLite (~/.purma/gamehub/gamehub.db)</storage>
+    <sources>
+      <source name="Steam">Biblioteca de Steam</source>
+      <source name="Lutris">Juegos de Lutris</source>
+      <source name="Heroic">Epic Games y GOG</source>
+      <source name="Native">Juegos nativos Linux (OpenRA, etc.)</source>
+    </sources>
+    <features>
+      <feature>Escaneo automático de bibliotecas de juegos</feature>
+      <feature>Integración con ProtonDB para compatibilidad</feature>
+      <feature>Activación automática de GameMode</feature>
+      <feature>Overlay con MangoHud</feature>
+      <feature>Gestión de favoritos</feature>
+      <feature>Búsqueda y filtrado</feature>
+    </features>
+    <included_games>
+      <game>OpenRA (C&C, Red Alert, Dune 2000)</game>
+    </included_games>
+    <chat_commands>
+      <command>/games - Listar juegos instalados</command>
+      <command>/play {name} - Lanzar juego</command>
+      <command>/gamemode - Estado de GameMode</command>
+      <command>/protondb {appid} - Consultar ProtonDB</command>
+    </chat_commands>
+  </module>
 </modules>
 
 <file_structure>
@@ -441,6 +483,7 @@
       <file>purma_memory.py</file>
       <file>purma_ghost.py</file>
       <file>purma_agents.py</file>
+      <file>purma_gamehub.py</file>
       <file>purma_integration.py</file>
       <file>purma_modules.py</file>
       <file>purma_sync.py</file>
@@ -510,7 +553,14 @@
           <file>Brain.js</file>
           <file>style.css</file>
         </directory>
+        <directory name="gamehub">
+          <file>GameHub.js</file>
+          <file>style.css</file>
+        </directory>
       </directory>
+    </directory>
+    <directory name="gaming">
+      <file>install-gaming.sh</file>
     </directory>
     <directory name="openbox">
       <file>rc.xml</file>
@@ -572,6 +622,7 @@
     <binding keys="Super+C" action="Purma Scribe"/>
     <binding keys="Super+Shift+X" action="Quick record 5s"/>
     <binding keys="Super+I" action="Purma Brain (AI Control Panel)"/>
+    <binding keys="Super+G" action="Purma GameHub"/>
   </category>
 
   <category name="Screenshots">
@@ -660,6 +711,13 @@
   <command name="/morning" description="Ejecutar rutina matutina"/>
   <command name="/research {topic}" description="Iniciar investigación"/>
   <command name="/review {file}" description="Code review de archivo"/>
+
+  <!-- GameHub Commands -->
+  <command name="/games" description="Listar juegos instalados"/>
+  <command name="/play {name}" description="Lanzar juego"/>
+  <command name="/gamemode" description="Estado de GameMode"/>
+  <command name="/protondb {appid}" description="Consultar compatibilidad ProtonDB"/>
+  <command name="/scan-games" description="Escanear bibliotecas de juegos"/>
 </builtin_commands>
 
 <dependencies>

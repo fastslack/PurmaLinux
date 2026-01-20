@@ -1,0 +1,475 @@
+/* ═══════════════════════════════════════════════════════════════════
+ * PurmaLinux - GameHub Styles
+ * Theme: Aurora Gaming
+ * ═══════════════════════════════════════════════════════════════════ */
+
+/* Aurora Gaming Colors */
+@define-color void #0a0e14;
+@define-color space #0d1117;
+@define-color nebula #161b22;
+@define-color cosmic #21262d;
+@define-color stardust #30363d;
+@define-color moonlight #8b949e;
+@define-color starlight #c9d1d9;
+@define-color plasma #f0f6fc;
+
+/* Gaming accent colors */
+@define-color gaming-primary #8b5cf6;     /* Purple */
+@define-color gaming-secondary #06b6d4;   /* Cyan */
+@define-color gaming-accent #f43f5e;      /* Rose */
+@define-color gaming-glow rgba(139, 92, 246, 0.3);
+
+/* ProtonDB colors */
+@define-color rating-platinum #b4c7dc;
+@define-color rating-gold #cfb53b;
+@define-color rating-silver #a8a8a8;
+@define-color rating-bronze #cd7f32;
+@define-color rating-borked #ef4444;
+@define-color rating-native #22c55e;
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* WINDOW                                                              */
+/* ─────────────────────────────────────────────────────────────────── */
+
+.gamehub-window {
+    background: alpha(@void, 0.95);
+}
+
+.gamehub-container {
+    background: linear-gradient(180deg, @space 0%, @void 100%);
+    border: 2px solid @stardust;
+    border-radius: 16px;
+    margin: 48px 120px;
+    padding: 0;
+    box-shadow: 0 0 60px @gaming-glow;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* HEADER                                                              */
+/* ─────────────────────────────────────────────────────────────────── */
+
+.gamehub-header {
+    background: linear-gradient(90deg, alpha(@gaming-primary, 0.2), alpha(@gaming-secondary, 0.2));
+    border-bottom: 1px solid @stardust;
+    border-radius: 14px 14px 0 0;
+    padding: 12px 16px;
+}
+
+.gamehub-logo {
+    padding: 4px 12px;
+}
+
+.logo-icon {
+    font-size: 24px;
+    margin-right: 8px;
+}
+
+.logo-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: @plasma;
+    background: linear-gradient(90deg, @gaming-primary, @gaming-secondary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gamemode-indicator {
+    background: @cosmic;
+    border: 1px solid @stardust;
+    border-radius: 8px;
+    padding: 6px 12px;
+    margin-right: 12px;
+    color: @moonlight;
+    font-size: 12px;
+}
+
+.gamemode-indicator.active {
+    background: alpha(@rating-native, 0.2);
+    border-color: @rating-native;
+    color: @rating-native;
+}
+
+.gamemode-indicator label:first-child {
+    margin-right: 6px;
+}
+
+.scan-btn {
+    background: alpha(@gaming-secondary, 0.2);
+    border: 1px solid @gaming-secondary;
+    border-radius: 8px;
+    padding: 6px 16px;
+    margin-right: 8px;
+    color: @gaming-secondary;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.scan-btn:hover {
+    background: alpha(@gaming-secondary, 0.3);
+    box-shadow: 0 0 12px alpha(@gaming-secondary, 0.4);
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: @moonlight;
+    font-size: 18px;
+}
+
+.close-btn:hover {
+    background: alpha(@gaming-accent, 0.2);
+    color: @gaming-accent;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* SEARCH                                                              */
+/* ─────────────────────────────────────────────────────────────────── */
+
+.search-entry {
+    background: @nebula;
+    border: 2px solid @stardust;
+    border-radius: 12px;
+    margin: 12px 16px;
+    padding: 12px 16px;
+    color: @plasma;
+    font-size: 14px;
+    caret-color: @gaming-primary;
+}
+
+.search-entry:focus {
+    border-color: @gaming-primary;
+    box-shadow: 0 0 12px alpha(@gaming-primary, 0.3);
+}
+
+.search-entry placeholder {
+    color: @moonlight;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* TABS                                                                */
+/* ─────────────────────────────────────────────────────────────────── */
+
+.gamehub-tabs {
+    background: @nebula;
+    border-bottom: 1px solid @stardust;
+    padding: 8px 16px;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    margin-right: 4px;
+    color: @moonlight;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+    background: alpha(@gaming-primary, 0.1);
+    color: @starlight;
+}
+
+.tab-btn.active {
+    background: alpha(@gaming-primary, 0.2);
+    color: @gaming-primary;
+    border-bottom: 2px solid @gaming-primary;
+}
+
+.tab-icon {
+    font-size: 16px;
+    margin-right: 6px;
+}
+
+.tab-separator {
+    background: @stardust;
+    min-width: 1px;
+    margin: 4px 12px;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* CONTENT                                                             */
+/* ─────────────────────────────────────────────────────────────────── */
+
+.gamehub-content {
+    padding: 16px;
+    min-height: 400px;
+}
+
+.section-title {
+    color: @starlight;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    padding-left: 4px;
+}
+
+.games-scroll {
+    border-radius: 8px;
+}
+
+.games-grid {
+    padding: 4px;
+}
+
+.games-empty {
+    background: @nebula;
+    border: 2px dashed @stardust;
+    border-radius: 12px;
+    padding: 48px;
+}
+
+.empty-message {
+    color: @moonlight;
+    font-size: 14px;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* GAME CARD                                                           */
+/* ─────────────────────────────────────────────────────────────────── */
+
+.game-card {
+    background: @nebula;
+    border: 2px solid @stardust;
+    border-radius: 12px;
+    margin: 6px;
+    padding: 0;
+    min-width: 180px;
+    max-width: 220px;
+    transition: all 0.2s ease;
+    overflow: hidden;
+}
+
+.game-card:hover {
+    border-color: @gaming-primary;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px alpha(@gaming-primary, 0.3);
+}
+
+.game-card:active {
+    transform: translateY(0);
+}
+
+.game-banner {
+    min-height: 100px;
+    background: linear-gradient(135deg, @cosmic, @nebula);
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px 10px 0 0;
+    position: relative;
+}
+
+.game-banner-overlay {
+    background: linear-gradient(180deg, transparent, alpha(@void, 0.8));
+    min-height: 100px;
+    padding: 8px;
+    border-radius: 10px 10px 0 0;
+}
+
+.game-source-icon {
+    background: alpha(@void, 0.8);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 14px;
+    color: @starlight;
+}
+
+.game-favorite {
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    color: @moonlight;
+    margin-left: auto;
+    padding: 4px;
+    transition: all 0.2s ease;
+}
+
+.game-favorite:hover {
+    color: @gaming-accent;
+    transform: scale(1.2);
+}
+
+.game-favorite.active {
+    color: @gaming-accent;
+}
+
+.game-info {
+    padding: 12px;
+    background: @nebula;
+}
+
+.game-title {
+    color: @plasma;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.game-meta {
+    margin-top: 4px;
+}
+
+.game-playtime {
+    color: @moonlight;
+    font-size: 11px;
+    margin-left: auto;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* PROTONDB RATINGS                                                    */
+/* ─────────────────────────────────────────────────────────────────── */
+
+.rating-badge {
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.rating-platinum {
+    background: alpha(@rating-platinum, 0.2);
+    color: @rating-platinum;
+    border: 1px solid @rating-platinum;
+}
+
+.rating-gold {
+    background: alpha(@rating-gold, 0.2);
+    color: @rating-gold;
+    border: 1px solid @rating-gold;
+}
+
+.rating-silver {
+    background: alpha(@rating-silver, 0.2);
+    color: @rating-silver;
+    border: 1px solid @rating-silver;
+}
+
+.rating-bronze {
+    background: alpha(@rating-bronze, 0.2);
+    color: @rating-bronze;
+    border: 1px solid @rating-bronze;
+}
+
+.rating-borked {
+    background: alpha(@rating-borked, 0.2);
+    color: @rating-borked;
+    border: 1px solid @rating-borked;
+}
+
+.rating-native {
+    background: alpha(@rating-native, 0.2);
+    color: @rating-native;
+    border: 1px solid @rating-native;
+}
+
+.rating-pending {
+    background: alpha(@moonlight, 0.1);
+    color: @moonlight;
+    border: 1px solid @stardust;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* STATUS BAR                                                          */
+/* ─────────────────────────────────────────────────────────────────── */
+
+.gamehub-statusbar {
+    background: @nebula;
+    border-top: 1px solid @stardust;
+    border-radius: 0 0 14px 14px;
+    padding: 8px 16px;
+}
+
+.status-item {
+    color: @moonlight;
+    font-size: 12px;
+}
+
+.status-separator {
+    background: @stardust;
+    min-width: 1px;
+    margin: 0 12px;
+}
+
+.loading-indicator {
+    color: @gaming-primary;
+    font-size: 12px;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* BAR BUTTON                                                          */
+/* ─────────────────────────────────────────────────────────────────── */
+
+.bar-gamehub-btn {
+    background: linear-gradient(135deg, alpha(@gaming-primary, 0.2), alpha(@gaming-secondary, 0.2));
+    border: 1px solid alpha(@gaming-primary, 0.5);
+    border-radius: 8px;
+    padding: 4px 12px;
+    margin: 0 4px;
+    transition: all 0.2s ease;
+}
+
+.bar-gamehub-btn:hover {
+    background: linear-gradient(135deg, alpha(@gaming-primary, 0.4), alpha(@gaming-secondary, 0.4));
+    box-shadow: 0 0 12px @gaming-glow;
+}
+
+.bar-gamehub-btn label {
+    font-size: 16px;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* SCROLLBARS                                                          */
+/* ─────────────────────────────────────────────────────────────────── */
+
+.gamehub-window scrollbar {
+    background: transparent;
+    min-width: 8px;
+}
+
+.gamehub-window scrollbar slider {
+    background: @stardust;
+    border-radius: 4px;
+    min-width: 6px;
+}
+
+.gamehub-window scrollbar slider:hover {
+    background: @gaming-primary;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/* ANIMATIONS                                                          */
+/* ─────────────────────────────────────────────────────────────────── */
+
+.gamehub-container {
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.game-card {
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

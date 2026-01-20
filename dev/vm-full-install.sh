@@ -91,6 +91,7 @@ echo "  - Polybar"
 echo "  - Zsh + Oh My Zsh + Powerlevel10k"
 echo "  - Ollama + modelo llama3.2"
 echo "  - Stack Python para AI"
+echo "  - Gaming (opcional: Steam, Lutris, OpenRA, GameMode)"
 echo "  - Todas las configuraciones de PurmaLinux"
 echo ""
 read -p "¿Continuar? [Y/n]: " confirm
@@ -102,7 +103,7 @@ fi
 # ═══════════════════════════════════════════════════════════════════
 # FASE 1: ACTUALIZACIÓN DEL SISTEMA
 # ═══════════════════════════════════════════════════════════════════
-phase "[1/9] Actualizando sistema base..."
+phase "[1/10] Actualizando sistema base..."
 
 sudo apt update
 sudo apt upgrade -y
@@ -118,7 +119,7 @@ success "Sistema actualizado"
 # ═══════════════════════════════════════════════════════════════════
 # FASE 2: PAQUETES CORE
 # ═══════════════════════════════════════════════════════════════════
-phase "[2/9] Instalando paquetes core..."
+phase "[2/10] Instalando paquetes core..."
 
 # Build tools
 sudo apt install -y \
@@ -220,10 +221,10 @@ sudo apt install -y \
     lxappearance \
     qt5ct
 
-# Polkit
-sudo apt install -y \
-    policykit-1 \
-    policykit-1-gnome
+# Polkit (nombre varía según versión de Ubuntu)
+sudo apt install -y polkitd policykit-1-gnome 2>/dev/null || \
+    sudo apt install -y policykit-1 policykit-1-gnome 2>/dev/null || \
+    sudo apt install -y polkitd polkit-kde-agent-1 2>/dev/null || true
 
 # Misc
 sudo apt install -y \
@@ -240,7 +241,7 @@ success "Paquetes core instalados"
 # ═══════════════════════════════════════════════════════════════════
 # FASE 3: ZSH + OH MY ZSH
 # ═══════════════════════════════════════════════════════════════════
-phase "[3/9] Instalando Zsh + Oh My Zsh + Powerlevel10k..."
+phase "[3/10] Instalando Zsh + Oh My Zsh + Powerlevel10k..."
 
 # Instalar Oh My Zsh (sin cambiar shell automáticamente)
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
@@ -521,7 +522,7 @@ success "Zsh + Oh My Zsh + Powerlevel10k configurado"
 # ═══════════════════════════════════════════════════════════════════
 # FASE 4: WINDOW MANAGERS Y COMPOSITOR
 # ═══════════════════════════════════════════════════════════════════
-phase "[4/9] Instalando window managers..."
+phase "[4/10] Instalando window managers..."
 
 # Openbox
 sudo apt install -y \
@@ -548,7 +549,7 @@ success "Window managers instalados"
 # ═══════════════════════════════════════════════════════════════════
 # FASE 5: POLYBAR
 # ═══════════════════════════════════════════════════════════════════
-phase "[5/9] Instalando Polybar..."
+phase "[5/10] Instalando Polybar..."
 
 if ! command -v polybar &> /dev/null; then
     # Dependencias de Polybar
@@ -593,7 +594,7 @@ fi
 # ═══════════════════════════════════════════════════════════════════
 # FASE 6: AGS (Aylur's GTK Shell)
 # ═══════════════════════════════════════════════════════════════════
-phase "[6/9] Instalando AGS..."
+phase "[6/10] Instalando AGS..."
 
 # Dependencias de AGS
 sudo apt install -y \
@@ -640,7 +641,7 @@ fi
 # ═══════════════════════════════════════════════════════════════════
 # FASE 7: PYTHON Y STACK AI
 # ═══════════════════════════════════════════════════════════════════
-phase "[7/9] Configurando Python y stack AI..."
+phase "[7/10] Configurando Python y stack AI..."
 
 sudo apt install -y \
     python3 \
@@ -682,7 +683,7 @@ success "Python y dependencias AI instaladas"
 # ═══════════════════════════════════════════════════════════════════
 # FASE 8: OLLAMA
 # ═══════════════════════════════════════════════════════════════════
-phase "[8/9] Instalando Ollama..."
+phase "[8/10] Instalando Ollama..."
 
 if ! command -v ollama &> /dev/null; then
     curl -fsSL https://ollama.com/install.sh | sh
@@ -714,9 +715,102 @@ ollama pull llama3.2 || warn "No se pudo descargar llama3.2. Ejecutar manualment
 success "Ollama configurado"
 
 # ═══════════════════════════════════════════════════════════════════
-# FASE 9: CONFIGURAR PURMALINUX
+# FASE 9: GAMING STACK (OPCIONAL)
 # ═══════════════════════════════════════════════════════════════════
-phase "[9/9] Configurando PurmaLinux..."
+echo ""
+echo -e "${YELLOW}¿Instalar Gaming Stack?${NC}"
+echo "  Incluye: Steam, Lutris, GameMode, MangoHud, OpenRA"
+read -p "Instalar gaming [y/N]: " gaming_choice
+
+if [[ "$gaming_choice" =~ ^[Yy]$ ]]; then
+    phase "[9/10] Instalando Gaming Stack..."
+
+    # Verificar si el script de gaming existe
+    if [[ -f "$PURMA_DIR/gaming/install-gaming.sh" ]]; then
+    log "Ejecutando instalación de gaming..."
+    # Ejecutar el script de gaming pero sin preguntas interactivas
+    PURMA_DIR="$PURMA_DIR" bash -c '
+        source "$PURMA_DIR/gaming/install-gaming.sh" << EOF
+n
+n
+EOF
+    ' 2>/dev/null || {
+        log "Ejecutando instalación manual de gaming..."
+        # Instalación manual si el script falla
+        sudo dpkg --add-architecture i386
+        sudo apt update
+
+        # Steam
+        echo "steam steam/question select I AGREE" | sudo debconf-set-selections
+        sudo apt install -y steam steam-devices 2>/dev/null || true
+
+        # Lutris
+        sudo add-apt-repository -y ppa:lutris-team/lutris 2>/dev/null || true
+        sudo apt update
+        sudo apt install -y lutris 2>/dev/null || true
+
+        # GameMode y MangoHud
+        sudo apt install -y gamemode mangohud 2>/dev/null || true
+
+        # OpenRA
+        sudo add-apt-repository -y ppa:openra/release 2>/dev/null || true
+        sudo apt update
+        sudo apt install -y openra 2>/dev/null || true
+
+        # Vulkan y 32-bit
+        sudo apt install -y \
+            mesa-vulkan-drivers mesa-vulkan-drivers:i386 \
+            libvulkan1 libvulkan1:i386 vulkan-tools \
+            libc6-i386 lib32z1 lib32gcc-s1 lib32stdc++6 2>/dev/null || true
+    }
+    success "Gaming stack instalado"
+else
+    log "Script de gaming no encontrado, instalando componentes básicos..."
+
+    # Habilitar 32-bit
+    sudo dpkg --add-architecture i386
+    sudo apt update
+
+    # Steam
+    echo "steam steam/question select I AGREE" | sudo debconf-set-selections
+    sudo apt install -y steam steam-devices 2>/dev/null || warn "Steam no disponible"
+
+    # Lutris
+    sudo add-apt-repository -y ppa:lutris-team/lutris 2>/dev/null || true
+    sudo apt update
+    sudo apt install -y lutris 2>/dev/null || warn "Lutris no disponible"
+
+    # GameMode y MangoHud
+    sudo apt install -y gamemode mangohud 2>/dev/null || warn "GameMode/MangoHud no disponible"
+
+    # OpenRA
+    sudo add-apt-repository -y ppa:openra/release 2>/dev/null || true
+    sudo apt update
+    sudo apt install -y openra 2>/dev/null || warn "OpenRA no disponible"
+
+    # Vulkan
+    sudo apt install -y \
+        mesa-vulkan-drivers mesa-vulkan-drivers:i386 \
+        libvulkan1 libvulkan1:i386 vulkan-tools 2>/dev/null || true
+
+    # 32-bit libs
+    sudo apt install -y \
+        libc6-i386 lib32z1 lib32gcc-s1 lib32stdc++6 2>/dev/null || true
+
+    success "Gaming stack básico instalado"
+    fi
+
+    # Crear directorio de GameHub
+    mkdir -p ~/.purma/gamehub/{logs,cache,screenshots}
+else
+    log "Gaming stack omitido. Puedes instalarlo después con:"
+    log "  bash ~/PurmaLinux/gaming/install-gaming.sh"
+fi
+
+# ═══════════════════════════════════════════════════════════════════
+# FASE 10: CONFIGURAR PURMALINUX
+# ═══════════════════════════════════════════════════════════════════
+phase "[10/10] Configurando PurmaLinux..."
 
 # Detectar si el script está dentro del repo
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
@@ -995,6 +1089,18 @@ cat << 'EOF'
 ╚══════════════════════════════════════════════════════════════════╝
 EOF
 echo -e "${NC}"
+
+# Mostrar info de gaming si fue instalado
+if [[ "$gaming_choice" =~ ^[Yy]$ ]]; then
+    echo -e "${CYAN}Gaming instalado:${NC}"
+    echo "  • Steam, Lutris, GameMode, MangoHud, OpenRA"
+    echo "  • Super+G → Purma GameHub"
+    echo ""
+else
+    echo -e "${YELLOW}Gaming no instalado.${NC} Para instalar después:"
+    echo "  bash ~/PurmaLinux/gaming/install-gaming.sh"
+    echo ""
+fi
 
 echo ""
 echo -e "${YELLOW}¿Instalar también Wayland (Hyprland/Sway)?${NC}"

@@ -159,9 +159,12 @@
     <!-- AI Chat (Super + A) -->
     <keybind key="W-a"><action name="Execute"><command>purma-chat</command></action></keybind>
 
-    <!-- Purma Flow -->
-    <keybind key="W-g"><action name="Execute"><command>purma-flow-ctl toggle</command></action></keybind>
-    <keybind key="W-S-g"><action name="Execute"><command>purma-flow-ctl record</command></action></keybind>
+    <!-- Purma Flow (Super+F in i3) -->
+    <keybind key="W-S-f"><action name="Execute"><command>ags -r "togglePurmaFlow()"</command></action></keybind>
+    <keybind key="W-C-f"><action name="Execute"><command>ags -r "togglePurmaRecording()"</command></action></keybind>
+
+    <!-- Purma GameHub (Gaming) -->
+    <keybind key="W-g"><action name="Execute"><command>ags -r "toggleGameHub()"</command></action></keybind>
 
     <!-- Purma Bridge -->
     <keybind key="W-b"><action name="Execute"><command>ags -r "togglePurmaBridge()"</command></action></keybind>
@@ -306,6 +309,35 @@
         <height>100%-48</height>
       </size>
       <layer>above</layer>
+    </application>
+    <!-- Gaming applications -->
+    <application class="Steam">
+      <decor>yes</decor>
+      <position force="yes">
+        <x>center</x>
+        <y>center</y>
+      </position>
+    </application>
+    <application class="lutris">
+      <decor>yes</decor>
+      <position force="yes">
+        <x>center</x>
+        <y>center</y>
+      </position>
+    </application>
+    <application class="heroic">
+      <decor>yes</decor>
+      <position force="yes">
+        <x>center</x>
+        <y>center</y>
+      </position>
+    </application>
+    <application class="goverlay">
+      <decor>yes</decor>
+      <position force="yes">
+        <x>center</x>
+        <y>center</y>
+      </position>
     </application>
   </applications>
 
