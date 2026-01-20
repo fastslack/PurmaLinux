@@ -1,225 +1,225 @@
 # PurmaLinux
 
-**AI-First Linux Distribution** - Un sistema operativo que integra inteligencia artificial en cada aspecto de la experiencia de usuario.
+**AI-First Linux Distribution** - An operating system that integrates artificial intelligence into every aspect of the user experience.
 
 ![PurmaLinux](https://img.shields.io/badge/PurmaLinux-AI%20First-00d4ff?style=for-the-badge)
 ![Python](https://img.shields.io/badge/Python-3.11+-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
-> **Autor:** Matías Aguirre
-> **Empresa:** [Matware](https://matware.nl)
-> **Proyecto:** PurmaLinux
+> **Author:** Matías Aguirre
+> **Company:** [Matware](https://matware.nl)
+> **Project:** PurmaLinux
 
-## Filosofia
+## Philosophy
 
-PurmaLinux no es solo una distribucion Linux con herramientas AI agregadas. Es un sistema operativo donde la inteligencia artificial esta integrada desde el nucleo, permitiendo:
+PurmaLinux is not just a Linux distribution with AI tools added on. It's an operating system where artificial intelligence is integrated from the core, enabling:
 
-- **Comunicacion unificada** entre todos los modulos via EventBus
-- **Contexto compartido** que permite a la AI entender el estado completo del sistema
-- **Workflows inteligentes** que coordinan multiples modulos automaticamente
-- **Anticipacion** de necesidades del usuario basada en patrones de uso
+- **Unified communication** between all modules via EventBus
+- **Shared context** that allows AI to understand the complete system state
+- **Intelligent workflows** that automatically coordinate multiple modules
+- **Anticipation** of user needs based on usage patterns
 
-## Arquitectura
+## Architecture
 
 ```
 +------------------+     +------------------+     +------------------+
 |   Purma Chat     |     |   Purma Lens     |     |   Purma Vault    |
-|   (Interfaz)     |     |   (Vision AI)    |     |   (Secretos)     |
+|   (Interface)    |     |   (Vision AI)    |     |   (Secrets)      |
 +--------+---------+     +--------+---------+     +--------+---------+
          |                        |                        |
          +------------------------+------------------------+
                                   |
                     +-------------+-------------+
                     |      PurmaEventBus        |
-                    |   (Sistema de Eventos)    |
+                    |     (Event System)        |
                     +-------------+-------------+
                                   |
          +------------------------+------------------------+
          |                        |                        |
 +--------+---------+     +--------+---------+     +--------+---------+
 |  Purma Cortex    |     |  Purma Memory    |     |   Purma Ghost    |
-|  (Prediccion)    |     |  (Conocimiento)  |     |  (Proactividad)  |
+|  (Prediction)    |     |  (Knowledge)     |     |  (Proactive)     |
 +------------------+     +------------------+     +------------------+
 ```
 
-## Modulos
+## Modules
 
 ### Core AI
 
-| Modulo | Descripcion |
+| Module | Description |
 |--------|-------------|
-| **Purma Chat** | Interfaz conversacional con Claude AI |
-| **Purma Lens** | Vision AI para analisis de imagenes, OCR, screenshots |
-| **Purma Vault** | Gestion segura de secretos con cifrado AES-256 |
-| **Purma Scribe** | Transcripcion de audio y dictado |
-| **Purma Brain** | Widget de escritorio con acceso rapido |
+| **Purma Chat** | Conversational interface with Claude AI |
+| **Purma Lens** | Vision AI for image analysis, OCR, screenshots |
+| **Purma Vault** | Secure secrets management with AES-256 encryption |
+| **Purma Scribe** | Audio transcription and dictation |
+| **Purma Brain** | Desktop widget with quick access |
 
 ### Intelligence Layer
 
-| Modulo | Descripcion |
+| Module | Description |
 |--------|-------------|
-| **Purma Cortex** | Motor predictivo que aprende patrones de uso |
-| **Purma Memory** | Base de conocimiento personal indexada |
-| **Purma Ghost** | Asistente proactivo que sugiere acciones |
-| **Purma Agents** | Sistema multi-agente para tareas complejas |
-| **Purma Spaces** | Contextos de trabajo especializados |
-| **Purma Pulse** | Monitoreo de sistema y bienestar |
+| **Purma Cortex** | Predictive engine that learns usage patterns |
+| **Purma Memory** | Indexed personal knowledge base |
+| **Purma Ghost** | Proactive assistant that suggests actions |
+| **Purma Agents** | Multi-agent system for complex tasks |
+| **Purma Spaces** | Specialized work contexts |
+| **Purma Pulse** | System and wellness monitoring |
 
 ### Sync & Organization
 
-| Modulo | Descripcion |
+| Module | Description |
 |--------|-------------|
-| **Purma Sync** | Sincronizacion con dispositivos moviles |
-| **AI Organizer** | Organizacion inteligente de archivos |
-| **File Managers** | Integracion con Thunar y Yazi |
+| **Purma Sync** | Synchronization with mobile devices |
+| **AI Organizer** | Intelligent file organization |
+| **File Managers** | Integration with Thunar and Yazi |
 
-## Instalacion
+## Installation
 
-### Requisitos
+### Requirements
 
 - Python 3.11+
-- Arch Linux (base recomendada)
-- 8GB RAM minimo
-- GPU compatible con CUDA (opcional, para aceleracion)
+- Arch Linux (recommended base)
+- 8GB RAM minimum
+- CUDA compatible GPU (optional, for acceleration)
 
-### Instalacion Rapida
+### Quick Install
 
 ```bash
-# Clonar repositorio
-git clone https://github.com/tu-usuario/PurmaLinux.git
+# Clone repository
+git clone https://github.com/user/PurmaLinux.git
 cd PurmaLinux
 
-# Crear entorno virtual
+# Create virtual environment
 python -m venv .venv
 source .venv/bin/activate
 
-# Instalar dependencias
+# Install dependencies
 pip install -r requirements.txt
 
-# Configurar API key
-export ANTHROPIC_API_KEY="tu-api-key"
+# Configure API key
+export ANTHROPIC_API_KEY="your-api-key"
 
-# Iniciar servidor
+# Start server
 python ai/server/purma_server.py
 ```
 
 ### CLI
 
 ```bash
-# Instalar CLI globalmente
+# Install CLI globally
 chmod +x bin/purma
 sudo ln -s $(pwd)/bin/purma /usr/local/bin/purma
 
-# Verificar instalacion
+# Verify installation
 purma status
 ```
 
-## Uso
+## Usage
 
-### Chat con AI
+### Chat with AI
 
 ```bash
-# Chat interactivo
+# Interactive chat
 purma chat
 
-# Comando directo
-purma chat "Explica este codigo"
+# Direct command
+purma chat "Explain this code"
 ```
 
-### Sincronizacion
+### Synchronization
 
 ```bash
-# Agregar carpeta a sync
-purma sync add ~/Documents --name "Mis Documentos"
+# Add folder to sync
+purma sync add ~/Documents --name "My Documents"
 
-# Listar carpetas sincronizadas
+# List synced folders
 purma sync list
 
-# Ver dispositivos conectados
+# View connected devices
 purma sync devices
 ```
 
-### Organizacion de Archivos
+### File Organization
 
 ```bash
-# Vista previa de organizacion
+# Preview organization
 purma organize preview ~/Downloads
 
-# Ejecutar organizacion
+# Execute organization
 purma organize run ~/Downloads
 
-# Habilitar auto-organizacion
+# Enable auto-organization
 purma organize enable ~/Downloads --mode smart
 ```
 
-### Vault (Secretos)
+### Vault (Secrets)
 
 ```bash
-# Estado del vault
+# Vault status
 purma vault status
 
-# Generar password
+# Generate password
 purma vault generate --length 32
 
-# Obtener secreto
+# Get secret
 purma vault get github_token
 ```
 
-### Otros Comandos
+### Other Commands
 
 ```bash
-# Sistema predictivo
+# Predictive system
 purma cortex predict
 
-# Base de conocimiento
-purma memory search "configuracion nginx"
+# Knowledge base
+purma memory search "nginx configuration"
 
-# Agentes especializados
+# Specialized agents
 purma agents list
 purma agents run code_reviewer
 
-# Servidor
+# Server
 purma server start
 purma server logs
 ```
 
-## Integracion con File Managers
+## File Manager Integration
 
 ### Thunar (GUI)
 
-Las Custom Actions se instalan en:
+Custom Actions are installed at:
 `~/.config/Thunar/uca.xml`
 
-Acciones disponibles via click derecho:
-- Organizar con IA
-- Habilitar Auto-organizacion
-- Sincronizar Carpeta
-- Analizar con IA
-- Extraer Texto (OCR)
+Available actions via right-click:
+- Organize with AI
+- Enable Auto-organization
+- Sync Folder
+- Analyze with AI
+- Extract Text (OCR)
 - Code Review
-- Explicar Archivo
-- Resumir Documento
+- Explain File
+- Summarize Document
 
 ### Yazi (Terminal)
 
-Keybindings con prefijo `A` (AI):
-- `A o` - Preview organizacion
-- `A O` - Ejecutar organizacion
-- `A s` - Agregar a sync
-- `A i` - Analizar archivo
+Keybindings with `A` prefix (AI):
+- `A o` - Preview organization
+- `A O` - Execute organization
+- `A s` - Add to sync
+- `A i` - Analyze file
 - `A r` - Code review
-- `A e` - Explicar archivo
-- `A t` - Extraer texto OCR
-- `A ?` - Ayuda AI
+- `A e` - Explain file
+- `A t` - Extract text OCR
+- `A ?` - AI help
 
-## API REST
+## REST API
 
-El servidor expone una API REST en `http://localhost:11435`:
+The server exposes a REST API at `http://localhost:11435`:
 
 ```bash
 # Chat
 POST /chat
-{"message": "Hola", "context": {}}
+{"message": "Hello", "context": {}}
 
 # Sync
 GET /sync/folders
@@ -236,23 +236,23 @@ GET /integration/context
 
 ## Mobile App
 
-PurmaLinux actua como hub central. La app movil (Android/iOS) se conecta via:
+PurmaLinux acts as a central hub. The mobile app (Android/iOS) connects via:
 
-1. **Emparejamiento por codigo**: El hub genera un codigo de 6 digitos
-2. **Emparejamiento por QR**: Escanear QR desde la app
-3. **Sincronizacion**: Las carpetas seleccionadas se sincronizan automaticamente
+1. **Code pairing**: The hub generates a 6-digit code
+2. **QR pairing**: Scan QR from the app
+3. **Sync**: Selected folders sync automatically
 
 ```bash
-# Generar codigo de emparejamiento
+# Generate pairing code
 curl http://localhost:11435/mobile/pairing/generate
 
-# O via CLI
+# Or via CLI
 purma sync pair
 ```
 
-## Configuracion
+## Configuration
 
-El archivo de configuracion se encuentra en `~/.purma/config.json`:
+The configuration file is located at `~/.purma/config.json`:
 
 ```json
 {
@@ -270,79 +270,72 @@ El archivo de configuracion se encuentra en `~/.purma/config.json`:
 }
 ```
 
-## Estructura del Proyecto
+## Project Structure
 
 ```
 PurmaLinux/
 ├── ai/
 │   └── server/
-│       ├── purma_server.py      # Servidor principal FastAPI
-│       ├── purma_sync.py        # Motor de sincronizacion
-│       ├── purma_integration.py # Sistema de integracion
-│       ├── purma_modules.py     # Adaptadores de modulos
-│       └── purma_mobile_api.py  # API movil
+│       ├── purma_server.py      # Main FastAPI server
+│       ├── purma_sync.py        # Sync engine
+│       ├── purma_integration.py # Integration system
+│       ├── purma_modules.py     # Module adapters
+│       └── purma_mobile_api.py  # Mobile API
 ├── base/
-│   ├── packages.txt             # Paquetes del sistema
-│   └── configs/                 # Configuraciones base
+│   ├── packages.txt             # System packages
+│   └── configs/                 # Base configurations
 ├── bin/
-│   └── purma                    # CLI unificado
+│   └── purma                    # Unified CLI
 ├── desktop/
 │   ├── thunar/
 │   │   └── uca.xml              # Custom Actions
 │   └── yazi/
-│       ├── yazi.toml            # Configuracion
+│       ├── yazi.toml            # Configuration
 │       ├── keymap.toml          # Keybindings
-│       └── theme.toml           # Tema Aurora
+│       └── theme.toml           # Aurora theme
 ├── docs/
-│   └── INTEGRATION.md           # Documentacion de integracion
-├── CLAUDE.md                    # Documentacion para AI
+│   └── INTEGRATION.md           # Integration documentation
+├── CLAUDE.md                    # AI documentation
 └── README.md
 ```
 
-## Tema Aurora
+## Aurora Theme
 
-PurmaLinux usa el tema "Aurora" con la siguiente paleta:
+PurmaLinux uses the "Aurora" theme with the following palette:
 
-| Color | Hex | Uso |
-|-------|-----|-----|
-| Cyan | `#00d4ff` | Primario, acentos |
-| Purple | `#a855f7` | Secundario |
-| Green | `#22c55e` | Exito, confirmacion |
-| Orange | `#f59e0b` | Advertencias |
-| Red | `#ef4444` | Errores |
-| Dark | `#0d1117` | Fondo |
-| Gray | `#8b949e` | Texto secundario |
+| Color | Hex | Usage |
+|-------|-----|-------|
+| Cyan | `#00d4ff` | Primary, accents |
+| Purple | `#a855f7` | Secondary |
+| Green | `#22c55e` | Success, confirmation |
+| Orange | `#f59e0b` | Warnings |
+| Red | `#ef4444` | Errors |
+| Dark | `#0d1117` | Background |
+| Gray | `#8b949e` | Secondary text |
 
-## Contribuir
+## Contributing
 
-1. Fork el repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit tus cambios (`git commit -m 'Agrega nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Abre un Pull Request
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/new-feature`)
+3. Commit your changes (`git commit -m 'Add new feature'`)
+4. Push to branch (`git push origin feature/new-feature`)
+5. Open a Pull Request
 
 ## Roadmap
 
-- [ ] App movil nativa (Flutter)
-- [ ] Purma Anticipate (prediccion de necesidades)
-- [ ] Purma Timeline (historial visual)
-- [ ] Purma Focus Shield (proteccion de distracciones)
-- [ ] Purma Habits (seguimiento de habitos)
-- [ ] Purma Dream (organizacion nocturna)
-- [ ] Soporte multi-idioma
-- [ ] Plugins de terceros
+- [ ] Native mobile app (Flutter)
+- [ ] Purma Anticipate (needs prediction)
+- [ ] Purma Timeline (visual history)
+- [ ] Purma Focus Shield (distraction protection)
+- [ ] Purma Habits (habit tracking)
+- [ ] Purma Dream (overnight organization)
+- [ ] Multi-language support
+- [ ] Third-party plugins
 
-## Licencia
+## License
 
-Este proyecto esta bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para mas detalles.
-
-## Creditos
-
-- **Claude AI** by Anthropic - Motor de inteligencia artificial
-- **FastAPI** - Framework web
-- **Yazi** - Terminal file manager
-- **Thunar** - GUI file manager
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
-**PurmaLinux** - *Donde la inteligencia artificial se encuentra con Linux*
+**PurmaLinux** - *Where artificial intelligence meets Linux*
